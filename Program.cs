@@ -1,11 +1,20 @@
+using SharpSeer.Interfaces;
+using SharpSeer.Models;
+using SharpSeer.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+builder.Services.AddDbContext<SharpSeerDBContext>();
+builder.Services.AddTransient<IService<Cohort>, CohortService>();
+builder.Services.AddTransient<IService<Exam>, ExamService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
+// Configure the HTTP request pipeline. 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
