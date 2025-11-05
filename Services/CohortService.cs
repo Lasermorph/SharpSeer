@@ -6,9 +6,9 @@ namespace SharpSeer.Services
     public class CohortService : IService<Cohort>
     {
 
-        SharpSeerDBContext context;
+        SharpSeerDbContext context;
 
-        public CohortService(SharpSeerDBContext dbContext)
+        public CohortService(SharpSeerDbContext dbContext)
         {
             context = dbContext;
         }

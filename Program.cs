@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<SharpSeerDBContext>();
+builder.Services.AddDbContext<SharpSeerDbContext>();
 builder.Services.AddTransient<IService<Cohort>, CohortService>();
 builder.Services.AddTransient<IService<Exam>, ExamService>();
 

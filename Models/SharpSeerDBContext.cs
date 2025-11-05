@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SharpSeer.Models;
 
-public partial class SharpSeerDBContext : DbContext
+public partial class SharpSeerDbContext : DbContext
 {
-    public SharpSeerDBContext()
+    public SharpSeerDbContext()
     {
     }
 
-    public SharpSeerDBContext(DbContextOptions<SharpSeerDBContext> options)
+    public SharpSeerDbContext(DbContextOptions<SharpSeerDbContext> options)
         : base(options)
     {
     }
@@ -23,44 +23,61 @@ public partial class SharpSeerDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SharpSeer;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer("Data Source=JULIA\\SQLEXPRESS;Initial Catalog=SharpSeerDB;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cohort>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Cohorts__3214EC274EE60854");
+            entity.HasKey(e => e.Id).HasName("PK__Cohorts__3214EC2782EC5191");
         });
 
         modelBuilder.Entity<Exam>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Exams__3214EC27BEA3130B");
+            entity.HasKey(e => e.Id).HasName("PK__Exams__3214EC278F1EB990");
 
-            entity.HasOne(d => d.Cohort).WithOne(p => p.Exam)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Exams__CohortID__3D5E1FD2");
-
-            entity.HasMany(d => d.Teachers).WithMany(p => p.Exams)
+            entity.HasMany(d => d.Cohorts).WithMany(p => p.Exams)
                 .UsingEntity<Dictionary<string, object>>(
-                    "Examiner",
-                    r => r.HasOne<Teacher>().WithMany()
-                        .HasForeignKey("TeacherId")
+                    "ExamCohort",
+                    r => r.HasOne<Cohort>().WithMany()
+                        .HasForeignKey("CohortId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Examiners__Teach__4316F928"),
+                        .HasConstraintName("FK__ExamCohor__Cohor__571DF1D5"),
                     l => l.HasOne<Exam>().WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Examiners__ExamI__4222D4EF"),
+                        .HasConstraintName("FK__ExamCohor__ExamI__5629CD9C"),
                     j =>
                     {
-                        j.HasKey("ExamId", "TeacherId").HasName("PK__Examiner__77AA0451684B2945");
-                        j.ToTable("Examiners");
+                        j.HasKey("ExamId", "CohortId").HasName("PK__ExamCoho__CDD7092837E1C6D8");
+                        j.ToTable("ExamCohorts");
+                        j.IndexerProperty<int>("ExamId").HasColumnName("ExamID");
+                        j.IndexerProperty<int>("CohortId").HasColumnName("CohortID");
+                    });
+
+            entity.HasMany(d => d.Teachers).WithMany(p => p.Exams)
+                .UsingEntity<Dictionary<string, object>>(
+                    "ExamTeacher",
+                    r => r.HasOne<Teacher>().WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__ExamTeach__Teach__534D60F1"),
+                    l => l.HasOne<Exam>().WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__ExamTeach__ExamI__52593CB8"),
+                    j =>
+                    {
+                        j.HasKey("ExamId", "TeacherId").HasName("PK__ExamTeac__77AA04338FA9F551");
+                        j.ToTable("ExamTeachers");
+                        j.IndexerProperty<int>("ExamId").HasColumnName("ExamID");
+                        j.IndexerProperty<int>("TeacherId").HasColumnName("TeacherID");
                     });
         });
 
         modelBuilder.Entity<Teacher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Teachers__3214EC272498E425");
+            entity.HasKey(e => e.Id).HasName("PK__Teachers__3214EC2722ABD1B8");
         });
 
         OnModelCreatingPartial(modelBuilder);

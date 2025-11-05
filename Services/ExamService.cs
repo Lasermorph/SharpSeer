@@ -6,7 +6,7 @@ namespace SharpSeer.Services
 {
     public class ExamService : IService<Exam>
     {
-        SharpSeerDBContext context;
+        SharpSeerDbContext context;
 
         public void Create(Exam ? exam)
         {
