@@ -4,33 +4,44 @@
 }
 <h1>Cohort Page</h1>
 <form method="get">
-	<button class="btn" type="submit" name="Action" value="create">
+	<a asp-page="/Cohorts/Create" class="btn btn-primary" type="submit" name="Action" value="create">
 		Tilføj
-	</button>
-	@if (Model.ShowCreate)
+	</a>
+	@* @if (Model.ShowCreate)
 	{
-		<iframe src="/Cohorts/Create" width="100%" height="80"></iframe>
+		<iframe src="" width="100%" height="80"></iframe>
 	} else
 	{
 		
-	}
+	} *@
 	
 </form>
+Filter
+
+
+
+
 
 <table class ="table">
 	<thead>
 		<tr>
 			<th scope="col">
+				<input type="text" class="form-control" 
+					   onchange="this.form.submit()" width="100" placeholder="Hold navn" style="margin-bottom:5px"/>
 				Navn
 			</th>
 			<th scope="col">
+				<input type="text" class="form-control"
+					   onchange="this.form.submit()" width="100" placeholder="Retning" style="margin-bottom:5px" />
 				Retning
 			</th>
 			<th scope="col">
+				<input type="text" class="form-control"
+					   onchange="this.form.submit()" width="100" placeholder="Semester" style="margin-bottom:5px"/>
 				Semester
 			</th>
 			<th scope="col">
-
+				
 			</th>
 		</tr>
 	</thead>
