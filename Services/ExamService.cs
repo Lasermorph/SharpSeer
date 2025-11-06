@@ -33,6 +33,10 @@ namespace SharpSeer.Services
             return context.Exams;
         }
 
+        public Exam? GetById(int id)
+        {
+            return context.Exams.Find(id);
+        }
         public void Update(Exam exam)
         {
             var entity = context.Exams.Find(exam.Id);
@@ -42,6 +46,11 @@ namespace SharpSeer.Services
             }
             context.Entry(entity).CurrentValues.SetValues(exam);
             context.SaveChanges();
+        }
+
+        public void Update(Exam t, int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

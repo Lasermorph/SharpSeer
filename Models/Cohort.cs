@@ -25,4 +25,8 @@ public partial class Cohort
     [ForeignKey("CohortId")]
     [InverseProperty("Cohorts")]
     public virtual ICollection<Exam> Exams { get; set; } = new List<Exam>();
+
+    public Cohort()
+    {
+    }
 }

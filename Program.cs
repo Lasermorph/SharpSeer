@@ -1,6 +1,8 @@
 using SharpSeer.Interfaces;
 using SharpSeer.Models;
 using SharpSeer.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<SharpSeerDbContext>();
 builder.Services.AddTransient<IService<Cohort>, CohortService>();
 builder.Services.AddTransient<IService<Exam>, ExamService>();
+//var conString = builder.Configuration.GetConnectionString("BloggingDatabase") ??
+//     throw new InvalidOperationException("Connection string 'BloggingDatabase'" +
+//    " not found.");
+//builder.Services.AddDbContext<BloggingDatabase>(options =>
+//    options.UseSqlServer(conString));
 
 var app = builder.Build();
 
