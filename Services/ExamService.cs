@@ -7,7 +7,10 @@ namespace SharpSeer.Services
     public class ExamService : IService<Exam>
     {
         SharpSeerDbContext context;
-
+        public ExamService(SharpSeerDbContext dbContext)
+        {
+            context = dbContext;
+        }
         public void Create(Exam ? exam)
         {
             if (exam == null) 
