@@ -8,13 +8,16 @@ namespace SharpSeer.Models;
 
 public partial class SharpSeerDbContext : DbContext
 {
+    private string ? connectionString;
     public SharpSeerDbContext()
     {
+
     }
 
-    public SharpSeerDbContext(DbContextOptions<SharpSeerDbContext> options)
+    public SharpSeerDbContext(DbContextOptions<SharpSeerDbContext> options, IConfiguration config)
         : base(options)
     {
+        connectionString = config.GetConnectionString("SharpSeerDB");
     }
 
     public virtual DbSet<Cohort> Cohorts { get; set; }
@@ -24,8 +27,12 @@ public partial class SharpSeerDbContext : DbContext
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=mssql3.unoeuro.com;Initial Catalog=vedelslund_dk_db_sharp_seer_db;User ID=vedelslund_dk;Password=p4k9whbaxz5FGD6RBgfe;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(connectionString);
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
