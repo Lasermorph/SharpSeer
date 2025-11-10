@@ -6,23 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SharpSeer.Models;
 
-[Index("CohortId", Name = "UQ__Exams__4A2288FEE1096D4E", IsUnique = true)]
-public class Exam
+public partial class Exam
 {
     [Key]
     [Column("ID")]
     public int Id { get; set; }
 
-    [StringLength(255)]
+    [StringLength(100)]
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
-    [Column("CohortID")]
-    public int CohortId { get; set; }
+    public int ExamType { get; set; }
 
     public bool IsGuarded { get; set; }
 
-    public bool NeedsExternalExaminer { get; set; }
+    public bool NeedExternalExaminer { get; set; }
 
     public DateTime FirstExamDate { get; set; }
 
@@ -30,32 +28,13 @@ public class Exam
 
     public DateTime? HandInDeadline { get; set; }
 
-    public int ExamDurationMinutes { get; set; }
+    public int DurationInMinutes { get; set; }
 
-    public int ExamType { get; set; }
-
-    [ForeignKey("CohortId")]
-    [InverseProperty("Exam")]
-    public virtual Cohort Cohort { get; set; } = null!;
+    [ForeignKey("ExamId")]
+    [InverseProperty("Exams")]
+    public virtual ICollection<Cohort> Cohorts { get; set; } = new List<Cohort>();
 
     [ForeignKey("ExamId")]
     [InverseProperty("Exams")]
     public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
-
-    public Exam()
-    {
-    }
-
-    public Exam(string name, int cohortId, bool isGuarded, bool needsExternalExaminer, DateTime firstExamDate, DateTime lastExamDate, DateTime? handInDeadline, int examDurationMinutes, int examType)
-    {
-        Name = name;
-        CohortId = cohortId;
-        IsGuarded = isGuarded;
-        NeedsExternalExaminer = needsExternalExaminer;
-        FirstExamDate = firstExamDate;
-        LastExamDate = lastExamDate;
-        HandInDeadline = handInDeadline;
-        ExamDurationMinutes = examDurationMinutes;
-        ExamType = examType;
-    }
 }

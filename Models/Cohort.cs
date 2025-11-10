@@ -6,33 +6,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SharpSeer.Models;
 
-[Index("Name", Name = "UQ__Cohorts__737584F66B6116DB", IsUnique = true)]
 public partial class Cohort
 {
     [Key]
     [Column("ID")]
-    public int Id { get; set; } = 1;
+    public int Id { get; set; }
 
-    [StringLength(23)]
+    [StringLength(100)]
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
-    [StringLength(31)]
+    [StringLength(100)]
     [Unicode(false)]
     public string Major { get; set; } = null!;
 
     public int Term { get; set; }
 
-    [InverseProperty("Cohort")]
-    public virtual Exam? Exam { get; set; }
+    [ForeignKey("CohortId")]
+    [InverseProperty("Cohorts")]
+    public virtual ICollection<Exam> Exams { get; set; } = new List<Exam>();
 
     public Cohort()
     {
-    }
-    public Cohort(string name, string major, int term)
-    {
-        Name = name;
-        Major = major;
-        Term = term;
     }
 }

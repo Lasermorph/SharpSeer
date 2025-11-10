@@ -6,8 +6,11 @@ namespace SharpSeer.Services
 {
     public class ExamService : IService<Exam>
     {
-        SharpSeerDBContext context;
-
+        SharpSeerDbContext context;
+        public ExamService(SharpSeerDbContext dbContext)
+        {
+            context = dbContext;
+        }
         public void Create(Exam ? exam)
         {
             if (exam == null) 
@@ -33,6 +36,10 @@ namespace SharpSeer.Services
             return context.Exams;
         }
 
+        public Exam? GetById(int id)
+        {
+            return context.Exams.Find(id);
+        }
         public void Update(Exam exam)
         {
             var entity = context.Exams.Find(exam.Id);
@@ -42,6 +49,11 @@ namespace SharpSeer.Services
             }
             context.Entry(entity).CurrentValues.SetValues(exam);
             context.SaveChanges();
+        }
+
+        public void Update(Exam t, int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

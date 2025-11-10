@@ -8,7 +8,9 @@ namespace SharpSeer.Interfaces
     {     
         void Create(T t);
         IEnumerable<T> GetAll();
+        T? GetById(int id);
         void Update(T t);
+        void Update(T t, int id);
         void Delete(T t);
     }
 }

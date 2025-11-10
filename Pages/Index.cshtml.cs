@@ -11,10 +11,10 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
 
-    SharpSeerDBContext Seer;
+    SharpSeerDbContext Seer;
     IService<Cohort> CohortService;
 
-    public IndexModel(ILogger<IndexModel> logger, SharpSeerDBContext seer, IService<Cohort> cohortService)
+    public IndexModel(ILogger<IndexModel> logger, SharpSeerDbContext seer, IService<Cohort> cohortService)
     {
         _logger = logger;
         Seer = seer;

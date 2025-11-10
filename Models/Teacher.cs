@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SharpSeer.Models;
 
-[Index("Email", Name = "UQ__Teachers__A9D10534E7FBAD77", IsUnique = true)]
+[Index("Email", Name = "UQ__Teachers__A9D10534BA269ED2", IsUnique = true)]
 public partial class Teacher
 {
     [Key]
     [Column("ID")]
     public int Id { get; set; }
 
-    [StringLength(255)]
+    [StringLength(100)]
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
-    [StringLength(255)]
+    [StringLength(100)]
     [Unicode(false)]
     public string Email { get; set; } = null!;
 

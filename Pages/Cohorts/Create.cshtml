@@ -1,0 +1,43 @@
+﻿@page
+@model SharpSeer.Pages.Cohorts.CreateModel
+@{
+}
+<table>
+    <thead>
+        <tr>
+            <th scope="col">
+                Navn
+            </th>
+            <th scope="col">
+                Retning
+            </th>
+            <th scope="col">
+                Semester
+            </th>
+            <th scope="col">
+            </th>
+            <th scope="col">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <form method="post">
+                <td>
+                    <input asp-for="Cohort.Name" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="Cohort.Major" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="Cohort.Term" class="form-control" />
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">Opret</button>
+                </td>
+                <td>
+                <button asp-page="" class="btn btn-secondary" >Annuller</button>
+                </td>
+            </form>
+        </tr>
+</table>
