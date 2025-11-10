@@ -3,6 +3,7 @@ using SharpSeer.Models;
 using SharpSeer.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Runtime.CompilerServices;
+using System.Linq.Expressions;
 
 namespace SharpSeer.Pages.Exams
 {
@@ -36,7 +37,6 @@ namespace SharpSeer.Pages.Exams
         public void OnGet()
         {
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
-            bool isDone = false;
 
             foreach (var q in QKeys)
             {
@@ -45,25 +45,19 @@ namespace SharpSeer.Pages.Exams
                     case "Delete":
                         ShowDelete = true;
                         GetQueryValues(q);
-                        isDone = true;
-                        break;
+                        goto EndOfLoop;
                     case "Create":
                         ShowCreate = true;
                         HttpContext.Request.Query.TryGetValue(q, out var value);
                         QueryString = q;
-                        isDone = true;
-                        break;
+                        goto EndOfLoop;
                     case "Update":
                         ShowUpdate = true;
                         GetQueryValues(q);
-                        isDone = true;
-                        break;
-                }
-                if (isDone) 
-                { 
-                    break; 
+                        goto EndOfLoop;
                 }
             }
+            EndOfLoop:;
 
             //if (HttpContext.Request.Query.TryGetValue("Delete", out var actionValue))
             //{
