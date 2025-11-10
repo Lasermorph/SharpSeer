@@ -17,11 +17,6 @@
 	
 </form>
 Filter
-
-
-
-
-
 <table class ="table">
 	<thead>
 		<tr>
@@ -113,63 +108,32 @@ Filter
 				<form asp-action="SubmitForm" asp-controller="Home" method="post">
 					<div class="modal-body">
 						<table class="table">
-							<thead>
+							<tbody>
 								<tr>
 									<th scope="col">
 										Navn
 									</th>
-									<th scope="col">
-										Eksamens type
-									</th>
-									<th scope="col">
-										Med vagt
-									</th>
-									<th scope="col">
-										Ekstern censor
-									</th>
-									<th scope="col">
-										Eksamens start
-									</th>
-									<th scope="col">
-										Eksamens Slut
-									</th>
-									<th scope="col">
-										Deadline for aflevering
-									</th>
-									<th scope="col">
-										Eksmaens varighed
-									</th>
+									<td>
+										<input asp-for="Cohort.Name" class="form-control" />
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-
 								<tr>
+									<th scope="col">
+										Retning
+									</th>
 									<td>
-										<input asp-for="Exam.Name" class="form-control" />
-									</td>
-									<td>
-										<input asp-for="Exam.ExamType" class="form-control" />
-									</td>
-									<td>
-										<input type="checkbox" asp-for="Exam.IsGuarded" />
-									</td>
-									<td>
-										<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
-									</td>
-									<td>
-										<input asp-for="Exam.FirstExamDate" class="form-control" />
-									</td>
-									<td>
-										<input asp-for="Exam.LastExamDate" class="form-control" />
-									</td>
-									<td>
-										<input asp-for="Exam.HandInDeadline" class="form-control" />
-									</td>
-									<td>
-										<input asp-for="Exam.DurationInMinutes" class="form-control" />
+										<input asp-for="Cohort.Major" class="form-control" />
 									</td>
 								</tr>
-
+								<tr>
+									<th scope="col">
+										Semester
+									</th>
+									<td>
+										<input type="checkbox" asp-for="Cohort.Term" />
+									</td>
+								</tr>
+							</tbody>
 						</table>
 					</div>
 					<!-- Modal footer -->
