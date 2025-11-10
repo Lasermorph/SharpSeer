@@ -7,7 +7,7 @@ namespace SharpSeer.Pages.Cohorts
 {
     public class UpdateModel : PageModel
     {
-        [BindProperty]
+        [BindProperty(SupportsGet =true)]
         public Cohort Cohort { get; set; }
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
@@ -16,9 +16,10 @@ namespace SharpSeer.Pages.Cohorts
         {
             m_service = service;
         }
-        public void OnGet(int id)
-        {
-            Id = id;
+       public void OnGet(int id)
+       {
+                Id = id;
+                Cohort = m_service.GetById(id);
         }
 
 
