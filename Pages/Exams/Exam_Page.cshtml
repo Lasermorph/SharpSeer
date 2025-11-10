@@ -121,62 +121,75 @@
 				<form asp-action="SubmitForm" asp-controller="Home" method="post">
 				<div class="modal-body">
 					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">
-									Navn
-								</th>
-								<th scope="col">
-									Eksamens type
-								</th>
-								<th scope="col">
-									Med vagt
-								</th>
-								<th scope="col">
-									Ekstern censor
-								</th>
-								<th scope="col">
-									Eksamens start
-								</th>
-								<th scope="col">
-									Eksamens Slut
-								</th>
-								<th scope="col">
-									Deadline for aflevering
-								</th>
-								<th scope="col">
-									Eksmaens varighed
-								</th>
-							</tr>
-						</thead>
-						<tbody>
+						
+							
 					
-							<tr>
-								<td>
-									<input asp-for="Exam.Name" class="form-control" />
-								</td>
-								<td>
-									<input asp-for="Exam.ExamType" class="form-control" />
-								</td>
-								<td>
-									<input type="checkbox" asp-for="Exam.IsGuarded" />
-								</td>
-								<td>
-									<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
-								</td>
-								<td>
-									<input asp-for="Exam.FirstExamDate" class="form-control" />
-								</td>
-								<td>
-									<input asp-for="Exam.LastExamDate" class="form-control" />
-								</td>
-								<td>
-									<input asp-for="Exam.HandInDeadline" class="form-control" />
-								</td>
-								<td>
-									<input asp-for="Exam.DurationInMinutes" class="form-control" />
-								</td>
-							</tr>
+						<tbody>
+								<tr>
+									<th scope="col">
+										Navn
+									</th>
+									<td>
+										<input asp-for="Exam.Name" class="form-control" />
+									</td>
+								</tr>
+                                <tr>
+									<th scope="col">
+										Eksamens type
+									</th>
+									<td>
+										<input asp-for="Exam.ExamType" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Med vagt
+									</th>
+									<td>
+										<input type="checkbox" asp-for="Exam.IsGuarded" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Ekstern censor
+									</th>
+									<td>
+										<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Eksamens start
+									</th>
+									<td>
+										<input asp-for="Exam.FirstExamDate" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Eksamens Slut
+									</th>
+									<td>
+										<input asp-for="Exam.LastExamDate" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Deadline for aflevering
+									</th>
+									<td>
+										<input asp-for="Exam.HandInDeadline" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Eksmaens varighed
+									</th>
+									<td>
+										<input asp-for="Exam.DurationInMinutes" class="form-control" />
+									</td>
+								</tr>
+						
 							
 					</table>
 				</div>
