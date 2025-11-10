@@ -16,6 +16,7 @@ namespace SharpSeer.Pages.Exams
 
         [BindProperty(SupportsGet = true)]
         public Exam? Exam { get; set; }
+
         private IService<Exam> m_service;
         public IEnumerable<Exam> Exams { get; set; }
         public Exam_PageModel(IService<Exam> service)
