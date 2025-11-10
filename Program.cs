@@ -12,6 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<SharpSeerDbContext>();
 builder.Services.AddTransient<IService<Cohort>, CohortService>();
 builder.Services.AddTransient<IService<Exam>, ExamService>();
+builder.Services.AddTransient<IService<Teacher>, TeacherService>();
 //var conString = builder.Configuration.GetConnectionString("BloggingDatabase") ??
 //     throw new InvalidOperationException("Connection string 'BloggingDatabase'" +
 //    " not found.");
