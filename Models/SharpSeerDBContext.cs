@@ -29,6 +29,7 @@ public partial class SharpSeerDBContext : DbContext
     {
         modelBuilder.Entity<Cohort>(entity =>
         {
+            Console.WriteLine("foo");
             entity.HasKey(e => e.Id).HasName("PK__Cohorts__3214EC274EE60854");
         });
 
