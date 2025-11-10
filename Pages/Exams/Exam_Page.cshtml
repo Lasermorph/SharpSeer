@@ -1,4 +1,5 @@
 ﻿@page
+@using SharpSeer.Models
 @model SharpSeer.Pages.Exams.Exam_PageModel
 @{
 }
@@ -70,6 +71,13 @@
 					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
 						Rediger
 					</a> *@
+					<form method="get" asp-page-handler="Update">
+						<a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" type="submit">
+							Opdater
+						</a>
+					</form>
+				</td>
+				<td>
 					<form method="get">
 					<a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" type="submit">
 						Slet
@@ -118,7 +126,7 @@
 					<a href="/Exams/Exam_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
-				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+				<form method="post" asp-page-handler="Create">
 				<div class="modal-body">
 					<table class="table">
 						<thead>
@@ -184,6 +192,116 @@
 				<div class="modal-footer">
 					
 					<button type="submit" class="btn btn-primary">Godkend</button>
+					<a href="/Exams/Exam_Page" type="button" class="btn btn-danger">Annuller</a>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+}
+
+@if (Model.ShowUpdate)
+{
+	<!-- Modal -->
+	<div style="display: block;" class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Tilføj ny eksamen</h4>
+					<a href="/Exams/Exam_Page" type="button" class="btn btn-close"></a>
+				</div>
+				<!-- Modal body -->
+				<form method="post" asp-page-handler="Update" asp-route-id="@Model.Exam.Id">
+				<div class="modal-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">
+									Navn
+								</th>
+								<th scope="col">
+									Eksamens type
+								</th>
+								<th scope="col">
+									Med vagt
+								</th>
+								<th scope="col">
+									Ekstern censor
+								</th>
+								<th scope="col">
+									Eksamens start
+								</th>
+								<th scope="col">
+									Eksamens Slut
+								</th>
+								<th scope="col">
+									Deadline for aflevering
+								</th>
+								<th scope="col">
+									Eksmaens varighed
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									@Model.Exam.Name
+								</td>
+								<td>
+									@Model.Exam.ExamType
+								</td>
+								<td>
+									@Model.Exam.IsGuarded
+								</td>
+								<td>
+									@Model.Exam.NeedExternalExaminer
+								</td>
+								<td>
+									@Model.Exam.FirstExamDate
+								</td>
+								<td>
+									@Model.Exam.LastExamDate
+								</td>
+								<td>
+									@Model.Exam.HandInDeadline
+								</td>
+								<td>
+									@Model.Exam.DurationInMinutes
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input asp-for="Exam.Name" class="form-control" />
+								</td>
+								<td>
+									<input asp-for="Exam.ExamType" class="form-control" />
+								</td>
+								<td>
+									<input type="checkbox" asp-for="Exam.IsGuarded" />
+								</td>
+								<td>
+									<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
+								</td>
+								<td>
+									<input asp-for="Exam.FirstExamDate" class="form-control" />
+								</td>
+								<td>
+									<input asp-for="Exam.LastExamDate" class="form-control" />
+								</td>
+								<td>
+									<input asp-for="Exam.HandInDeadline" class="form-control" />
+								</td>
+								<td>
+									<input asp-for="Exam.DurationInMinutes" class="form-control" />
+								</td>
+							</tr>
+					</table>
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					
+					<button type="submit" class="btn btn-primary">Opdater</button>
 					<a href="/Exams/Exam_Page" type="button" class="btn btn-danger">Annuller</a>
 				</div>
 				</form>

@@ -15,7 +15,7 @@ namespace SharpSeer.Pages.Exams
         [BindProperty(SupportsGet = true)]
         public string QueryString { get; set; } = string.Empty;
 
-        [BindProperty(SupportsGet =true)]
+        [BindProperty(SupportsGet = true)]
         public Exam? Exam { get; set; }
         private IService<Exam> m_service;
         public IEnumerable<Exam> Exams { get; set; }
@@ -85,11 +85,10 @@ namespace SharpSeer.Pages.Exams
                 switch (q)
                 {
                     case "Delete":
-                        
+
                         GetQueryValues(q);
                         m_service.Delete(Exam);
-                        isDone = true;
-                        break;
+                        goto EndOfLoop;
                     case "Create":
                         HttpContext.Request.Query.TryGetValue(q, out var value);
                         m_service.Create(Exam);
@@ -106,10 +105,24 @@ namespace SharpSeer.Pages.Exams
                     break;
                 }
             }
+        EndOfLoop:
             //HttpContext.Request.Query.TryGetValue("Delete", out var actionValue);
             //m_service.Delete(m_service.GetById(int.Parse(actionValue)));
             return RedirectToPage("Exam_Page");
 
+        }
+        
+        public IActionResult OnPostUpdate(int id)
+        {
+            Exam.Id = id;
+            m_service.Update(Exam);
+            return RedirectToPage("Exam_Page");
+        }
+
+        public IActionResult OnPostCreate()
+        {
+            m_service.Create(Exam);
+            return RedirectToPage("Exam_Page");
         }
     }
 }
