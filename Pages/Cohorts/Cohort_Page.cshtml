@@ -3,19 +3,9 @@
 @{
 }
 <h1>Cohort Page</h1>
-<form method="get">
-	<a asp-page="/Cohorts/Create" class="btn btn-primary" type="submit" name="Action" value="create">
-		Tilføj
-	</a>
-	@* @if (Model.ShowCreate)
-	{
-		<iframe src="" width="100%" height="80"></iframe>
-	} else
-	{
-		
-	} *@
-	
-</form>
+
+<a class="btn btn-primary" href="/Cohorts/Cohort_Page/?Create=0">Tilføj</a>
+
 Filter
 <table class ="table">
 	<thead>
@@ -54,10 +44,14 @@ Filter
 					@cohort.Term
 				</td>
 				<td>
-					<a asp-page="/Cohorts/Update" asp-route-id="@cohort.Id" class="btn btn-primary">
-						Opdater
-                    </a>
-                    <a asp-page="/Cohorts/Delete" asp-route-id="@cohort.Id" class="btn btn-danger">Slet</a>
+					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
+						Rediger
+					</a> *@
+					<form method="get">
+						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" type="submit">
+							Slet
+						</a>
+					</form>
 				</td>
 			</tr>
 		}
@@ -93,6 +87,7 @@ Filter
 		</div>
 	</div>
 }
+
 @if (Model.ShowCreate)
 {
 	<!-- Modal -->
@@ -130,7 +125,7 @@ Filter
 										Semester
 									</th>
 									<td>
-										<input type="checkbox" asp-for="Cohort.Term" />
+										<input asp-for="Cohort.Term" class="form-control" />
 									</td>
 								</tr>
 							</tbody>
@@ -140,7 +135,7 @@ Filter
 					<div class="modal-footer">
 
 						<button type="submit" class="btn btn-primary">Godkend</button>
-						<a href="/Exams/Exam_Page" type="button" class="btn btn-danger">Annuller</a>
+						<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-danger">Annuller</a>
 					</div>
 				</form>
 			</div>
@@ -148,7 +143,59 @@ Filter
 	</div>
 }
 
-
+@if (Model.ShowUpdate)
+{
+	<!-- Modal -->
+	<div style="display: block;" class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Opdater hold</h4>
+					<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-close"></a>
+				</div>
+				<!-- Modal body -->
+				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+					<div class="modal-body">
+						<table class="table">
+							<tbody>
+								<tr>
+									<th scope="col">
+										Navn
+									</th>
+									<td>
+										<input asp-for="Cohort.Name" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Retning
+									</th>
+									<td>
+										<input asp-for="Cohort.Major" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Semester
+									</th>
+									<td>
+										<input type="checkbox" asp-for="Cohort.Term" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Opdater</button>
+						<a href="/Exams/Exam_Page" type="button" class="btn btn-danger">Annuller</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+}
 
 
 
