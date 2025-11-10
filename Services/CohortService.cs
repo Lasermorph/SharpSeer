@@ -38,7 +38,7 @@ namespace SharpSeer.Services
         public Cohort? GetById(int id)
         {
             return context.Cohorts.Find(id);
-        }   
+        }
 
         public void Update(Cohort cohort)
         {
