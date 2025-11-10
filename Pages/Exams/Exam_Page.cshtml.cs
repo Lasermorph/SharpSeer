@@ -3,7 +3,6 @@ using SharpSeer.Models;
 using SharpSeer.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Runtime.CompilerServices;
-using System.Linq.Expressions;
 
 namespace SharpSeer.Pages.Exams
 {
@@ -24,20 +23,16 @@ namespace SharpSeer.Pages.Exams
             m_service = service;
             Exams = m_service.GetAll();
             Exam = new Exam();
-        
         }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GetQueryValues(in string q) 
         {
             HttpContext.Request.Query.TryGetValue(q, out var value);
             Exam = m_service.GetById(int.Parse(value));
         }
-
         public void OnGet()
         {
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
-
             foreach (var q in QKeys)
             {
                 switch (q)

@@ -6,14 +6,11 @@ namespace SharpSeer.Services
 {
     public class CohortService : IService<Cohort>
     {
-
         SharpSeerDbContext context;
-
         public CohortService(SharpSeerDbContext dbContext)
         {
             context = dbContext;
         }
-
         public void Create(Cohort? cohort)
         {
             if (cohort == null)
@@ -26,7 +23,6 @@ namespace SharpSeer.Services
 
         public void Delete(Cohort cohort)
         {
-            
             if (cohort == null)
             {
                 throw new NotImplementedException();
@@ -42,7 +38,7 @@ namespace SharpSeer.Services
         public Cohort? GetById(int id)
         {
             return context.Cohorts.Find(id);
-        }   
+        }
 
         public void Update(Cohort cohort)
         {
