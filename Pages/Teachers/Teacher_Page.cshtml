@@ -2,3 +2,185 @@
 @model SharpSeer.Pages.Teachers.Teacher_PageModel
 @{
 }
+<h2>Lærer oversigt</h2>
+
+<a class="btn btn-primary" href="/Teachers/Teacher_Page/?Create=0">Tilføj</a>
+
+<table class="table">
+	<tbody>
+		@foreach (var teacher in Model.Teachers)
+		{
+			<tr>
+				<td>
+					@teacher.Name
+				</td>
+				<td>
+					@teacher.Email
+				</td>
+				<td>
+					@teacher.PhoneNumber
+				</td>
+				<td>
+					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
+						Rediger
+					</a> *@
+					<form method="get">
+						<a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger" type="submit">
+							Slet
+						</a>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@if (Model.ShowDelete)
+{
+	<!-- Modal -->
+	<div style="display: block;" class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Er du sikker på du vil slette denne Lærer</h4>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">
+					@Model.Teacher.Name
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<form method="post">
+						<button type="submit" class="btn btn-danger">Ja</button>
+					</form>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-primary">Nej</a>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+@if (Model.ShowCreate)
+{
+	<!-- Modal -->
+	<div style="display: block;" class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Tilføj ny lærer</h4>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
+				</div>
+				<!-- Modal body -->
+				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+					<div class="modal-body">
+						<table class="table">
+							<tbody>
+								<tr>
+									<th scope="col">
+										Navn
+									</th>
+									<td>
+										<input asp-for="Teacher.Name" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										E-Mail
+									</th>
+									<td>
+										<input asp-for="Teacher.Email" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Telefon nummer
+									</th>
+									<td>
+										<input asp-for="Teacher.PhoneNumber" class="form-control" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer">
+
+						<button type="submit" class="btn btn-primary">Godkend</button>
+						<a href="/Teachers/Teacher_Page" type="button" class="btn btn-danger">Annuller</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+}
+
+@if (Model.ShowUpdate)
+{
+	<!-- Modal -->
+	<div style="display: block;" class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Opdater hold</h4>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
+				</div>
+				<!-- Modal body -->
+				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+					<div class="modal-body">
+						<table class="table">
+							<tbody>
+								<tr>
+									<th scope="col">
+										Navn
+									</th>
+									<td>
+										<input asp-for="Teacher.Name" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										E-Mail
+									</th>
+									<td>
+										<input asp-for="Teacher.Email" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Telefon nummer
+									</th>
+									<td>
+										<input asp-for="Teacher.PhoneNumber" class="form-control" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Opdater</button>
+						<a href="/Teachers/Teacher_Page" type="button" class="btn btn-danger">Annuller</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+}
+
+
+
+
+
+@section Scripts
+{
+	<script>
+		$(document).ready(function () {
+			$("#myModal").modal({backdrop: "static"});
+			$("#myModal").modal("show");
+		});)
+	</script>
+}

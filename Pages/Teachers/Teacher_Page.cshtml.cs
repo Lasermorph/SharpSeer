@@ -12,10 +12,13 @@ namespace SharpSeer.Pages.Teachers
         public bool ShowDelete { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
+
         [BindProperty(SupportsGet =true)]
         public string QueryString { get; set; } = string.Empty;
+
         [BindProperty(SupportsGet =true)] 
         public Teacher? Teacher { get; set; }
+
         public IEnumerable<Teacher> Teachers { get; set; }
         private IService<Teacher> m_service;
         public Teacher_PageModel(IService<Teacher> service)
@@ -32,7 +35,7 @@ namespace SharpSeer.Pages.Teachers
         }
 
        
-          public void OnGet()
+        public void OnGet()
         {
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
             foreach (var q in QKeys)
@@ -54,7 +57,7 @@ namespace SharpSeer.Pages.Teachers
                         goto EndOfLoop;
                 }
             }
-        EndOfLoop:;
+            EndOfLoop:;
         }
         public IActionResult OnPost()
         {
