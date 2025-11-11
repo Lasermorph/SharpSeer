@@ -17,6 +17,8 @@ namespace SharpSeer.Pages.Cohorts
         public Cohort? Cohort { get; set; }
         public IEnumerable<Cohort> Cohorts { get; set; }
         private IService<Cohort> m_service;
+        [BindProperty]
+        public bool ShowFilterList { get; set; } = true;
         public Cohort_PageModel(IService<Cohort> service)
         {
             m_service = service;
@@ -48,6 +50,10 @@ namespace SharpSeer.Pages.Cohorts
                     case "Update":
                         ShowUpdate = true;
                         GetQueryValues(q);
+                        goto EndOfLoop;
+                    case "Name":
+                        HttpContext.Request.Query.TryGetValue(q, out var name);
+                        Cohorts = m_service.GetAll().Where(c => c.Name.ToLower().Contains(name.ToString().ToLower()));
                         goto EndOfLoop;
                 }
             }
@@ -85,6 +91,11 @@ namespace SharpSeer.Pages.Cohorts
                 }
             }
             return RedirectToPage("Cohort_Page");
+        }
+
+        public void OnPostFilter()
+        {
+            
         }
     }
 }
