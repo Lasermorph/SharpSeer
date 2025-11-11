@@ -1,5 +1,6 @@
 ﻿@page
 @using SharpSeer.Models
+@using static SharpSeer.Models.Exam
 @model SharpSeer.Pages.Exams.Exam_PageModel
 @{
 }
@@ -7,38 +8,84 @@
 <a class="btn btn-primary" href="/Exams/Exam_Page/?Create=0">Tilføj</a>
 
 <table class="table">
-	<thead>
-		<tr>
-			<th scope="col" >
-				Navn
-			</th>
-			<th scope="col">
-				Eksamens type
-			</th>
-			<th scope="col">
-				Med vagt
-			</th>
-			<th scope="col">
-				Ekstern censor
-			</th>
-			<th scope="col">
-				Eksamens start
-			</th>
-			<th scope="col">
-				Eksamens Slut
-			</th>
-			<th scope="col">
-				Deadline for aflevering
-			</th>
-			<th scope="col">
-				Eksmaens varighed
-			</th>
-			<th scope="col">
+	<form>
+		<thead>
+			<tr>
+				<th scope="col">
+					<input type="text" class="form-control" asp-for="Name" placeholder="Navn" />
+				</th>
+				<th scope="col">
+					<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+						<option value="">Alle</option>
+					</select>
+					@* <input type="int" class="form-control" asp-for="ExamType" placeholder="Eksamens type" /> *@
+				</th>
+				<th scope="col">
+					<select asp-for="IsGuarded" class="form-select">
+						<option value="">Alle</option>
+						<option value="true">Ja</option>
+						<option value="false">Nej</option>
+					</select>
+					@* <input type="checkbox" asp-for="IsGuarded" placeholder="Eksamens vagt" /> *@
+				</th>
+				<th scope="col">
+					<select asp-for="NeedExternalExaminer" class="form-select"> 
+						<option value="">Alle</option>
+						<option value="true">Ja</option>
+						<option value="false">Nej</option>
+					</select>
+					@* <input type="checkbox" asp-for="NeedExternalExaminer" placeholder="Udenfra kommende censor" /> *@
+				</th>
+				<th scope="col">
+					<input type="datetime" class="form-control" asp-for="FirstExamDate" placeholder="Første eksamens dag" />
+				</th>
+				<th scope="col">
+					<input type="datetime" class="form-control" asp-for="LastExamDate" placeholder="Sidste eksamens dag" />
+				</th>
+				<th scope="col">
+					<input type="datetime" class="form-control" asp-for="HandInDeadline" placeholder="Deadline for aflevering, hvis skriftlig" />
+				</th>
+				<th scope="col">
+					<input type="number" min="0" class="form-control" asp-for="DurationInMinutes" placeholder="Eksamens varighed" />
+				</th>
+				<th scope="col">
+					<button type="submit" class="btn btn-primary">Søg</button>
+				</th>
+			</tr>
+		</thead>
+	</form>
+		<thead>
+			<tr>
+				<th scope="col" >
+					Navn
+				</th>
+				<th scope="col">
+					Eksamens type
+				</th>
+				<th scope="col">
+					Med vagt
+				</th>
+				<th scope="col">
+					Ekstern censor
+				</th>
+				<th scope="col">
+					Eksamens start
+				</th>
+				<th scope="col">
+					Eksamens Slut
+				</th>
+				<th scope="col">
+					Deadline for aflevering
+				</th>
+				<th scope="col">
+					Eksmaens varighed
+				</th>
+				<th scope="col">
 				
-			</th>
+				</th>
 			
-		</tr>
-	</thead>
+			</tr>
+		</thead>
 	<tbody>
 		@foreach (var exam in Model.Exams)
 		{
@@ -47,7 +94,7 @@
 					@exam.Name
 				</td>
 				<td>
-					@exam.ExamType
+					@((ExamTypeEnum)exam.ExamType)
 				</td>
 				<td>
 					@(exam.IsGuarded ? "Ja" : "Nej")
@@ -68,9 +115,6 @@
 					@exam.DurationInMinutes minutter
 				</td>
 				<td>
-					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
-						Rediger
-					</a> *@
 					<form method="get" asp-page-handler="Update">
 						<a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" type="submit">
 							Opdater
@@ -164,7 +208,9 @@
 										<input asp-for="Exam.Name" class="form-control" />
 									</td>
 									<td>
-										<input asp-for="Exam.ExamType" class="form-control" />
+										<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+											<option value="">Vælg type</option>
+										</select>
 									</td>
 									<td>
 										<input type="checkbox" asp-for="Exam.IsGuarded" />
@@ -191,7 +237,7 @@
 					<!-- Modal footer -->
 					<div class="modal-footer">
 					
-						<button type="submit" class="btn btn-primary">Godkend</button>
+						<button type="submit" class="btn btn-primary">Opret</button>
 						<a href="/Exams/Exam_Page" type="button" class="btn btn-danger">Annuller</a>
 					</div>
 				</form>
@@ -208,7 +254,7 @@
 			<div class="modal-content">
 				<!-- Modal Header -->
 				<div class="modal-header">
-					<h4 class="modal-title">Tilføj ny eksamen</h4>
+					<h4 class="modal-title">Opdater eksamen</h4>
 					<a href="/Exams/Exam_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
@@ -249,10 +295,10 @@
 									@Model.Exam.Name
 								</td>
 								<td>
-									@Model.Exam.ExamType
+									@((ExamTypeEnum)Model.Exam.ExamType)
 								</td>
 								<td>
-									@Model.Exam.IsGuarded
+									@Model.Exam.IsGuarded 
 								</td>
 								<td>
 									@Model.Exam.NeedExternalExaminer
@@ -273,9 +319,10 @@
 							<tr>
 								<td>
 									<input asp-for="Exam.Name" class="form-control" />
-								</td>
+								</td> 
 								<td>
-									<input asp-for="Exam.ExamType" class="form-control" />
+									<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+									</select>
 								</td>
 								<td>
 									<input type="checkbox" asp-for="Exam.IsGuarded" />

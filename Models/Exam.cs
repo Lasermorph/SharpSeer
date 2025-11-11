@@ -8,6 +8,13 @@ namespace SharpSeer.Models;
 
 public partial class Exam
 {
+    public enum ExamTypeEnum
+    {
+        Skriftlig = 1,
+        Mundtlig = 2,
+        Projekt = 3,
+    }
+
     [Key]
     [Column("ID")]
     public int Id { get; set; }
@@ -37,4 +44,5 @@ public partial class Exam
     [ForeignKey("ExamId")]
     [InverseProperty("Exams")]
     public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
+
 }
