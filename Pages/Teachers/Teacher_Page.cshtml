@@ -1,10 +1,12 @@
 ﻿@page
+@using SharpSeer.Models
 @model SharpSeer.Pages.Teachers.Teacher_PageModel
 @{
 }
 <h2>Lærer oversigt</h2>
 
 <a class="btn btn-primary" href="/Teachers/Teacher_Page/?Create=0">Tilføj</a>
+
 
 <table class="table">
 	<tbody>
@@ -24,6 +26,11 @@
 					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
 						Rediger
 					</a> *@
+					<form method="get">
+						<a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary" type="submit">
+							Opdater
+						</a>
+					</form>
 					<form method="get">
 						<a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger" type="submit">
 							Slet
@@ -52,7 +59,7 @@
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<form method="post">
+					<form method="post" asp-route-id="@Model.Teacher.Id" asp-page-handler="Delete">
 						<button type="submit" class="btn btn-danger">Ja</button>
 					</form>
 					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-primary">Nej</a>
@@ -74,7 +81,7 @@
 					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
-				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+				<form method="post" asp-page-handler="Create">
 					<div class="modal-body">
 						<table class="table">
 							<tbody>
@@ -129,7 +136,7 @@
 					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
-				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+				<form method="post" asp-route-id="@Model.Teacher.Id" asp-page-handler="Update">
 					<div class="modal-body">
 						<table class="table">
 							<tbody>

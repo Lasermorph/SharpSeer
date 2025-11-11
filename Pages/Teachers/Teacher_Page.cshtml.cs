@@ -59,38 +59,57 @@ namespace SharpSeer.Pages.Teachers
             }
             EndOfLoop:;
         }
-        public IActionResult OnPost()
-        {
-            ICollection<string> QKeys = HttpContext.Request.Query.Keys;
-            bool isDone = false;
-            foreach (var q in QKeys)
-            {
-                switch (q)
-                {
-                    case "Delete":
+        //public IActionResult OnPost()
+        //{
+        //    ICollection<string> QKeys = HttpContext.Request.Query.Keys;
+        //    bool isDone = false;
+        //    foreach (var q in QKeys)
+        //    {
+        //        switch (q)
+        //        {
+        //            case "Delete":
 
-                        GetQueryValues(q);
-                        m_service.Delete(Teacher);
-                        isDone = true;
-                        break;
-                    case "Create":
-                        HttpContext.Request.Query.TryGetValue(q, out var value);
-                        m_service.Create(Teacher);
-                        isDone = true;
-                        break;
-                    case "Update":
-                        GetQueryValues(q);
-                        m_service.Update(Teacher);
-                        isDone = true;
-                        break;
-                }
-                if (isDone)
-                {
-                    break;
-                }
-            }
+        //                GetQueryValues(q);
+        //                m_service.Delete(Teacher);
+        //                isDone = true;
+        //                break;
+        //            case "Create":
+        //                HttpContext.Request.Query.TryGetValue(q, out var value);
+        //                m_service.Create(Teacher);
+        //                isDone = true;
+        //                break;
+        //            case "Update":
+        //                GetQueryValues(q);
+        //                m_service.Update(Teacher);
+        //                isDone = true;
+        //                break;
+        //        }
+        //        if (isDone)
+        //        {
+        //            break;
+        //        }
+        //    }
+        //    return RedirectToPage("Teacher_Page");
+        //}
+        public IActionResult OnPostDelete(int id)
+        {
+            Teacher.Id = id;
+            m_service.Delete(Teacher);
             return RedirectToPage("Teacher_Page");
         }
+        public IActionResult OnPostUpdate(int id)
+        {
+            Teacher.Id = id;
+            m_service.Update(Teacher);
+            return RedirectToPage("Teacher_Page");
+        }
+
+        public IActionResult OnPostCreate()
+        {
+            m_service.Create(Teacher);
+            return RedirectToPage("Teacher_Page");
+        }
+
     }
 }
     
