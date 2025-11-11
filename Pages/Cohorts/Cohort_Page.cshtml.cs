@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Storage;
 using SharpSeer.Interfaces;
 using SharpSeer.Models;
 using System.Runtime.CompilerServices;
@@ -11,6 +12,14 @@ namespace SharpSeer.Pages.Cohorts
         public bool ShowDelete { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
+        
+        [BindProperty(SupportsGet = true)]
+        public string Name { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Major { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public int Term { get; set; } = 0;
+
         [BindProperty(SupportsGet = true)]
         public string QueryString { get; set; } = string.Empty;
         [BindProperty(SupportsGet = true)]
@@ -49,6 +58,24 @@ namespace SharpSeer.Pages.Cohorts
                         ShowUpdate = true;
                         GetQueryValues(q);
                         goto EndOfLoop;
+                    case "Name":
+                        if (!string.IsNullOrEmpty(Cohort?.Name))
+                        {
+                            Cohorts = Cohorts.Where(c => c.Name.Contains(Cohort.Name, StringComparison.OrdinalIgnoreCase));
+                        }
+                        break;
+                    case "Major":
+                        if (!string.IsNullOrEmpty(Cohort?.Major))
+                        {
+                            Cohorts = Cohorts.Where(c => c.Major.Contains(Cohort.Major, StringComparison.OrdinalIgnoreCase));
+                        }
+                        break;
+                    case "Term":
+                        if (Cohort?.Term != 0)
+                        {
+                            Cohorts = Cohorts.Where(c => c.Term == Cohort.Term);
+                        }
+                        break;
                 }
             }
         EndOfLoop:;

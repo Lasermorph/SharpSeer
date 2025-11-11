@@ -1,8 +1,9 @@
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SharpSeer.Interfaces;
 using SharpSeer.Models;
-using System.Runtime.CompilerServices;
 
 namespace SharpSeer.Pages.Teachers
 {
@@ -12,7 +13,13 @@ namespace SharpSeer.Pages.Teachers
         public bool ShowDelete { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
-
+        [BindProperty(SupportsGet = true)]
+        public string Email { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string PhoneNumber { get; set; }
+        [BindProperty(SupportsGet =true)]
+        public string Name { get; set; }
+        
         [BindProperty(SupportsGet =true)]
         public string QueryString { get; set; } = string.Empty;
 
@@ -55,42 +62,28 @@ namespace SharpSeer.Pages.Teachers
                         ShowUpdate = true;
                         GetQueryValues(q);
                         goto EndOfLoop;
+                    case "Name":
+                        if (!string.IsNullOrEmpty(Name))
+                        { 
+                            Teachers = Teachers.Where(t => t.Name.Contains(Name, StringComparison.OrdinalIgnoreCase));
+                        }
+                        break;
+                    case "Email":
+                        if (!string.IsNullOrEmpty(Email))
+                        {
+                            Teachers = Teachers.Where(t => t.Email.Contains(Email, StringComparison.OrdinalIgnoreCase));
+                        }
+                       break;
+                    case "PhoneNumber":
+                        if (!string.IsNullOrEmpty(PhoneNumber))
+                        {
+                            Teachers = Teachers.Where(t => t.PhoneNumber.Contains(PhoneNumber, StringComparison.OrdinalIgnoreCase));
+                        }
+                        break;
                 }
             }
             EndOfLoop:;
         }
-        //public IActionResult OnPost()
-        //{
-        //    ICollection<string> QKeys = HttpContext.Request.Query.Keys;
-        //    bool isDone = false;
-        //    foreach (var q in QKeys)
-        //    {
-        //        switch (q)
-        //        {
-        //            case "Delete":
-
-        //                GetQueryValues(q);
-        //                m_service.Delete(Teacher);
-        //                isDone = true;
-        //                break;
-        //            case "Create":
-        //                HttpContext.Request.Query.TryGetValue(q, out var value);
-        //                m_service.Create(Teacher);
-        //                isDone = true;
-        //                break;
-        //            case "Update":
-        //                GetQueryValues(q);
-        //                m_service.Update(Teacher);
-        //                isDone = true;
-        //                break;
-        //        }
-        //        if (isDone)
-        //        {
-        //            break;
-        //        }
-        //    }
-        //    return RedirectToPage("Teacher_Page");
-        //}
         public IActionResult OnPostDelete(int id)
         {
             Teacher.Id = id;

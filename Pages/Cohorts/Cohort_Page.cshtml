@@ -8,28 +8,24 @@
 
 Filter
 <table class ="table">
+	<form>
 	<thead>
 		<tr>
 			<th scope="col">
-				<input type="text" class="form-control" 
-					   onchange="this.form.submit()" width="100" placeholder="Hold navn" style="margin-bottom:5px"/>
-				Navn
+				<input type="text" class="form-control" asp-for="Name" placeholder="Navn" />
 			</th>
 			<th scope="col">
-				<input type="text" class="form-control"
-					   onchange="this.form.submit()" width="100" placeholder="Retning" style="margin-bottom:5px" />
-				Retning
+				<input type="text" class="form-control" asp-for="Major" placeholder="Retning" />
 			</th>
 			<th scope="col">
-				<input type="text" class="form-control"
-					   onchange="this.form.submit()" width="100" placeholder="Semester" style="margin-bottom:5px"/>
-				Semester
+				<input type="number" min="0" max="5" class="form-control" asp-for="Term" placeholder="Semester" />
 			</th>
 			<th scope="col">
-				
+				<button type="submit" class="btn btn-primary">Stefan din bums</button>
 			</th>
 		</tr>
 	</thead>
+	</form>
 	<tbody>
 		@foreach (var cohort in Model.Cohorts)
 		{
@@ -44,10 +40,7 @@ Filter
 					@cohort.Term
 				</td>
 				<td>
-					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
-						Rediger
-					</a> *@
-					<form method="get">
+						<form method="get">
 						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" type="submit">
 							Slet
 						</a>

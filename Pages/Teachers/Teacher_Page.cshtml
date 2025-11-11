@@ -1,4 +1,4 @@
-﻿@page
+﻿@page 
 @using SharpSeer.Models
 @model SharpSeer.Pages.Teachers.Teacher_PageModel
 @{
@@ -7,8 +7,25 @@
 
 <a class="btn btn-primary" href="/Teachers/Teacher_Page/?Create=0">Tilføj</a>
 
-
 <table class="table">
+	<form>
+	<thead>
+		<tr>
+			<th scope="col">
+				<input type="text" asp-for="Name" placeholder="Navn" />
+			</th>
+			<th scope="col">
+				<input type="text" asp-for="Email" placeholder="E-mail" />
+			</th>
+			<th scope="col">
+				<input type="text" asp-for="PhoneNumber" placeholder="Telefon nummer" />
+			</th>
+			<th scope="col">
+				<button type="submit" class="btn btn-primary">Stefan din bums</button>
+			</th>
+		</tr>
+	</thead>
+	</form>
 	<tbody>
 		@foreach (var teacher in Model.Teachers)
 		{
@@ -23,14 +40,13 @@
 					@teacher.PhoneNumber
 				</td>
 				<td>
-					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
-						Rediger
-					</a> *@
 					<form method="get">
 						<a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary" type="submit">
 							Opdater
 						</a>
 					</form>
+				</td>
+				<td>
 					<form method="get">
 						<a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger" type="submit">
 							Slet
