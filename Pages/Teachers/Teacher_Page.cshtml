@@ -1,54 +1,38 @@
 ﻿@page
-@model SharpSeer.Pages.Cohorts.Cohort_PageModel
+@using SharpSeer.Models
+@model SharpSeer.Pages.Teachers.Teacher_PageModel
 @{
 }
-<h1>Hold Oversigt</h1>
+<h2>Lærer oversigt</h2>
 
-<a class="btn btn-primary" href="/Cohorts/Cohort_Page/?Create=0">Tilføj</a>
+<a class="btn btn-primary" href="/Teachers/Teacher_Page/?Create=0">Tilføj</a>
 
-Filter
-<table class ="table">
-	<thead>
-		<tr>
-			<th scope="col">
-				<input type="text" class="form-control" 
-					   onchange="this.form.submit()" width="100" placeholder="Hold navn" style="margin-bottom:5px"/>
-				Navn
-			</th>
-			<th scope="col">
-				<input type="text" class="form-control"
-					   onchange="this.form.submit()" width="100" placeholder="Retning" style="margin-bottom:5px" />
-				Retning
-			</th>
-			<th scope="col">
-				<input type="text" class="form-control"
-					   onchange="this.form.submit()" width="100" placeholder="Semester" style="margin-bottom:5px"/>
-				Semester
-			</th>
-			<th scope="col">
-				
-			</th>
-		</tr>
-	</thead>
+
+<table class="table">
 	<tbody>
-		@foreach (var cohort in Model.Cohorts)
+		@foreach (var teacher in Model.Teachers)
 		{
 			<tr>
 				<td>
-					@cohort.Name
+					@teacher.Name
 				</td>
 				<td>
-					@cohort.Major
+					@teacher.Email
 				</td>
 				<td>
-					@cohort.Term
+					@teacher.PhoneNumber
 				</td>
 				<td>
 					@* <a asp-page="/Exams/Edit" asp-route-id="@exam.Id" class="btn btn-primary" type="submit" name="Action" value="edit">
 						Rediger
 					</a> *@
 					<form method="get">
-						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" type="submit">
+						<a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary" type="submit">
+							Opdater
+						</a>
+					</form>
+					<form method="get">
+						<a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger" type="submit">
 							Slet
 						</a>
 					</form>
@@ -56,11 +40,8 @@ Filter
 			</tr>
 		}
 	</tbody>
-</table> 
+</table>
 
-
-
-<!-- Modal -->
 @if (Model.ShowDelete)
 {
 	<!-- Modal -->
@@ -69,19 +50,19 @@ Filter
 			<div class="modal-content">
 				<!-- Modal Header -->
 				<div class="modal-header">
-					<h4 class="modal-title">Er du sikker på du vil slette dette hold?</h4>
-					<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-close"></a>
+					<h4 class="modal-title">Er du sikker på du vil slette denne Lærer</h4>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
 				<div class="modal-body">
-					@Model.Cohort.Name
+					@Model.Teacher.Name
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<form method="post">
+					<form method="post" asp-route-id="@Model.Teacher.Id" asp-page-handler="Delete">
 						<button type="submit" class="btn btn-danger">Ja</button>
 					</form>
-					<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-primary">Nej</a>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-primary">Nej</a>
 				</div>
 			</div>
 		</div>
@@ -96,11 +77,11 @@ Filter
 			<div class="modal-content">
 				<!-- Modal Header -->
 				<div class="modal-header">
-					<h4 class="modal-title">Tilføj nyt hold</h4>
-					<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-close"></a>
+					<h4 class="modal-title">Tilføj ny lærer</h4>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
-				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+				<form method="post" asp-page-handler="Create">
 					<div class="modal-body">
 						<table class="table">
 							<tbody>
@@ -109,23 +90,23 @@ Filter
 										Navn
 									</th>
 									<td>
-										<input asp-for="Cohort.Name" class="form-control" />
+										<input asp-for="Teacher.Name" class="form-control" />
 									</td>
 								</tr>
 								<tr>
 									<th scope="col">
-										Retning
+										E-Mail
 									</th>
 									<td>
-										<input asp-for="Cohort.Major" class="form-control" />
+										<input asp-for="Teacher.Email" class="form-control" />
 									</td>
 								</tr>
 								<tr>
 									<th scope="col">
-										Semester
+										Telefon nummer
 									</th>
 									<td>
-										<input asp-for="Cohort.Term" class="form-control" />
+										<input asp-for="Teacher.PhoneNumber" class="form-control" />
 									</td>
 								</tr>
 							</tbody>
@@ -135,7 +116,7 @@ Filter
 					<div class="modal-footer">
 
 						<button type="submit" class="btn btn-primary">Godkend</button>
-						<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-danger">Annuller</a>
+						<a href="/Teachers/Teacher_Page" type="button" class="btn btn-danger">Annuller</a>
 					</div>
 				</form>
 			</div>
@@ -152,10 +133,10 @@ Filter
 				<!-- Modal Header -->
 				<div class="modal-header">
 					<h4 class="modal-title">Opdater hold</h4>
-					<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-close"></a>
+					<a href="/Teachers/Teacher_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
-				<form asp-action="SubmitForm" asp-controller="Home" method="post">
+				<form method="post" asp-route-id="@Model.Teacher.Id" asp-page-handler="Update">
 					<div class="modal-body">
 						<table class="table">
 							<tbody>
@@ -164,23 +145,23 @@ Filter
 										Navn
 									</th>
 									<td>
-										<input asp-for="Cohort.Name" class="form-control" />
+										<input asp-for="Teacher.Name" class="form-control" />
 									</td>
 								</tr>
 								<tr>
 									<th scope="col">
-										Retning
+										E-Mail
 									</th>
 									<td>
-										<input asp-for="Cohort.Major" class="form-control" />
+										<input asp-for="Teacher.Email" class="form-control" />
 									</td>
 								</tr>
 								<tr>
 									<th scope="col">
-										Semester
+										Telefon nummer
 									</th>
 									<td>
-										<input type="checkbox" asp-for="Cohort.Term" />
+										<input asp-for="Teacher.PhoneNumber" class="form-control" />
 									</td>
 								</tr>
 							</tbody>
@@ -189,7 +170,7 @@ Filter
 					<!-- Modal footer -->
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Opdater</button>
-						<a href="/Exams/Exam_Page" type="button" class="btn btn-danger">Annuller</a>
+						<a href="/Teachers/Teacher_Page" type="button" class="btn btn-danger">Annuller</a>
 					</div>
 				</form>
 			</div>
