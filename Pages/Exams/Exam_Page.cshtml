@@ -8,7 +8,7 @@
 <a class="btn btn-primary" href="/Exams/Exam_Page/?Create=0">Tilføj</a>
 
 <table class="table">
-	<form>
+	<form method="get">
 		<thead>
 			<tr>
 				<th scope="col">
@@ -115,7 +115,7 @@
 					@exam.DurationInMinutes minutter
 				</td>
 				<td>
-					<form method="get" asp-page-handler="Update">
+					<form method="get">
 						<a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" type="submit">
 							Opdater
 						</a>
