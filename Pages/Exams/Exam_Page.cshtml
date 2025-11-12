@@ -171,67 +171,76 @@
 				</div>
 				<!-- Modal body -->
 				<form method="post" asp-page-handler="Create">
-				<div class="modal-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">
-									Navn
-								</th>
-								<th scope="col">
-									Eksamens type
-								</th>
-								<th scope="col">
-									Med vagt
-								</th>
-								<th scope="col">
-									Ekstern censor
-								</th>
-								<th scope="col">
-									Eksamens start
-								</th>
-								<th scope="col">
-									Eksamens Slut
-								</th>
-								<th scope="col">
-									Deadline for aflevering
-								</th>
-								<th scope="col">
-									Eksmaens varighed
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-					
+					<div class="modal-body">
+						<table class="table">
+							<tbody>
 								<tr>
+									<th scope="col">
+										Navn
+									</th>
 									<td>
 										<input asp-for="Exam.Name" class="form-control" />
 									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Eksamens type
+									</th>
 									<td>
 										<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
 											<option value="">Vælg type</option>
 										</select>
 									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Med vagt
+									</th>
 									<td>
 										<input type="checkbox" asp-for="Exam.IsGuarded" />
 									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Ekstern censor
+									</th>
 									<td>
 										<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
 									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Eksamens start
+									</th>
 									<td>
 										<input asp-for="Exam.FirstExamDate" class="form-control" />
 									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Eksamens Slut
+									</th>
 									<td>
 										<input asp-for="Exam.LastExamDate" class="form-control" />
 									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Deadline for aflevering
+									</th>
 									<td>
 										<input asp-for="Exam.HandInDeadline" class="form-control" />
 									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Eksmaens varighed
+									</th>
 									<td>
 										<input asp-for="Exam.DurationInMinutes" class="form-control" />
 									</td>
-								</tr>
-							
+                                </tr>
+                            </tbody>
 						</table>
 					</div>
 					<!-- Modal footer -->
@@ -263,86 +272,112 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">
-									Navn
+								<th></th>
+								<th>
+									Oprindelig information
 								</th>
-								<th scope="col">
-									Eksamens type
-								</th>
-								<th scope="col">
-									Med vagt
-								</th>
-								<th scope="col">
-									Ekstern censor
-								</th>
-								<th scope="col">
-									Eksamens start
-								</th>
-								<th scope="col">
-									Eksamens Slut
-								</th>
-								<th scope="col">
-									Deadline for aflevering
-								</th>
-								<th scope="col">
-									Eksmaens varighed
+								<th>
+									Opdateret information
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
+								<th scope="col">
+									Navn
+								</th>
 								<td>
 									@Model.Exam.Name
 								</td>
+									<td>
+										<input asp-for="Exam.Name" class="form-control" />
+									</td>
+							</tr>
+							<tr>
+								<th scope="col">
+									Eksamens type
+								</th>
 								<td>
 									@((ExamTypeEnum)Model.Exam.ExamType)
 								</td>
 								<td>
-									@Model.Exam.IsGuarded 
+									<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+									</select>
 								</td>
+								
+							</tr>
+							<tr>
+								<th scope="col">
+									Med vagt
+								</th>
+								<td>
+									@Model.Exam.IsGuarded
+                                </td>
+								<td>
+									<input type="checkbox" asp-for="Exam.IsGuarded" />
+								</td>
+									
+							</tr>
+							<tr>
+								<th scope="col">
+									Ekstern censor
+								</th>
 								<td>
 									@Model.Exam.NeedExternalExaminer
 								</td>
 								<td>
-									@Model.Exam.FirstExamDate
+									<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
 								</td>
-								<td>
-									@Model.Exam.LastExamDate
-								</td>
-								<td>
-									@Model.Exam.HandInDeadline
-								</td>
-								<td>
-									@Model.Exam.DurationInMinutes
-								</td>
+									
 							</tr>
 							<tr>
+								<th scope="col">
+									Eksamens start
+								</th>
 								<td>
-									<input asp-for="Exam.Name" class="form-control" />
-								</td> 
-								<td>
-									<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
-									</select>
-								</td>
-								<td>
-									<input type="checkbox" asp-for="Exam.IsGuarded" />
-								</td>
-								<td>
-									<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
+									@Model.Exam.FirstExamDate
 								</td>
 								<td>
 									<input asp-for="Exam.FirstExamDate" class="form-control" />
 								</td>
+									
+							</tr>
+							<tr>
+								<th scope="col">
+									Eksamens Slut
+								</th>
+								<td>
+									@Model.Exam.LastExamDate
+								</td>
 								<td>
 									<input asp-for="Exam.LastExamDate" class="form-control" />
 								</td>
+									
+							</tr>
+							<tr>
+								<th scope="col">
+									Deadline for aflevering
+								</th>
+								<td>
+									@Model.Exam.HandInDeadline
+								</td>
 								<td>
 									<input asp-for="Exam.HandInDeadline" class="form-control" />
+								</td>
+									
+							</tr>
+							<tr>
+								<th scope="col">
+									Eksmaens varighed
+								</th>
+								<td>
+									@Model.Exam.DurationInMinutes
 								</td>
 								<td>
 									<input asp-for="Exam.DurationInMinutes" class="form-control" />
 								</td>
 							</tr>
+                        </tbody>
 					</table>
 				</div>
 				<!-- Modal footer -->
