@@ -3,6 +3,8 @@ using SharpSeer.Models;
 using SharpSeer.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Runtime.CompilerServices;
+using static SharpSeer.Models.Exam;
+
 
 namespace SharpSeer.Pages.Exams
 {
@@ -11,6 +13,24 @@ namespace SharpSeer.Pages.Exams
         public bool ShowDelete { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
+
+        [BindProperty(SupportsGet = true)]
+        public string Name { get; set; } = null!;
+        [BindProperty]
+        public ExamTypeEnum? ExamType { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public bool? IsGuarded { get; set; } = null;
+        [BindProperty(SupportsGet = true)]
+        public bool? NeedExternalExaminer { get; set; } = null;
+        [BindProperty(SupportsGet = true)]
+        public DateTime FirstExamDate { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public DateTime LastExamDate { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public DateTime? HandInDeadline { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public int DurationInMinutes { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string QueryString { get; set; } = string.Empty;
 
@@ -51,24 +71,56 @@ namespace SharpSeer.Pages.Exams
                         ShowUpdate = true;
                         GetQueryValues(q);
                         goto EndOfLoop;
+                    case "Name":
+                        if (!string.IsNullOrEmpty(Name))
+                        {
+                            Exams = Exams.Where(t => t.Name.Contains(Name, StringComparison.OrdinalIgnoreCase));
+                        }
+                        break;
+                    
+                    case "ExamType":
+                        if (ExamType.HasValue)
+                            Exams = Exams.Where(t => t.ExamType == (int)ExamType.Value);
+                        break;
+                    case "IsGuarded":
+                        if (IsGuarded.HasValue)
+                        {
+                            Exams = Exams.Where(t => t.IsGuarded == IsGuarded);
+                        }
+                       break;
+                    case "NeedExternalExaminer":
+                        if (NeedExternalExaminer.HasValue)
+                        {
+                            Exams = Exams.Where(t => t.NeedExternalExaminer == NeedExternalExaminer);
+                        }
+                        break;
+                    case "FirstExamDate":
+                        if (FirstExamDate != DateTime.MinValue)
+                        {
+                            Exams = Exams.Where(t => t.FirstExamDate.Date == FirstExamDate.Date);
+                        }
+                        break;
+                    case "LastExamDate":
+                        if (LastExamDate != DateTime.MinValue)
+                        {
+                            Exams = Exams.Where(t => t.LastExamDate.Date == LastExamDate.Date);
+                        }
+                        break;
+                    case "HandInDeadline":
+                        if (HandInDeadline != null)
+                        {
+                            Exams = Exams.Where(t => t.HandInDeadline != null && t.HandInDeadline.Value.Date == HandInDeadline.Value.Date);
+                        }
+                        break;
+                    case "DurationInMinutes":
+                        if (DurationInMinutes != 0)
+                        {
+                            Exams = Exams.Where(t => t.DurationInMinutes == DurationInMinutes);
+                        }
+                        break;
                 }
             }
             EndOfLoop:;
-
-            //if (HttpContext.Request.Query.TryGetValue("Delete", out var actionValue))
-            //{
-            //    ShowDelete = true;
-            //    Exam = m_service.GetById(int.Parse(actionValue));
-            //}
-            //else if (HttpContext.Request.Query.TryGetValue("Create", out var createValue))
-            //{
-            //    ShowUpdate = true;
-            //    Exam = m_service.GetById(int.Parse(createValue));
-            //}
-            //else if (HttpContext.Request.Query.TryGetValue("Update", out var updateValue))
-            //{
-            //    ShowCreate = true;
-            //}
 
         }
 
@@ -111,12 +163,14 @@ namespace SharpSeer.Pages.Exams
         public IActionResult OnPostUpdate(int id)
         {
             Exam.Id = id;
+            Exam.ExamType = (int)ExamType.Value;
             m_service.Update(Exam);
             return RedirectToPage("Exam_Page");
         }
 
         public IActionResult OnPostCreate()
         {
+            Exam.ExamType = (int)ExamType;
             m_service.Create(Exam);
             return RedirectToPage("Exam_Page");
         }
