@@ -40,11 +40,17 @@
 					@cohort.Term
 				</td>
 				<td>
-						<form method="get">
+					<form method="get">
+						<a href="/Cohorts/Cohort_Page/?Update=@cohort.Id" class="btn btn-primary" type="submit">
+							Opdater
+						</a>
+					</form>
+					<form method="get">
 						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" type="submit">
 							Slet
 						</a>
 					</form>
+
 				</td>
 			</tr>
 		}
