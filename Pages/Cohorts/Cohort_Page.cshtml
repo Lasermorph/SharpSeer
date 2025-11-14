@@ -6,7 +6,6 @@
 
 <a class="btn btn-primary" href="/Cohorts/Cohort_Page/?Create=0">Tilføj</a>
 
-<a href="/Cohorts/Cohort_Page/?Name=">Filter</a>
 <table class ="table">
 	<form>
 	<thead>
@@ -41,12 +40,12 @@
 				</td>
 				<td>
 					<form method="get">
-						<a href="/Cohorts/Cohort_Page/?Update=@cohort.Id" class="btn btn-primary" type="submit">
+						<a href="/Cohorts/Cohort_Page/?Update=@cohort.Id" class="btn btn-primary" style="float: left;" type="submit">
 							Opdater
 						</a>
 					</form>
 					<form method="get">
-						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" type="submit">
+						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit">
 							Slet
 						</a>
 					</form>
@@ -177,7 +176,7 @@
 										Semester
 									</th>
 									<td>
-										<input type="checkbox" asp-for="Cohort.Term" />
+										<input type="number" min="0" max="5" asp-for="Cohort.Term" />
 									</td>
 								</tr>
 							</tbody>
@@ -186,7 +185,7 @@
 					<!-- Modal footer -->
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Opdater</button>
-						<a href="/Exams/Exam_Page" type="button" class="btn btn-danger">Annuller</a>
+						<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-danger">Annuller</a>
 					</div>
 				</form>
 			</div>
