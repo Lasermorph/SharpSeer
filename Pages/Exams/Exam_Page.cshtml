@@ -319,7 +319,7 @@
 									Med vagt
 								</th>
 								<td>
-									@Model.Exam.IsGuarded
+										@(Model.Exam.IsGuarded  ? "Ja" : "Nej")
                                 </td>
 								<td>
 										<select asp-for="IsGuarded" class="form-select">
@@ -335,7 +335,7 @@
 									Ekstern censor
 								</th>
 								<td>
-									@Model.Exam.NeedExternalExaminer
+										@(Model.Exam.NeedExternalExaminer ? "Ja" : "Nej")
 								</td>
 								<td>
 										<select asp-for="NeedExternalExaminer" class="form-select">
