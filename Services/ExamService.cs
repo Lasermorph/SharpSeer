@@ -13,6 +13,16 @@ namespace SharpSeer.Services
         }
         public void Create(Exam ? exam)
         {
+            foreach (var teacher in exam.Teachers)
+            {
+                foreach  (var ex in teacher.Exams)
+                {
+                    if (ex.FirstExamDate == exam.FirstExamDate)
+                    {
+                        throw new Exception("Teacher already has an exam scheduled at this time.");
+                    }
+                }
+            }
             if (exam == null) 
             {
                 throw new NotImplementedException();
