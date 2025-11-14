@@ -37,19 +37,27 @@ namespace SharpSeer.Pages.Exams
         [BindProperty(SupportsGet = true)]
         public Exam? Exam { get; set; }
 
-        private IService<Exam> m_service;
+        private IService<Exam> m_examService;
+        private IService<Cohort> m_cohortService;
+        private IService<Teacher> m_teacherService;
         public IEnumerable<Exam> Exams { get; set; }
-        public Exam_PageModel(IService<Exam> service)
+        public IEnumerable<Cohort> Cohorts { get; set; }
+        public IEnumerable<Teacher> Teachers { get; set; }
+        public Exam_PageModel(IService<Exam> examService, IService<Cohort> cohortService, IService<Teacher> teacherService)
         {
-            m_service = service;
-            Exams = m_service.GetAll();
+            m_examService = examService;
+            m_cohortService = cohortService;
+            m_teacherService = teacherService;
+            Exams = m_examService.GetAll();
+            Cohorts = m_cohortService.GetAll();
+            Teachers = m_teacherService.GetAll();
             Exam = new Exam();
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GetQueryValues(in string q) 
         {
             HttpContext.Request.Query.TryGetValue(q, out var value);
-            Exam = m_service.GetById(int.Parse(value));
+            Exam = m_examService.GetById(int.Parse(value));
         }
         public void OnGet()
         {
@@ -135,16 +143,16 @@ namespace SharpSeer.Pages.Exams
                     case "Delete":
 
                         GetQueryValues(q);
-                        m_service.Delete(Exam);
+                        m_examService.Delete(Exam);
                         goto EndOfLoop;
                     case "Create":
                         HttpContext.Request.Query.TryGetValue(q, out var value);
-                        m_service.Create(Exam);
+                        m_examService.Create(Exam);
                         isDone = true;
                         break;
                     case "Update":
                         GetQueryValues(q);
-                        m_service.Update(Exam);
+                        m_examService.Update(Exam);
                         isDone = true;
                         break;
                 }
@@ -164,14 +172,14 @@ namespace SharpSeer.Pages.Exams
         {
             Exam.Id = id;
             Exam.ExamType = (int)ExamType.Value;
-            m_service.Update(Exam);
+            m_examService.Update(Exam);
             return RedirectToPage("Exam_Page");
         }
 
         public IActionResult OnPostCreate()
         {
             Exam.ExamType = (int)ExamType;
-            m_service.Create(Exam);
+            m_examService.Create(Exam);
             return RedirectToPage("Exam_Page");
         }
     }

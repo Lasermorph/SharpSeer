@@ -40,6 +40,17 @@ namespace SharpSeer.Services
         {
             return context.Exams.Find(id);
         }
+
+        public IEnumerable<Cohort> GetCohorts() 
+        { 
+            return context.Cohorts;
+        }
+        public IEnumerable<Teacher> GetTeachers()
+        {
+            return context.Teachers;
+        }
+
+
         public void Update(Exam exam)
         {
             var entity = context.Exams.Find(exam.Id);
