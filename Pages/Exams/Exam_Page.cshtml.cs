@@ -4,6 +4,7 @@ using SharpSeer.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Runtime.CompilerServices;
 using static SharpSeer.Models.Exam;
+using Microsoft.VisualBasic;
 
 
 namespace SharpSeer.Pages.Exams
@@ -13,6 +14,9 @@ namespace SharpSeer.Pages.Exams
         public bool ShowDelete { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
+        public bool AreYouAnIdiot { get; set;} = false;
+
+        public bool ShowCalendar { get; set; } = false;
 
         [BindProperty(SupportsGet = true)]
         public string Name { get; set; } = null!;
@@ -39,6 +43,7 @@ namespace SharpSeer.Pages.Exams
 
         private IService<Exam> m_service;
         public IEnumerable<Exam> Exams { get; set; }
+        public List<Exam> TestExams = new List<Exam>();
         public Exam_PageModel(IService<Exam> service)
         {
             m_service = service;
@@ -50,6 +55,17 @@ namespace SharpSeer.Pages.Exams
         {
             HttpContext.Request.Query.TryGetValue(q, out var value);
             Exam = m_service.GetById(int.Parse(value));
+        }
+        public void GetTime(DateTime start, DateTime end)
+        {
+            foreach(Exam e in Exams)
+            {
+                if (e.FirstExamDate >= start || e.FirstExamDate <= e.LastExamDate || e.LastExamDate <= end)
+                {
+                    TestExams.Add(e);
+                }
+            }
+            Exams = TestExams;
         }
         public void OnGet()
         {
@@ -95,15 +111,21 @@ namespace SharpSeer.Pages.Exams
                         }
                         break;
                     case "FirstExamDate":
-                        if (FirstExamDate != DateTime.MinValue)
+                        if (FirstExamDate > LastExamDate)
                         {
-                            Exams = Exams.Where(t => t.FirstExamDate.Date == FirstExamDate.Date);
+                            AreYouAnIdiot = true;                            
+                        }
+                        else
+                        {
+                            if (FirstExamDate != DateTime.MinValue)
+                            {
+                                Exams = Exams.Where(t => t.FirstExamDate.Date <= LastExamDate.Date && t.LastExamDate.Date >= FirstExamDate.Date);
+                            }
                         }
                         break;
                     case "LastExamDate":
                         if (LastExamDate != DateTime.MinValue)
                         {
-                            Exams = Exams.Where(t => t.LastExamDate.Date == LastExamDate.Date);
                         }
                         break;
                     case "HandInDeadline":
