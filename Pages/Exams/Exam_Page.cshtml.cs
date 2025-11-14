@@ -16,10 +16,10 @@ namespace SharpSeer.Pages.Exams
 
         [BindProperty(SupportsGet = true)]
         public string Name { get; set; } = null!;
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public ExamTypeEnum? ExamType { get; set; }
         [BindProperty(SupportsGet = true)]
-        public bool? IsGuarded { get; set; } = null;
+        public bool? IsGuarded { get; set; } = null; 
         [BindProperty(SupportsGet = true)]
         public bool? NeedExternalExaminer { get; set; } = null;
         [BindProperty(SupportsGet = true)]
