@@ -21,7 +21,7 @@
 				<input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Telefon nummer" />
 			</th>
 			<th scope="col">
-				<button type="submit" class="btn btn-primary">Stefan din bums</button>
+				<button type="submit" class="btn btn-primary">Søg</button>
 			</th>
 		</tr>
 	</thead>
@@ -124,6 +124,14 @@
 									<td>
 										<input asp-for="Teacher.PhoneNumber" class="form-control" />
 									</td>
+								</tr>
+								<tr>
+								<th scope="col">
+									Navne kode
+								</th>
+								<td>
+									<input asp-for="Teacher.NameId" class="form-control" />
+								</td>
 								</tr>
 							</tbody>
 						</table>
