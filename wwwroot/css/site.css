@@ -17,7 +17,8 @@ html {
   min-height: 100%;
 }
 
-body {
+body 
+{
   margin-bottom: 60px;
 }
 
@@ -30,8 +31,15 @@ body {
   text-align: start;
 }
 
-.modal {
-    background: rgba(55,55,55,.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+.modal
+{
+  position: fixed;
+  background: rgba(55,55,55,.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.noScroll
+{
+  overflow: hidden;
 }

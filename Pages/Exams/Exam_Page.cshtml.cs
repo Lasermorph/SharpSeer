@@ -15,8 +15,10 @@ namespace SharpSeer.Pages.Exams
         public bool ShowCreate { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
         public bool AreYouAnIdiot { get; set;} = false;
+        public bool SetOverflow { get; set; } = false;
 
         public bool ShowCalendar { get; set; } = false;
+        public List<Exam> TestExams { get; set; } = new List<Exam>();
 
         [BindProperty(SupportsGet = true)]
         public string Name { get; set; } = null!;
@@ -89,15 +91,18 @@ namespace SharpSeer.Pages.Exams
                 {
                     case "Delete":
                         ShowDelete = true;
+                        SetOverflow = true;
                         GetQueryValues(q);
                         goto EndOfLoop;
                     case "Create":
                         ShowCreate = true;
+                        SetOverflow = true;
                         HttpContext.Request.Query.TryGetValue(q, out var value);
                         QueryString = q;
                         goto EndOfLoop;
                     case "Update":
                         ShowUpdate = true;
+                        SetOverflow = true;
                         GetQueryValues(q);
                         goto EndOfLoop;
                     case "Name":
