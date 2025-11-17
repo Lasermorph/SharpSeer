@@ -148,8 +148,10 @@
 	</tbody>
 </table>
 
+
 @if (Model.ShowDelete)
 {
+
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -176,6 +178,7 @@
 }	
 @if (Model.ShowCreate)
 {
+	
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -312,6 +315,7 @@
 
 @if (Model.ShowUpdate)
 {
+	
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -322,6 +326,7 @@
 					<a href="/Exams/Exam_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
+			
 				<form method="post" asp-page-handler="Update" asp-route-id="@Model.Exam.Id">
 				<div class="modal-body">
 					<table class="table">
@@ -411,75 +416,55 @@
 											<option value="true">Ja</option>
 											<option value="false">Nej</option>
 										</select>
-								</td>
-									
-							</tr>
-							<tr>
-								<th scope="col">
-									Ekstern censor
-								</th>
-								<td>
-										@(Model.Exam.NeedExternalExaminer ? "Ja" : "Nej")
-								</td>
-								<td>
+									</td>
+								</tr>
+
+								<tr>
+									<td>Ekstern censor</td>
+									<td>@(Model.Exam.NeedExternalExaminer ? "Ja" : "Nej")</td>
+									<td>
 										<select asp-for="NeedExternalExaminer" class="form-select">
 											<option value="">Alle</option>
 											<option value="true">Ja</option>
 											<option value="false">Nej</option>
 										</select>
-								</td>
-									
-							</tr>
-							<tr>
-								<th scope="col">
-									Eksamens start
-								</th>
-								<td>
-									@Model.Exam.FirstExamDate
-								</td>
-								<td>
-									<input asp-for="Exam.FirstExamDate" class="form-control" />
-								</td>
-									
-							</tr>
-							<tr>
-								<th scope="col">
-									Eksamens Slut
-								</th>
-								<td>
-									@Model.Exam.LastExamDate
-								</td>
-								<td>
-									<input asp-for="Exam.LastExamDate" class="form-control" />
-								</td>
-									
-							</tr>
-							<tr>
-								<th scope="col">
-									Deadline for aflevering
-								</th>
-								<td>
-									@Model.Exam.HandInDeadline
-								</td>
-								<td>
-									<input asp-for="Exam.HandInDeadline" class="form-control" />
-								</td>
-									
-							</tr>
-							<tr>
-								<th scope="col">
-									Eksmaens varighed
-								</th>
-								<td>
-									@Model.Exam.DurationInMinutes
-								</td>
-								<td>
-									<input asp-for="Exam.DurationInMinutes" class="form-control" />
-								</td>
-							</tr>
-                        </tbody>
-					</table>
-				</div>
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens start</td>
+									<td>@Model.Exam.FirstExamDate</td>
+									<td>
+										<input asp-for="Exam.FirstExamDate" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens slut</td>
+									<td>@Model.Exam.LastExamDate</td>
+									<td>
+										<input asp-for="Exam.LastExamDate" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Deadline for aflevering</td>
+									<td>@Model.Exam.HandInDeadline</td>
+									<td>
+										<input asp-for="Exam.HandInDeadline" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens varighed (minutter)</td>
+									<td>@Model.Exam.DurationInMinutes</td>
+									<td>
+										<input asp-for="Exam.DurationInMinutes" class="form-control" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
 					
@@ -490,6 +475,11 @@
 			</div>
 		</div>
 	</div>
+}
+
+@if (Model.ShowCalendar)
+{
+
 }
 
 

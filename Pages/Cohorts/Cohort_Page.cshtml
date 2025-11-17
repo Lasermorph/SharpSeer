@@ -38,18 +38,19 @@
 				<td>
 					@cohort.Term
 				</td>
-				<td>
+				<td style="display: inline-block;">
 					<form method="get">
-						<a href="/Cohorts/Cohort_Page/?Update=@cohort.Id" class="btn btn-primary" style="float: left;" type="submit">
+						<a href="/Cohorts/Cohort_Page/?Update=@cohort.Id" class="btn btn-primary" type="submit">
 							Opdater
 						</a>
 					</form>
+				</td>
+				<td style="display: inline-block;">
 					<form method="get">
-						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit">
+						<a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger" type="submit">
 							Slet
 						</a>
 					</form>
-
 				</td>
 			</tr>
 		}
@@ -60,6 +61,7 @@
 <!-- Modal -->
 @if (Model.ShowDelete)
 {
+	
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -87,6 +89,13 @@
 
 @if (Model.ShowCreate)
 {
+	<style>
+		.modal {
+			background: rgba(55,55,55,.6);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+		}
+	</style>
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -142,6 +151,7 @@
 
 @if (Model.ShowUpdate)
 {
+
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharpSeer.Interfaces;
 using SharpSeer.Models;
+using SharpSeer.Pages.Exams;
 
 namespace SharpSeer.Services
 {
@@ -13,6 +14,16 @@ namespace SharpSeer.Services
         }
         public void Create(Exam ? exam)
         {
+            foreach (var teacher in exam.Teachers)
+            {
+                foreach  (var ex in teacher.Exams)
+                {
+                    if (ex.FirstExamDate == exam.FirstExamDate)
+                    {
+                        throw new Exception("Teacher already has an exam scheduled at this time.");
+                    }
+                }
+            }
             if (exam == null) 
             {
                 throw new NotImplementedException();
@@ -26,7 +37,7 @@ namespace SharpSeer.Services
             if (exam == null) 
             {
                 throw new NotImplementedException();
-            }
+            } 
             context.Exams.Remove(exam);
             context.SaveChanges();
         }
