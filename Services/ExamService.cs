@@ -27,7 +27,7 @@ namespace SharpSeer.Services
             if (exam == null) 
             {
                 throw new NotImplementedException();
-            }
+            } 
             context.Exams.Remove(exam);
             context.SaveChanges();
         }
