@@ -180,7 +180,7 @@
 {
 	
 	<!-- Modal -->
-	<div style="display: block;" class="modal" id="myModal">
+	<div style="display: block;" class="modal modal-lg" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<!-- Modal Header -->
@@ -219,7 +219,7 @@
 										<div style="height:80px;overflow-y:scroll">
 											@foreach (var cohort in Model.CohortsAll)
 											{
-												<input class="form-check" name="Cohorts" type="checkbox" value="@cohort.Id" />
+												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
 												@cohort.Name
 												<br />
 											}
@@ -237,7 +237,7 @@
 											
 											@foreach (var teacher in Model.TeachersAll)
 											{
-												<input class="form-check" name="Teachers" type="checkbox" value="@teacher.Id" />
+												<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
 												@teacher.Name
 												<br />
 											}
@@ -381,7 +381,7 @@
 										<div style="height:80px;overflow-y:scroll">
 										@foreach (var cohort in Model.CohortsAll)
 											{
-												<input class="form-check" name="Cohorts" type="checkbox" value="@cohort.Id" />
+												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
 												@cohort.Name
 												<br />
 											}
@@ -400,7 +400,7 @@
 								<td>
 									@foreach (var teacher in Model.TeachersAll)
 										{
-											<input class="form-check" name="Teachers" type="checkbox" value="@teacher.Id" />
+											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
 											@teacher.Name
 											<br />
 										}
