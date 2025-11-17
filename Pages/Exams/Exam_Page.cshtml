@@ -219,7 +219,7 @@
 										<div style="height:80px;overflow-y:scroll">
 											@foreach (var cohort in Model.CohortsAll)
 											{
-												<input name="Cohorts" type="checkbox" value="@cohort.Id" />
+												<input class="form-check" name="Cohorts" type="checkbox" value="@cohort.Id" />
 												@cohort.Name
 												<br />
 											}
@@ -233,12 +233,15 @@
 										Underviser(e)
 									</th>
 									<td>
-										@foreach (var teacher in Model.TeachersAll)
-										{
-											<input name="Teachers" type="checkbox" value="@teacher.Id" />
-											@teacher.Name
-											<br />
-										}
+										<div style="height:80px;overflow-y:scroll">
+											
+											@foreach (var teacher in Model.TeachersAll)
+											{
+												<input class="form-check" name="Teachers" type="checkbox" value="@teacher.Id" />
+												@teacher.Name
+												<br />
+											}
+										</div>
 									</td>
 								</tr>
 
@@ -378,7 +381,7 @@
 										<div style="height:80px;overflow-y:scroll">
 										@foreach (var cohort in Model.CohortsAll)
 											{
-												<input name="Cohorts" type="checkbox" value="@cohort.Id" />
+												<input class="form-check" name="Cohorts" type="checkbox" value="@cohort.Id" />
 												@cohort.Name
 												<br />
 											}
@@ -397,7 +400,7 @@
 								<td>
 									@foreach (var teacher in Model.TeachersAll)
 										{
-											<input name="Teachers" type="checkbox" value="@teacher.Id" />
+											<input class="form-check" name="Teachers" type="checkbox" value="@teacher.Id" />
 											@teacher.Name
 											<br />
 										}
