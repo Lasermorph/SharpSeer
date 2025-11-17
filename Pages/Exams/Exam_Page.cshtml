@@ -213,12 +213,14 @@
 										Hold
 									</th>
 									<td>
-										<select class="form-select" multiple asp-for="Cohorts" style="width:180px;">
-										@foreach (var cohort in Model.Cohorts)
-										{
-											<option value="@cohort">@cohort.Name</option>
-										}
-									</select>
+										<div style="height:80px;overflow-y:scroll">
+											@foreach (var cohort in Model.CohortsAll)
+											{
+												<input name="Cohorts" type="checkbox" value="@cohort.Id" />
+												@cohort.Name
+												<br />
+											}
+										</div>
 									</td>
 									
 								</tr>
@@ -228,12 +230,12 @@
 										Underviser(e)
 									</th>
 									<td>
-										<select class="form-select" multiple asp-for="Teachers" style="width:180px;">
-											@foreach (var teacher in Model.Teachers)
-											{
-												<option value="@teacher">@teacher.Name</option>
-											}
-										</select>	
+										@foreach (var teacher in Model.TeachersAll)
+										{
+											<input name="Teachers" type="checkbox" value="@teacher.Id" />
+											@teacher.Name
+											<br />
+										}
 									</td>
 								</tr>
 
@@ -367,14 +369,15 @@
 									@((Model.Exam.Cohorts?.Any() ?? false)
 											? string.Join(", ", Model.Exam.Cohorts.Select(c => c.Name)) : "Ingen hold tilknyttet")
 								</td>
-																																						
 								<td>
-									<select class="inputbox" name="color" id="color" style="width:180px;">
-										@foreach (var cohort in Model.Cohorts)
-										{
-											<option value="@cohort.Id">@cohort.Name</option>
-										}
-									</select>
+										<div style="height:80px;overflow-y:scroll">
+										@foreach (var cohort in Model.CohortsAll)
+											{
+												<input name="Cohorts" type="checkbox" value="@cohort.Id" />
+												@cohort.Name
+												<br />
+											}
+									</div>
 								</td>
 
 							</tr>
@@ -384,15 +387,15 @@
 								</th>
 								<td scope="col">
 									@((Model.Exam.Teachers?.Any() ?? false)
-																		? string.Join(", ", Model.Exam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet")
+										? string.Join(", ", Model.Exam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet")
 								</td>
 								<td>
-									<select class="inputbox" name="color" id="color" style="width:180px;">
-										@foreach (var teacher in Model.Teachers)
+									@foreach (var teacher in Model.TeachersAll)
 										{
-											<option value="@teacher.Id">@teacher.Name</option>
+											<input name="Teachers" type="checkbox" value="@teacher.Id" />
+											@teacher.Name
+											<br />
 										}
-									</select>
 								</td>
 							</tr>
 							<tr>

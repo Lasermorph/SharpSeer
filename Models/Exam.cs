@@ -36,7 +36,7 @@ public partial class Exam
     public DateTime? HandInDeadline { get; set; }
 
     public int DurationInMinutes { get; set; }
-
+    
     [ForeignKey("ExamId")]
     [InverseProperty("Exams")]
     public virtual ICollection<Cohort> Cohorts { get; set; } = new List<Cohort>();

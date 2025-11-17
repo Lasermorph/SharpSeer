@@ -33,32 +33,61 @@ namespace SharpSeer.Services
 
         public IEnumerable<Exam> GetAll()
         {
-            return context.Exams;
+            return context.Exams.Include(e => e.Cohorts).Include(e => e.Teachers);
         }
 
         public Exam? GetById(int id)
         {
-            return context.Exams.Find(id);
+            return context.Exams.Include(e => e.Cohorts)
+                .Include(e => e.Teachers)
+                .FirstOrDefault(e => e.Id == id); ;
         }
 
-        public IEnumerable<Cohort> GetCohorts() 
-        { 
-            return context.Cohorts;
-        }
-        public IEnumerable<Teacher> GetTeachers()
-        {
-            return context.Teachers;
-        }
+        //public ICollection<Cohort> GetReferenceObj() 
+        //{ 
+        //    return context.;
+        //}
+       
 
 
         public void Update(Exam exam)
         {
-            var entity = context.Exams.Find(exam.Id);
+            var entity = context.Exams
+                .Include(e => e.Cohorts)
+                .Include(e => e.Teachers)
+                .FirstOrDefault(e => e.Id == exam.Id); ;
             if (entity == null)
             {
                 throw new NotImplementedException();
             }
+            // Update scalar/owned properties
             context.Entry(entity).CurrentValues.SetValues(exam);
+            // Update Cohorts
+            if (exam.Cohorts != null)
+            {
+                foreach (var cohort in exam.Cohorts)
+                {
+                    // Attach the DB tracked cohort by id to avoid duplicate entries
+                    var dbC = context.Cohorts.Find(cohort.Id);
+                    if (dbC != null)
+                    {
+                        entity.Cohorts.Add(dbC);
+                    }
+                }
+            }
+            // Update Teachers
+            entity.Teachers.Clear();
+            if (exam.Teachers != null)
+            {
+                foreach (var teacher in exam.Teachers)
+                {
+                    var dbT = context.Teachers.Find(teacher.Id);
+                    if (dbT != null)
+                    {
+                        entity.Teachers.Add(dbT);
+                    }
+                }
+            }
             context.SaveChanges();
         }
 
