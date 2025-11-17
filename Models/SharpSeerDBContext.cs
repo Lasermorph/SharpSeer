@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace SharpSeer.Models;
 
 public partial class SharpSeerDbContext : DbContext
 {
-    private string ? connectionString;
     public SharpSeerDbContext()
     {
-
     }
 
-    public SharpSeerDbContext(DbContextOptions<SharpSeerDbContext> options, IConfiguration config)
+    public SharpSeerDbContext(DbContextOptions<SharpSeerDbContext> options)
         : base(options)
     {
-        connectionString = config.GetConnectionString("SharpSeerDB");
     }
 
     public virtual DbSet<Cohort> Cohorts { get; set; }
@@ -27,23 +22,34 @@ public partial class SharpSeerDbContext : DbContext
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer(connectionString);
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=mssql3.unoeuro.com;Initial Catalog=vedelslund_dk_db_sharp_seer_db;User ID=vedelslund_dk;Password=p4k9whbaxz5FGD6RBgfe;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cohort>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Cohorts__3214EC2782EC5191");
+            entity.HasKey(e => e.Id).HasName("PK__Cohorts__3214EC27C7D3E5AE");
+
+            entity.HasIndex(e => e.Name, "UC_CohortName").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Major)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Exam>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Exams__3214EC278F1EB990");
+            entity.HasKey(e => e.Id).HasName("PK__Exams__3214EC2797C7D7E3");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
 
             entity.HasMany(d => d.Cohorts).WithMany(p => p.Exams)
                 .UsingEntity<Dictionary<string, object>>(
@@ -51,14 +57,14 @@ public partial class SharpSeerDbContext : DbContext
                     r => r.HasOne<Cohort>().WithMany()
                         .HasForeignKey("CohortId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamCohor__Cohor__571DF1D5"),
+                        .HasConstraintName("FK__ExamCohor__Cohor__44FF419A"),
                     l => l.HasOne<Exam>().WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamCohor__ExamI__5629CD9C"),
+                        .HasConstraintName("FK__ExamCohor__ExamI__440B1D61"),
                     j =>
                     {
-                        j.HasKey("ExamId", "CohortId").HasName("PK__ExamCoho__CDD7092837E1C6D8");
+                        j.HasKey("ExamId", "CohortId").HasName("PK__ExamCoho__CDD7092843B24DBB");
                         j.ToTable("ExamCohorts");
                         j.IndexerProperty<int>("ExamId").HasColumnName("ExamID");
                         j.IndexerProperty<int>("CohortId").HasColumnName("CohortID");
@@ -70,14 +76,14 @@ public partial class SharpSeerDbContext : DbContext
                     r => r.HasOne<Teacher>().WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamTeach__Teach__534D60F1"),
+                        .HasConstraintName("FK__ExamTeach__Teach__412EB0B6"),
                     l => l.HasOne<Exam>().WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamTeach__ExamI__52593CB8"),
+                        .HasConstraintName("FK__ExamTeach__ExamI__403A8C7D"),
                     j =>
                     {
-                        j.HasKey("ExamId", "TeacherId").HasName("PK__ExamTeac__77AA04338FA9F551");
+                        j.HasKey("ExamId", "TeacherId").HasName("PK__ExamTeac__77AA0433C824FF4E");
                         j.ToTable("ExamTeachers");
                         j.IndexerProperty<int>("ExamId").HasColumnName("ExamID");
                         j.IndexerProperty<int>("TeacherId").HasColumnName("TeacherID");
@@ -86,7 +92,26 @@ public partial class SharpSeerDbContext : DbContext
 
         modelBuilder.Entity<Teacher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Teachers__3214EC2722ABD1B8");
+            entity.HasKey(e => e.Id).HasName("PK__Teachers__3214EC27913FCC04");
+
+            entity.HasIndex(e => e.Email, "UQ__Teachers__A9D10534F1F7AF2F").IsUnique();
+
+            entity.HasIndex(e => e.NameId, "UQ__Teachers__EE1C17C064D2A295").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.NameId)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("NameID");
+            entity.Property(e => e.PhoneNumber)
+                .HasMaxLength(15)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

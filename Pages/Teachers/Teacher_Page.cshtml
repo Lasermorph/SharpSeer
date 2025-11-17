@@ -21,7 +21,7 @@
 				<input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Telefon nummer" />
 			</th>
 			<th scope="col">
-				<button type="submit" class="btn btn-primary">Stefan din bums</button>
+				<button type="submit" class="btn btn-primary">Søg</button>
 			</th>
 		</tr>
 	</thead>
@@ -39,16 +39,16 @@
 				<td>
 					@teacher.PhoneNumber
 				</td>
-				<td>
+				<td style="display: inline-block;">
 					<form method="get">
-						<a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary" style="float: left;" type="submit">
+						<a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary" type="submit">
 							Opdater
 						</a>
 					</form>
 				</td>
-				<td>
+				<td style="display: inline-block;">
 					<form method="get">
-						<a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit">
+						<a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger" type="submit">
 							Slet
 						</a>
 					</form>
@@ -60,6 +60,14 @@
 
 @if (Model.ShowDelete)
 {
+	<style>
+		.modal {
+			background: rgba(55,55,55,.6);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+		}
+	</style>
+
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -87,6 +95,14 @@
 
 @if (Model.ShowCreate)
 {
+	<style>
+		.modal {
+			background: rgba(55,55,55,.6);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+		}
+	</style>
+
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -125,6 +141,14 @@
 										<input asp-for="Teacher.PhoneNumber" class="form-control" />
 									</td>
 								</tr>
+								<tr>
+								<th scope="col">
+									Navne kode
+								</th>
+								<td>
+									<input asp-for="Teacher.NameId" class="form-control" />
+								</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -142,6 +166,13 @@
 
 @if (Model.ShowUpdate)
 {
+	<style>
+		.modal {
+			background: rgba(55,55,55,.6);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+		}
+	</style>
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
