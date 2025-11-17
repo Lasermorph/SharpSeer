@@ -47,7 +47,7 @@ namespace SharpSeer.Pages.Exams
         public ICollection<int> Cohorts { get; set; }
         [BindProperty(SupportsGet = true)]
         public ICollection<int> Teachers { get; set; }
-
+        public List<Exam> TestExams { get; set; } = new List<Exam>();
         private IService<Exam> m_examService;
         private IService<Cohort> m_cohortService;
         private IService<Teacher> m_teacherService;
