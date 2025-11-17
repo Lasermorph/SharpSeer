@@ -11,6 +11,7 @@ namespace SharpSeer.Pages.Exams
 {
     public class Exam_PageModel : PageModel
     {
+        public int DaysInMonth { get; set; } = 0;
         public bool ShowDelete { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
@@ -46,6 +47,8 @@ namespace SharpSeer.Pages.Exams
         public List<Exam> TestExams = new List<Exam>();
         public Exam_PageModel(IService<Exam> service)
         {
+            DateTime dateTime = DateTime.Now;
+            DaysInMonth = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
             m_service = service;
             Exams = m_service.GetAll();
             Exam = new Exam();
