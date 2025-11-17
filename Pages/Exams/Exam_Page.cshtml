@@ -53,6 +53,10 @@
 				</th>
 			</tr>
 		</thead>
+	@if (Model.AreYouAnIdiot)
+	{
+		<label style="color: red">Er du dum eller hva' ???</label>
+	}
 	</form>
 		<thead>
 			<tr>
@@ -123,7 +127,7 @@
 				</td>
 				<td>
 					<form method="get">
-					<a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit">
+					<a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" type="submit">
 						Slet
 					</a>
 					</form>
@@ -131,6 +135,7 @@
 			</tr>
 		}
 </table>
+
 
 @if (Model.ShowDelete)
 {
@@ -406,6 +411,11 @@
 			</div>
 		</div>
 	</div>
+}
+
+@if (Model.ShowCalendar)
+{
+
 }
 
 
