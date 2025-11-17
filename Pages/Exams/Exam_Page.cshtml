@@ -336,7 +336,11 @@
 									<td>Med vagt</td>
 									<td>@(Model.Exam.IsGuarded ? "Ja" : "Nej")</td>
 									<td>
-										<input type="checkbox" asp-for="Exam.IsGuarded" />
+										<select asp-for="IsGuarded" class="form-select">
+											<option value="">Alle</option>
+											<option value="true">Ja</option>
+											<option value="false">Nej</option>
+										</select>
 									</td>
 								</tr>
 
@@ -344,7 +348,11 @@
 									<td>Ekstern censor</td>
 									<td>@(Model.Exam.NeedExternalExaminer ? "Ja" : "Nej")</td>
 									<td>
-										<input type="checkbox" asp-for="Exam.NeedExternalExaminer" />
+										<select asp-for="NeedExternalExaminer" class="form-select">
+											<option value="">Alle</option>
+											<option value="true">Ja</option>
+											<option value="false">Nej</option>
+										</select>
 									</td>
 								</tr>
 
