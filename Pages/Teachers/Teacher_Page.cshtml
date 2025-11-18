@@ -15,6 +15,9 @@
 				<input type="text" class="form-control" asp-for="Name" placeholder="Navn" />
 			</th>
 			<th scope="col">
+				<input type="text" class="form-control" asp-for="NameId" placeholder="Navne kode" />
+			</th>
+			<th scope="col">
 				<input type="text" class="form-control" asp-for="Email" placeholder="E-mail" />
 			</th>
 			<th scope="col">
@@ -32,6 +35,9 @@
 			<tr>
 				<td>
 					@teacher.Name
+				</td>
+				<td>
+					@teacher.NameId
 				</td>
 				<td>
 					@teacher.Email
@@ -112,6 +118,14 @@
 								</tr>
 								<tr>
 									<th scope="col">
+										Navne kode
+									</th>
+									<td>
+										<input asp-for="Teacher.NameId" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
 										E-Mail
 									</th>
 									<td>
@@ -125,14 +139,6 @@
 									<td>
 										<input asp-for="Teacher.PhoneNumber" class="form-control" />
 									</td>
-								</tr>
-								<tr>
-								<th scope="col">
-									Navne kode
-								</th>
-								<td>
-									<input asp-for="Teacher.NameId" class="form-control" />
-								</td>
 								</tr>
 							</tbody>
 						</table>
@@ -171,6 +177,14 @@
 									</th>
 									<td>
 										<input asp-for="Teacher.Name" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Navne kode
+									</th>
+									<td>
+										<input asp-for="Teacher.NameId" class="form-control" />
 									</td>
 								</tr>
 								<tr>

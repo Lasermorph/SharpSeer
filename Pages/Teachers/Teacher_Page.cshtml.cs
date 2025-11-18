@@ -19,7 +19,10 @@ namespace SharpSeer.Pages.Teachers
         public string PhoneNumber { get; set; }
         [BindProperty(SupportsGet =true)]
         public string Name { get; set; }
-        
+
+        [BindProperty(SupportsGet = true)]
+        public string NameId { get; set; }
+
         [BindProperty(SupportsGet =true)]
         public string QueryString { get; set; } = string.Empty;
 
