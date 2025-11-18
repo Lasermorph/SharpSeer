@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace SharpSeer.Models;
 
-public enum ExamTypeEnum
-{
-    Skriftlig = 1,
-    Mundtlig = 2,
-    Projekt = 3
-}
 public partial class Exam
 {
+    public enum ExamTypeEnum
+    {
+        Skriftlig = 1,
+        Mundtlig = 2,
+        Projekt = 3,
+    }
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;

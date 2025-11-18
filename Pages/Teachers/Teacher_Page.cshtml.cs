@@ -23,6 +23,9 @@ namespace SharpSeer.Pages.Teachers
         [BindProperty(SupportsGet = true)]
         public string NameId { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public bool? IsExternal { get; set; }
+
         [BindProperty(SupportsGet =true)]
         public string QueryString { get; set; } = string.Empty;
 
@@ -81,6 +84,18 @@ namespace SharpSeer.Pages.Teachers
                         if (!string.IsNullOrEmpty(PhoneNumber))
                         {
                             Teachers = Teachers.Where(t => t.PhoneNumber.Contains(PhoneNumber, StringComparison.OrdinalIgnoreCase));
+                        }
+                        break;
+                    case "NameId":
+                        if (!string.IsNullOrEmpty(NameId))
+                        {
+                            Teachers = Teachers.Where(t => t.NameId.Contains(NameId, StringComparison.OrdinalIgnoreCase));
+                        }
+                        break;
+                    case "IsExternal":
+                        if (IsExternal.HasValue)
+                        {
+                            Teachers = Teachers.Where(t => t.IsExternal == IsExternal.Value);
                         }
                         break;
                 }
