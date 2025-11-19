@@ -226,7 +226,12 @@ namespace SharpSeer.Pages.Exams
                 var cohort = m_cohortService.GetById(cohortId);
                 Exam.Cohorts.Add(cohort);
             }
-                
+            foreach (var teacherId in Teachers)
+            {
+                var teacher = m_teacherService.GetById(teacherId);
+                Exam.Teachers.Add(teacher);
+            }
+
             m_examService.Create(Exam);
             return RedirectToPage("Exam_Page");
         }
