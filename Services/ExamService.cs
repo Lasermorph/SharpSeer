@@ -74,6 +74,7 @@ namespace SharpSeer.Services
             // Update scalar/owned properties
             context.Entry(entity).CurrentValues.SetValues(exam);
             // Update Cohorts
+            entity.Cohorts.Clear();
             if (exam.Cohorts != null)
             {
                 foreach (var cohort in exam.Cohorts)
