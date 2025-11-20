@@ -6,7 +6,8 @@
 @{
 }
 
-
+<body class="background">
+</body>
 <body class="@((Model.SetOverflow) ? "noScroll": "")">
 <a class="btn btn-primary" href="/Exams/Exam_Page/?Create=0">Tilføj</a>
 
@@ -95,6 +96,7 @@
 			
 		</tr>
 	</thead>
+	
 	<tbody>
 	@foreach (var exam in Model.Exams)
 	{
@@ -148,8 +150,9 @@
 		</tr>
 	}
 	</tbody>
+		
 </table>
-
+	
 
 @if (Model.ShowDelete)
 {
@@ -487,6 +490,8 @@
 
 }
 </body>
+
+
 
 
 

@@ -5,82 +5,101 @@
 }
 
 <head>
-<style>
-* {box-sizing: border-box;}
-ul {list-style-type: none;}
-body {font-family: Verdana, sans-serif;}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-.month {
-  padding: 20px 25px;
-  width: 100%;
-  background: #1abc9c;
-  text-align: center;
-}
+        ul {
+            list-style-type: none;
+        }
 
-.month ul {
-  margin: 0;
-  padding: 0;
-}
+        body {
+            font-family: 'franklin gothic medium', sans-serif;
+        }
 
-.month ul li {
-  color: white;
-  font-size: 25px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
+        .month {
+            padding: 20px 25px;
+            width: 100%;
+            background: #fff387;
+            text-align: center;
+        }
 
-.month .prev {
-  float: left;
-  padding-top: 10px;
-}
+            .month ul {
+                margin: 0;
+                padding: 0;
+            }
 
-.month .next {
-  float: right;
-  padding-top: 10px;
-}
+                .month ul li {
+                    color: black;
+                    font-size: 25px;
+                    text-transform: uppercase;
+                    letter-spacing: 3px;
+                }
 
-.weekdays {
-  margin: 0;
-  padding: 10px 0;
-  background-color: #ddd;
-}
+            .month .prev {
+                float: left;
+                padding-top: 10px;
+            }
 
-.weekdays li {
-  display: inline-block;
-  width: 13.6%;
-  color: #666;
-  text-align: center;
-}
+            .month .next {
+                float: right;
+                padding-top: 10px;
+            }
 
-.days {
-  padding: 10px 0;
-  background: #eee;
-  margin: 0;
-}
+        .weekdays {
+            margin: 0;
+            padding: 10px 0;
+            background-color: #F4A460;
+        }
 
-.days li {
-  list-style-type: none;
-  display: inline-block;
-  width: 13.6%;
-  text-align: center;
-  margin-bottom: 5px;
-  font-size:12px;
-  color: #777;
-}
+            .weekdays li {
+                display: inline-block;
+                width: 13.6%;
+                color: #000000;
+                text-align: center;
+            }
 
-.days li .active {
-  padding: 5px;
-  background: #1abc9c;
-  color: white !important;
-}
+        .days {
+            padding: 30px 0;
+            background: #fafad2;
+            margin: 10;
+        }
 
-.exam
-{
-  background-color: #2090ff;
-  font-size: 0.5vw;
-}
+            .days li {
+                list-style-type: none;
+                display: inline-block;
+                width: 13.6%;
+                text-align: center;
+                margin-bottom: 25px;
+                font-size: 12px;
+                color: #777;
+                border-left: 2px solid #FFDEAD;
+                border-top: 2px solid #FFDEAD   ;
+                padding: 10px 0;
+            }
 
-</style>
+                .days li:nth-child(7n +1)
+                {
+                    border-left: none;
+                }
+
+                .days li:nth-child(-n+7)
+                {
+                    border-top: none;
+                }
+
+                .days li .active {
+                    padding: 20px;
+                    background: #1abc9c;
+                    color: white !important;
+                }
+
+        .exam {
+            background-color: #cd5c5c;
+            font-size: 0.5vw;
+        }
+    </style>
 </head>
 <body>
 
@@ -100,7 +119,7 @@ body {font-family: Verdana, sans-serif;}
     </form>
     <li>
       @Model.MonthStr<br>
-      <span style="font-size:18px">@Model.Year</span>
+      <span style="font-size:40px">@Model.Year</span>
     </li>
   </ul>
 </div>
@@ -119,7 +138,7 @@ body {font-family: Verdana, sans-serif;}
   }
   @for (int i = 1; i <= Model.DaysInMonth; i++)
   {
-    <li>@i<div><button class="btn exam">hej</button></div></li>
+    <li>@i<div><button class="btn exam">Eksamen</button></div></li>
   }
 </ul> 
 
