@@ -23,7 +23,7 @@ public partial class SharpSeerDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=mssql3.unoeuro.com;Initial Catalog=vedelslund_dk_db_sharp_seer_db;User ID=vedelslund_dk;Password=p4k9whbaxz5FGD6RBgfe;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer("Data Source=mssql3.unoeuro.com;Initial Catalog=vedelslund_dk_db_sharp_seer_db;User ID=vedelslund_dk;Password=p4k9whbaxz5FGD6RBgfe;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -56,12 +56,10 @@ public partial class SharpSeerDbContext : DbContext
                     "ExamCohort",
                     r => r.HasOne<Cohort>().WithMany()
                         .HasForeignKey("CohortId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamCohor__Cohor__44FF419A"),
+                        .HasConstraintName("FK__ExamCohor__CohortID"),
                     l => l.HasOne<Exam>().WithMany()
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamCohor__ExamI__440B1D61"),
+                        .HasConstraintName("FK__ExamCohor__ExamID"),
                     j =>
                     {
                         j.HasKey("ExamId", "CohortId").HasName("PK__ExamCoho__CDD7092843B24DBB");
@@ -75,12 +73,10 @@ public partial class SharpSeerDbContext : DbContext
                     "ExamTeacher",
                     r => r.HasOne<Teacher>().WithMany()
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamTeach__Teach__412EB0B6"),
+                        .HasConstraintName("FK__ExamTeach__TeacherID"),
                     l => l.HasOne<Exam>().WithMany()
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamTeach__ExamI__403A8C7D"),
+                        .HasConstraintName("FK__ExamTeach__ExamID"),
                     j =>
                     {
                         j.HasKey("ExamId", "TeacherId").HasName("PK__ExamTeac__77AA0433C824FF4E");
