@@ -1,5 +1,6 @@
 ﻿@page
 @using Microsoft.VisualBasic
+@using MyApp.Namespace
 @model MyApp.Namespace.CalendarViewModel
 @{
 }
@@ -60,13 +61,15 @@
                 text-align: center;
             }
 
-        .days {
+        .days 
+        {
             padding: 30px 0;
             background: #fafad2;
             margin: 10;
         }
 
-            .days li {
+            .days li
+            {
                 list-style-type: none;
                 display: inline-block;
                 width: 13.6%;
@@ -95,9 +98,17 @@
                     color: white !important;
                 }
 
-        .exam {
+        .exam
+        {
             background-color: #cd5c5c;
             font-size: 0.5vw;
+            margin-bottom: 0.2rem;
+        }
+
+        .days li.empty
+        {
+            background-color: transparent;
+            border: none;
         }
     </style>
 </head>
@@ -134,11 +145,22 @@
 <ul class="days">
   @for (int i = 1; i < Model.FirstDayOfMonth; i++)
   {
-    <li></li>
+    <li class="empty"></li>
   }
-  @for (int i = 1; i <= Model.DaysInMonth; i++)
+  
+  @for (int day = 1; day <= Model.DaysInMonth; day++)
   {
-    <li>@i<div><button class="btn exam">Eksamen</button></div></li>
+    <li>@day
+        @foreach (Models.Exam exam in Model.ExamButtons)
+        {
+            if (exam.FirstExamDate.Day <= day && exam.LastExamDate.Day >= day)
+            {
+                <div>
+                    <button class="btn exam">@exam.Name</button>
+                </div>
+            }
+        }
+    </li>
   }
 </ul> 
 

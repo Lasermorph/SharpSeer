@@ -1,25 +1,42 @@
+using System.Collections;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+using SharpSeer.Interfaces;
+using SharpSeer.Models;
+using SharpSeer.Services;
 
 namespace MyApp.Namespace
 {
     public class CalendarViewModel : PageModel
     {
+        public List<Exam> ExamButtons { get; set; }
+        [BindProperty]
+        public int ExamButtonIndex { get; set; } = 0;
         public DateTime CurrentTime { get; set; } = DateTime.Now;
+        public DateTime LastDateInMonth { get; set; }
         public int DaysInMonth { get; set; } = 0;
         public int Year { get; set; } = 0;
         public int Month { get; set; } = 0;
         public string MonthStr { get; set; } = "";
         public int FirstDayOfMonth { get; set; } = 0;
         public List<string> WeekNames { get; set; }
+        SharpSeerDbContext context;
 
-        public CalendarViewModel()
+        public CalendarViewModel(IService<Exam> examService, SharpSeerDbContext dbContext)
         {
             DaysInMonth = DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month);
             Year = CurrentTime.Year;
             Month = CurrentTime.Month;
             WeekNames = new List<string>{"Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"};
+            context = dbContext;
+
+            LastDateInMonth = new DateTime(Year, Month, DaysInMonth);
+
+            ExamButtons = context.Exams.Include(e => e.Cohorts)
+                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= CurrentTime).ToList();
         }
         public void OnGet()
         {
