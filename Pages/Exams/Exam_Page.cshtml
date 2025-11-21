@@ -169,7 +169,7 @@
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<form method="post">
+					<form method="post" asp-route-id="@Model.Exam.Id" asp-page-handler="Delete">
 					<button type="submit" class="btn btn-danger">Ja</button>
 					</form>
 					<a href="/Exams/Exam_Page" type="button" class="btn btn-primary">Nej</a>

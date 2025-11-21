@@ -204,7 +204,24 @@ namespace SharpSeer.Pages.Exams
             return RedirectToPage("Exam_Page");
 
         }
-        
+
+        public IActionResult OnPostDelete(int id)
+        {
+            Exam.Id = id;
+            foreach (var cohortId in Cohorts)
+            {
+                var cohort = m_cohortService.GetById(cohortId);
+                Exam.Cohorts.Add(cohort);
+            }
+            foreach (var teacherId in Teachers)
+            {
+                var teacher = m_teacherService.GetById(teacherId);
+                Exam.Teachers.Add(teacher);
+            }
+            m_examService.Delete(Exam);
+            return RedirectToPage("Exam_Page");
+        }
+
         public IActionResult OnPostUpdate(int id)
         {
             Exam.Id = id;
