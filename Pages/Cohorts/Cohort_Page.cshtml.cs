@@ -113,5 +113,23 @@ namespace SharpSeer.Pages.Cohorts
             }
             return RedirectToPage("Cohort_Page");
         }
+
+        public IActionResult OnPostDelete(int id)
+        {
+            Cohort.Id = id;
+            m_service.Delete(Cohort);
+            return RedirectToPage("Cohort_Page");
+        }
+        public IActionResult OnPostUpdate(int id)
+        {
+            Cohort.Id = id;
+            m_service.Update(Cohort);
+            return RedirectToPage("Cohort_Page");
+        }
+        public IActionResult OnPostCreate()
+        {
+            m_service.Create(Cohort);
+            return RedirectToPage("Cohort_Page");
+        }
     }
 }
