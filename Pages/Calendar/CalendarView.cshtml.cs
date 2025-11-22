@@ -3,6 +3,7 @@ using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Identity.Client;
 using SharpSeer.Interfaces;
 using SharpSeer.Models;
@@ -12,42 +13,40 @@ namespace MyApp.Namespace
 {
     public class CalendarViewModel : PageModel
     {
-        public List<Exam> ExamButtons { get; set; }
+        public LinkedList<Exam> ExamButtons { get; set; }
+		public List<Exam> ExamToBeDeleted { get; set; }
         [BindProperty]
         public int ExamButtonIndex { get; set; } = 0;
         public DateTime CurrentTime { get; set; } = DateTime.Now;
         public DateTime LastDateInMonth { get; set; }
+		private DateTime m_selectedDateTime;
         public int DaysInMonth { get; set; } = 0;
         public int Year { get; set; } = 0;
         public int Month { get; set; } = 0;
         public string MonthStr { get; set; } = "";
         public int FirstDayOfMonth { get; set; } = 0;
         public List<string> WeekNames { get; set; }
-        SharpSeerDbContext context;
+        private SharpSeerDbContext m_context;
 
-        public CalendarViewModel(IService<Exam> examService, SharpSeerDbContext dbContext)
+        public CalendarViewModel(SharpSeerDbContext dbContext)
         {
             DaysInMonth = DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month);
             Year = CurrentTime.Year;
             Month = CurrentTime.Month;
             WeekNames = new List<string>{"Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"};
-            context = dbContext;
-
-            LastDateInMonth = new DateTime(Year, Month, DaysInMonth);
-
-            ExamButtons = context.Exams.Include(e => e.Cohorts)
-                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= CurrentTime).ToList();
+            m_context = dbContext;
         }
         public void OnGet()
         {
             MonthStr = GetMonthName(Month);
 
-            DateTime dateTime = new DateTime(CurrentTime.Year, CurrentTime.Month, 1);
-            DayOfWeek dayOfWeek = dateTime.DayOfWeek;
+            m_selectedDateTime = new DateTime(Year, Month, 1);
+            DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
             FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
+			GetDataFromDatabase();
         }
 
-        public void OnPostNextMonth(int month, int year)
+        public async Task OnPostNextMonth(int month, int year)
         {
             Month = month + 1;
             Year = year;
@@ -58,13 +57,14 @@ namespace MyApp.Namespace
             }
 
             DaysInMonth = DateTime.DaysInMonth(Year, Month);
-            DateTime dateTime = new DateTime(Year, Month, 1);
-            DayOfWeek dayOfWeek = dateTime.DayOfWeek;
+            m_selectedDateTime = new DateTime(Year, Month, 1);
+            DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
             FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
             MonthStr = GetMonthName(Month);
+			GetDataFromDatabase();
         }
 
-        public void OnPostPreviousMonth(int month, int year)
+        public async Task OnPostPreviousMonth(int month, int year)
         {
             Month = month - 1;
             Year = year;
@@ -76,12 +76,22 @@ namespace MyApp.Namespace
 
             DaysInMonth = DateTime.DaysInMonth(Year, Month);
 
-            DateTime dateTime = new DateTime(Year, Month, 1);
-            DayOfWeek dayOfWeek = dateTime.DayOfWeek;
+            m_selectedDateTime = new DateTime(Year, Month, 1);
+            DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
             FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
 
             MonthStr = GetMonthName(Month);
+			GetDataFromDatabase();
         }
+
+		public void GetDataFromDatabase()
+		{
+			LastDateInMonth = new DateTime(Year, Month, DaysInMonth);
+			IEnumerable<Exam> buttons = m_context.Exams.Include(e => e.Cohorts)
+                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime).OrderBy(e => e.FirstExamDate);
+			ExamButtons = new LinkedList<Exam>(buttons);
+			ExamToBeDeleted = new List<Exam>(ExamButtons.Count / 4);
+		}
 
         public string GetMonthName(int month)
         {

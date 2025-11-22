@@ -1,6 +1,7 @@
 ﻿@page
 @using Microsoft.VisualBasic
 @using MyApp.Namespace
+@using SharpSeer.Models
 @model MyApp.Namespace.CalendarViewModel
 @{
 }
@@ -153,6 +154,16 @@
     <li>@day
         @foreach (Models.Exam exam in Model.ExamButtons)
         {
+            if(exam.FirstExamDate.Day > day)
+            {
+                break;
+            }
+
+            if (exam.LastExamDate.Day < day)
+            {
+                Model.ExamToBeDeleted.Add(exam);
+            }
+            
             if (exam.FirstExamDate.Day <= day && exam.LastExamDate.Day >= day)
             {
                 <div>
@@ -161,6 +172,14 @@
             }
         }
     </li>
+    foreach (Exam examToBeDeleted in Model.ExamToBeDeleted)
+    {
+        Model.ExamButtons.Remove(examToBeDeleted);
+    }
+    if (Model.ExamToBeDeleted.Count > 0)
+    {
+        Model.ExamToBeDeleted.Clear();
+    }
   }
 </ul> 
 
