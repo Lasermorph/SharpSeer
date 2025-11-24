@@ -248,13 +248,13 @@ namespace SharpSeer.Pages.Exams
 
             if (Cohorts == null || Cohorts.Count == 0)
             {
-                ModelState.AddModelError(nameof(Cohorts), "Vælg mindst ét hold.");
+                ModelState.AddModelError(nameof(Cohorts), "VÃ¦lg mindst Ã©t hold.");
                 ShowCreate = true;
                 return Page();
             }
             if (Teachers == null || Teachers.Count == 0)
             {
-                ModelState.AddModelError(nameof(Teachers), "Vælg mindst én underviser.");
+                ModelState.AddModelError(nameof(Teachers), "VÃ¦lg mindst Ã©n underviser.");
                 ShowCreate = true;
                 return Page();
             }

@@ -1,0 +1,369 @@
+﻿@page
+@using Microsoft.VisualBasic
+@using MyApp.Namespace
+@using SharpSeer.Models
+@model MyApp.Namespace.CalendarViewModel
+@{
+}
+
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        body {
+            font-family: 'franklin gothic medium', sans-serif;
+        }
+
+        .month {
+            padding: 20px 25px;
+            width: 100%;
+            background: #fff387;
+            text-align: center;
+        }
+
+            .month ul {
+                margin: 0;
+                padding: 0;
+            }
+
+                .month ul li {
+                    color: black;
+                    font-size: 25px;
+                    text-transform: uppercase;
+                    letter-spacing: 3px;
+                }
+
+            .month .prev {
+                float: left;
+                padding-top: 10px;
+            }
+
+            .month .next {
+                float: right;
+                padding-top: 10px;
+            }
+
+        .weekdays {
+            margin: 0;
+            padding: 10px 0;
+            background-color: #F4A460;
+        }
+
+            .weekdays li {
+                display: inline-block;
+                width: 13.6%;
+                color: #000000;
+                text-align: center;
+            }
+
+        .days 
+        {
+            padding: 30px 0;
+            background: #fafad2;
+            margin: 10;
+        }
+
+            .days li
+            {
+                list-style-type: none;
+                display: inline-block;
+                width: 13.6%;
+                text-align: center;
+                margin-bottom: 25px;
+                font-size: 12px;
+                color: #777;
+                border-left: 2px solid #FFDEAD;
+                border-top: 2px solid #FFDEAD   ;
+                padding: 10px 0;
+            }
+
+                .days li:nth-child(7n +1)
+                {
+                    border-left: none;
+                }
+
+                .days li:nth-child(-n+7)
+                {
+                    border-top: none;
+                }
+
+                .days li .active {
+                    padding: 20px;
+                    background: #1abc9c;
+                    color: white !important;
+                }
+
+        .exam
+        {
+            background-color: #cd5c5c;
+            font-size: 0.5vw;
+            margin-bottom: 0.2rem;
+        }
+
+        .days li.empty
+        {
+            background-color: transparent;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>CSS Calendar</h1>
+
+<div class="month">
+  <ul>
+    <form method="post" asp-page-handler="PreviousMonth" asp-route-month="@Model.Month" asp-route-year="@Model.Year" asp-route-lastDayOfMonth="@Model.FirstDayOfMonth">
+        <li class="prev">
+            <button type="submit">&#10094;</button>
+        </li>
+    </form>
+    <form method="post" asp-page-handler="NextMonth" asp-route-month="@Model.Month" asp-route-year="@Model.Year" asp-route-lastDayOfMonth="@Model.FirstDayOfMonth">
+        <li class="next">
+        <button type="submit">&#10095;</button>
+        </li>
+    </form>
+    <li>
+      @Model.MonthStr<br>
+      <span style="font-size:40px">@Model.Year</span>
+    </li>
+  </ul>
+</div>
+
+<ul class="weekdays">
+  @foreach (string day in Model.WeekNames)
+  {
+    <li>@day</li>
+  }
+</ul>
+
+<ul class="days">
+  @for (int i = 1; i < Model.FirstDayOfMonth; i++)
+  {
+    <li class="empty"></li>
+  }
+  
+  @for (int day = 1; day <= Model.DaysInMonth; day++)
+  {
+    <li>@day
+        @foreach (Models.Exam exam in Model.ExamButtons)
+        {
+            if(exam.FirstExamDate.Day > day)
+            {
+                break;
+            }
+
+            if (exam.LastExamDate.Day < day)
+            {
+                Model.ExamToBeDeleted.Add(exam);
+            }
+            
+            if (exam.FirstExamDate.Day <= day && exam.LastExamDate.Day >= day)
+            {
+                <form method="post" asp-page-handler="SelectedExam" asp-route-examID="@exam.Id" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+                    <div>
+                        <button type="submit" class="btn exam">@exam.Name</button>
+                    </div>
+                </form>
+            }
+        }
+    </li>
+    foreach (Exam examToBeDeleted in Model.ExamToBeDeleted)
+    {
+        Model.ExamButtons.Remove(examToBeDeleted);
+    }
+    if (Model.ExamToBeDeleted.Count > 0)
+    {
+        Model.ExamToBeDeleted.Clear();
+    }
+  }
+</ul> 
+
+@if (Model.ShowSelected)
+{
+
+}
+
+@if (Model.ShowUpdate)
+{
+	
+	<!-- Modal -->
+	<div style="display: block;" class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Opdater eksamen</h4>
+					<a href="/Calendar/CalendarView" type="button" class="btn btn-close"></a>
+				</div>
+				<!-- Modal body -->
+			
+				<form method="post" asp-page-handler="Update" asp-route-id="@Model.SelectedExam.Id">
+				<div class="modal-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>
+									Oprindelig information
+								</th>
+								<th>
+									Opdateret information
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="col">
+									Navn
+								</th>
+								<td>
+									@Model.SelectedExam.Name
+								</td>
+								<td>
+									<input asp-for="SelectedExam.Name" class="form-control" />
+								</td>
+							</tr>
+							<tr>
+								<th scope="col">
+									Eksamens type
+								</th>
+								<td>
+									@((ExamTypeEnum)Model.SelectedExam.ExamType)
+								</td>
+								<td>
+									<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+									</select>
+								</td>
+								
+							</tr>
+							<tr>
+								<th scope="col">
+									Hold
+								</th>
+								<td scope="col">
+									@((Model.SelectedExam.Cohorts?.Any() ?? false)
+											? string.Join(", ", Model.SelectedExam.Cohorts.Select(c => c.Name)) : "Ingen hold tilknyttet")
+								</td>
+								<td>
+										<div style="height:80px;overflow-y:scroll">
+										@foreach (var cohort in Model.CohortsAll)
+											{
+												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
+												@cohort.Name
+												<br />
+											}
+									</div>
+								</td>
+
+							</tr>
+							<tr>
+								<th scope="col">
+									Underviser(e)
+								</th>
+								<td scope="col">
+									@((Model.SelectedExam.Teachers?.Any() ?? false)
+										? string.Join(", ", Model.SelectedExam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet")
+								</td>
+								<td>
+									@foreach (var teacher in Model.TeachersAll)
+										{
+											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
+											@teacher.Name
+											<br />
+										}
+								</td>
+							</tr>
+							<tr>
+								<th scope="col">
+									Med vagt
+								</th>
+								<td>
+										@(Model.SelectedExam.IsGuarded  ? "Ja" : "Nej")
+                                </td>
+								<td>
+										<select asp-for="IsGuarded" class="form-select">
+											<option value="">Alle</option>
+											<option value="true">Ja</option>
+											<option value="false">Nej</option>
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td>Ekstern censor</td>
+									<td>@(Model.SelectedExam.NeedExternalExaminer ? "Ja" : "Nej")</td>
+									<td>
+										<select asp-for="NeedExternalExaminer" class="form-select">
+											<option value="">Alle</option>
+											<option value="true">Ja</option>
+											<option value="false">Nej</option>
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens start</td>
+									<td>@Model.SelectedExam.FirstExamDate</td>
+									<td>
+										<input asp-for="SelectedExam.FirstExamDate" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens slut</td>
+									<td>@Model.SelectedExam.LastExamDate</td>
+									<td>
+										<input asp-for="SelectedExam.LastExamDate" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Deadline for aflevering</td>
+									<td>@Model.SelectedExam.HandInDeadline</td>
+									<td>
+										<input asp-for="SelectedExam.HandInDeadline" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens varighed (minutter)</td>
+									<td>@Model.SelectedExam.DurationInMinutes</td>
+									<td>
+										<input asp-for="SelectedExam.DurationInMinutes" class="form-control" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					
+					<button type="submit" class="btn btn-primary">Opdater</button>
+					<a href="/Calendar/CalendarView" type="button" class="btn btn-danger">Annuller</a>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+}
+
+
+
+@section Scripts 
+{
+	<script>
+		$(document).ready(function () {
+			$("#myModal").modal({backdrop: "static"});
+			$("#myModal").modal("show");
+		});)
+	</script>	
+}
+
+</body>
