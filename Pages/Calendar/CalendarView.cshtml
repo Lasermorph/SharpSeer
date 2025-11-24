@@ -166,9 +166,11 @@
             
             if (exam.FirstExamDate.Day <= day && exam.LastExamDate.Day >= day)
             {
-                <div>
-                    <button class="btn exam">@exam.Name</button>
-                </div>
+                <form method="post" asp-page-handler="SelectedExam" asp-route-examID="@exam.Id" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+                    <div>
+                        <button type="submit" class="btn exam">@exam.Name</button>
+                    </div>
+                </form>
             }
         }
     </li>
@@ -182,5 +184,186 @@
     }
   }
 </ul> 
+
+@if (Model.ShowSelected)
+{
+
+}
+
+@if (Model.ShowUpdate)
+{
+	
+	<!-- Modal -->
+	<div style="display: block;" class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Opdater eksamen</h4>
+					<a href="/Calendar/CalendarView" type="button" class="btn btn-close"></a>
+				</div>
+				<!-- Modal body -->
+			
+				<form method="post" asp-page-handler="Update" asp-route-id="@Model.SelectedExam.Id">
+				<div class="modal-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>
+									Oprindelig information
+								</th>
+								<th>
+									Opdateret information
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="col">
+									Navn
+								</th>
+								<td>
+									@Model.SelectedExam.Name
+								</td>
+								<td>
+									<input asp-for="SelectedExam.Name" class="form-control" />
+								</td>
+							</tr>
+							<tr>
+								<th scope="col">
+									Eksamens type
+								</th>
+								<td>
+									@((ExamTypeEnum)Model.SelectedExam.ExamType)
+								</td>
+								<td>
+									<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+									</select>
+								</td>
+								
+							</tr>
+							<tr>
+								<th scope="col">
+									Hold
+								</th>
+								<td scope="col">
+									@((Model.SelectedExam.Cohorts?.Any() ?? false)
+											? string.Join(", ", Model.SelectedExam.Cohorts.Select(c => c.Name)) : "Ingen hold tilknyttet")
+								</td>
+								<td>
+										<div style="height:80px;overflow-y:scroll">
+										@foreach (var cohort in Model.CohortsAll)
+											{
+												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
+												@cohort.Name
+												<br />
+											}
+									</div>
+								</td>
+
+							</tr>
+							<tr>
+								<th scope="col">
+									Underviser(e)
+								</th>
+								<td scope="col">
+									@((Model.SelectedExam.Teachers?.Any() ?? false)
+										? string.Join(", ", Model.SelectedExam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet")
+								</td>
+								<td>
+									@foreach (var teacher in Model.TeachersAll)
+										{
+											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
+											@teacher.Name
+											<br />
+										}
+								</td>
+							</tr>
+							<tr>
+								<th scope="col">
+									Med vagt
+								</th>
+								<td>
+										@(Model.SelectedExam.IsGuarded  ? "Ja" : "Nej")
+                                </td>
+								<td>
+										<select asp-for="IsGuarded" class="form-select">
+											<option value="">Alle</option>
+											<option value="true">Ja</option>
+											<option value="false">Nej</option>
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td>Ekstern censor</td>
+									<td>@(Model.SelectedExam.NeedExternalExaminer ? "Ja" : "Nej")</td>
+									<td>
+										<select asp-for="NeedExternalExaminer" class="form-select">
+											<option value="">Alle</option>
+											<option value="true">Ja</option>
+											<option value="false">Nej</option>
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens start</td>
+									<td>@Model.SelectedExam.FirstExamDate</td>
+									<td>
+										<input asp-for="SelectedExam.FirstExamDate" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens slut</td>
+									<td>@Model.SelectedExam.LastExamDate</td>
+									<td>
+										<input asp-for="SelectedExam.LastExamDate" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Deadline for aflevering</td>
+									<td>@Model.SelectedExam.HandInDeadline</td>
+									<td>
+										<input asp-for="SelectedExam.HandInDeadline" class="form-control" />
+									</td>
+								</tr>
+
+								<tr>
+									<td>Eksamens varighed (minutter)</td>
+									<td>@Model.SelectedExam.DurationInMinutes</td>
+									<td>
+										<input asp-for="SelectedExam.DurationInMinutes" class="form-control" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					
+					<button type="submit" class="btn btn-primary">Opdater</button>
+					<a href="/Calendar/CalendarView" type="button" class="btn btn-danger">Annuller</a>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+}
+
+
+
+@section Scripts 
+{
+	<script>
+		$(document).ready(function () {
+			$("#myModal").modal({backdrop: "static"});
+			$("#myModal").modal("show");
+		});)
+	</script>	
+}
 
 </body>

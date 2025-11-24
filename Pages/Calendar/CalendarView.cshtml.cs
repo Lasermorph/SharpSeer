@@ -8,6 +8,7 @@ using Microsoft.Identity.Client;
 using SharpSeer.Interfaces;
 using SharpSeer.Models;
 using SharpSeer.Services;
+using System.IO;
 
 namespace MyApp.Namespace
 {
@@ -26,15 +27,37 @@ namespace MyApp.Namespace
         public string MonthStr { get; set; } = "";
         public int FirstDayOfMonth { get; set; } = 0;
         public List<string> WeekNames { get; set; }
+        public string UpdateModal { get; set; } = "";
+        public Exam SelectedExam { get; set; } = new Exam();
+        public ExamTypeEnum ExamType { get; set; }
+        public bool ShowUpdate { get; set; } = false;
+        public bool ShowSelected { get; set; } = false;
         private SharpSeerDbContext m_context;
+        public IEnumerable<Cohort> CohortsAll { get; set; }
+        public IEnumerable<Teacher> TeachersAll { get; set; }
+        public bool IsGuarded { get; set; } = true;
+        public bool NeedExternalExaminer { get; set; } = true;
+        private IService<Exam> m_service;
+        private IService<Teacher> m_teacherService;
+        private IService<Cohort> m_cohortService;
 
-        public CalendarViewModel(SharpSeerDbContext dbContext)
+        public CalendarViewModel(SharpSeerDbContext dbContext, IService<Exam> service, IService<Cohort> cohortService, IService<Teacher> teacherService)
         {
+            m_service = service;
             DaysInMonth = DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month);
             Year = CurrentTime.Year;
             Month = CurrentTime.Month;
             WeekNames = new List<string>{"Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"};
             m_context = dbContext;
+            using (StreamReader sr = new StreamReader("./UpdateModalExam.html"))
+            {
+                while (sr.ReadLine() != null)
+                {
+                    UpdateModal += sr.ReadLine();
+                }
+            }
+            m_cohortService = cohortService;
+            m_teacherService = teacherService;
         }
         public void OnGet()
         {
@@ -88,10 +111,31 @@ namespace MyApp.Namespace
 		{
 			LastDateInMonth = new DateTime(Year, Month, DaysInMonth);
 			IEnumerable<Exam> buttons = m_context.Exams.Include(e => e.Cohorts)
-                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime).OrderBy(e => e.FirstExamDate);
+                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime)
+                .OrderBy(e => e.FirstExamDate);
 			ExamButtons = new LinkedList<Exam>(buttons);
-			ExamToBeDeleted = new List<Exam>(ExamButtons.Count / 4);
+			ExamToBeDeleted = new List<Exam>(3);
 		}
+
+        public void OnPostSelectedExam(int examID, int month, int year)
+        {
+            Year = year;
+            Month = month;
+            DaysInMonth = DateTime.DaysInMonth(Year, Month);
+
+            m_selectedDateTime = new DateTime(Year, Month, 1);
+            DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
+            FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
+
+            MonthStr = GetMonthName(Month);
+
+            SelectedExam = m_service.GetById(examID);
+            ExamType = (ExamTypeEnum)SelectedExam.ExamType;
+            CohortsAll = m_cohortService.GetAll();
+            TeachersAll = m_teacherService.GetAll();
+            ShowUpdate = true;
+            GetDataFromDatabase();
+        }
 
         public string GetMonthName(int month)
         {
