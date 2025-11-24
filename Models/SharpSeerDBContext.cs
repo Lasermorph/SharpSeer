@@ -56,12 +56,10 @@ public partial class SharpSeerDbContext : DbContext
                     "ExamCohort",
                     r => r.HasOne<Cohort>().WithMany()
                         .HasForeignKey("CohortId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamCohor__Cohor__44FF419A"),
+                        .HasConstraintName("FK__ExamCohor__CohortID"),
                     l => l.HasOne<Exam>().WithMany()
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamCohor__ExamI__440B1D61"),
+                        .HasConstraintName("FK__ExamCohor__ExamID"),
                     j =>
                     {
                         j.HasKey("ExamId", "CohortId").HasName("PK__ExamCoho__CDD7092843B24DBB");
@@ -75,12 +73,10 @@ public partial class SharpSeerDbContext : DbContext
                     "ExamTeacher",
                     r => r.HasOne<Teacher>().WithMany()
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamTeach__Teach__412EB0B6"),
+                        .HasConstraintName("FK__ExamTeach__TeacherID"),
                     l => l.HasOne<Exam>().WithMany()
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ExamTeach__ExamI__403A8C7D"),
+                        .HasConstraintName("FK__ExamTeach__ExamID"),
                     j =>
                     {
                         j.HasKey("ExamId", "TeacherId").HasName("PK__ExamTeac__77AA0433C824FF4E");
@@ -102,6 +98,7 @@ public partial class SharpSeerDbContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.IsExternal).HasDefaultValue(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);

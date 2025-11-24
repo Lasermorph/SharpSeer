@@ -62,6 +62,8 @@ namespace SharpSeer.Services
             { 
                 throw new NotImplementedException(); 
             }
+            entity.NameId = teacher.NameId;
+            entity.IsExternal = teacher.IsExternal;
             entity.Name = teacher.Name;
             entity.Email = teacher.Email;
             entity.PhoneNumber = teacher.PhoneNumber;

@@ -15,5 +15,7 @@ public partial class Teacher
 
     public string NameId { get; set; } = null!;
 
+    public bool? IsExternal { get; set; }
+
     public virtual ICollection<Exam> Exams { get; set; } = new List<Exam>();
 }

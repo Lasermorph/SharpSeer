@@ -51,7 +51,7 @@ namespace SharpSeer.Services
         {
             return context.Exams.Include(e => e.Cohorts)
                 .Include(e => e.Teachers)
-                .FirstOrDefault(e => e.Id == id); ;
+                .FirstOrDefault(e => e.Id == id);
         }
 
         //public ICollection<Cohort> GetReferenceObj() 
@@ -66,7 +66,7 @@ namespace SharpSeer.Services
             var entity = context.Exams
                 .Include(e => e.Cohorts)
                 .Include(e => e.Teachers)
-                .FirstOrDefault(e => e.Id == exam.Id); ;
+                .FirstOrDefault(e => e.Id == exam.Id);
             if (entity == null)
             {
                 throw new NotImplementedException();
@@ -74,6 +74,7 @@ namespace SharpSeer.Services
             // Update scalar/owned properties
             context.Entry(entity).CurrentValues.SetValues(exam);
             // Update Cohorts
+            entity.Cohorts.Clear();
             if (exam.Cohorts != null)
             {
                 foreach (var cohort in exam.Cohorts)

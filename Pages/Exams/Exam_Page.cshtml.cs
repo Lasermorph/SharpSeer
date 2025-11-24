@@ -62,7 +62,6 @@ namespace SharpSeer.Pages.Exams
             CohortsAll = m_cohortService.GetAll();
             TeachersAll = m_teacherService.GetAll();
             Exam = new Exam();
-            Cohorts = new List<int>();
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GetQueryValues(in string q) 
@@ -160,7 +159,14 @@ namespace SharpSeer.Pages.Exams
                 }
             }
             EndOfLoop:;
-            
+
+            // If updating, populate bound id lists so checkboxes render checked
+            if (ShowUpdate && Exam != null)
+            {
+                Cohorts = Exam.Cohorts?.Select(c => c.Id).ToList() ?? new List<int>();
+                Teachers = Exam.Teachers?.Select(t => t.Id).ToList() ?? new List<int>();
+            }
+
         }
 
         public IActionResult OnPost()
@@ -198,7 +204,24 @@ namespace SharpSeer.Pages.Exams
             return RedirectToPage("Exam_Page");
 
         }
-        
+
+        public IActionResult OnPostDelete(int id)
+        {
+            Exam.Id = id;
+            foreach (var cohortId in Cohorts)
+            {
+                var cohort = m_cohortService.GetById(cohortId);
+                Exam.Cohorts.Add(cohort);
+            }
+            foreach (var teacherId in Teachers)
+            {
+                var teacher = m_teacherService.GetById(teacherId);
+                Exam.Teachers.Add(teacher);
+            }
+            m_examService.Delete(Exam);
+            return RedirectToPage("Exam_Page");
+        }
+
         public IActionResult OnPostUpdate(int id)
         {
             Exam.Id = id;
@@ -220,13 +243,33 @@ namespace SharpSeer.Pages.Exams
         public IActionResult OnPostCreate()
         {
 
+            CohortsAll = m_cohortService.GetAll();
+            TeachersAll = m_teacherService.GetAll();
+
+            if (Cohorts == null || Cohorts.Count == 0)
+            {
+                ModelState.AddModelError(nameof(Cohorts), "Vælg mindst ét hold.");
+                ShowCreate = true;
+                return Page();
+            }
+            if (Teachers == null || Teachers.Count == 0)
+            {
+                ModelState.AddModelError(nameof(Teachers), "Vælg mindst én underviser.");
+                ShowCreate = true;
+                return Page();
+            }
             Exam.ExamType = (int)ExamType;
             foreach (var cohortId in Cohorts)
             {
                 var cohort = m_cohortService.GetById(cohortId);
                 Exam.Cohorts.Add(cohort);
             }
-                
+            foreach (var teacherId in Teachers)
+            {
+                var teacher = m_teacherService.GetById(teacherId);
+                Exam.Teachers.Add(teacher);
+            }
+
             m_examService.Create(Exam);
             return RedirectToPage("Exam_Page");
         }

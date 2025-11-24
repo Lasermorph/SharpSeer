@@ -158,7 +158,7 @@
 {
 
 	<!-- Modal -->
-	<div style="display: block;" class="modal" id="myModal">
+		<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<!-- Modal Header -->
@@ -172,7 +172,7 @@
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<form method="post">
+					<form method="post" asp-route-id="@Model.Exam.Id" asp-page-handler="Delete">
 					<button type="submit" class="btn btn-danger">Ja</button>
 					</form>
 					<a href="/Exams/Exam_Page" type="button" class="btn btn-primary">Nej</a>
@@ -185,7 +185,7 @@
 {
 	
 	<!-- Modal -->
-	<div style="display: block;" class="modal modal-lg" id="myModal">
+	<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<!-- Modal Header -->
@@ -203,7 +203,7 @@
 										Navn
 									</th>
 									<td>
-										<input asp-for="Exam.Name" class="form-control" />
+										<input asp-for="Exam.Name" class="form-control" required />
 									</td>
 								</tr>
 								<tr>
@@ -211,8 +211,8 @@
 										Eksamens type
 									</th>
 									<td>
+										<label>Vælg type</label>
 										<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
-											<option value="">Vælg type</option>
 										</select>
 									</td>
 								</tr>
@@ -221,14 +221,15 @@
 										Hold
 									</th>
 									<td>
-										<div style="height:80px;overflow-y:scroll">
+										<div style="height:80px;overflow-y:scroll" >
 											@foreach (var cohort in Model.CohortsAll)
 											{
-												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
+													<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" @(Model.Cohorts != null && Model.Cohorts.Contains(cohort.Id) ? "checked" : "") />
 												@cohort.Name
 												<br />
 											}
 										</div>
+                                            <span asp-validation-for="Cohorts" class="text-danger"></span>
 									</td>
 									
 								</tr>
@@ -242,11 +243,13 @@
 											
 											@foreach (var teacher in Model.TeachersAll)
 											{
-												<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
+													<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" @(Model.Teachers != null && Model.Teachers.Contains(teacher.Id) ? "checked" : "") />
 												@teacher.Name
 												<br />
 											}
 										</div>
+										<span asp-validation-for="Teachers" class="text-danger"></span>
+
 									</td>
 								</tr>
 
@@ -256,7 +259,7 @@
 									</th>
 									<td>
 										<select asp-for="IsGuarded" class="form-select">
-											<option value="">Alle</option>
+											<option value="">Alle</option>	
 											<option value="true">Ja</option>
 											<option value="false">Nej</option>
 										</select>
@@ -279,7 +282,7 @@
 										Eksamens start
 									</th>
 									<td>
-										<input asp-for="Exam.FirstExamDate" class="form-control" />
+											<input asp-for="Exam.FirstExamDate" class="form-control"/>
 									</td>
 								</tr>
 								<tr>
@@ -287,7 +290,7 @@
 										Eksamens Slut
 									</th>
 									<td>
-										<input asp-for="Exam.LastExamDate" class="form-control" />
+											<input asp-for="Exam.LastExamDate" class="form-control"/>
 									</td>
 								</tr>
 								<tr>
@@ -303,7 +306,7 @@
 										Eksmaens varighed
 									</th>
 									<td>
-										<input asp-for="Exam.DurationInMinutes" class="form-control" />
+											<input asp-for="Exam.DurationInMinutes" class="form-control" required />
 									</td>
                                 </tr>
                             </tbody>
@@ -386,7 +389,7 @@
 										<div style="height:80px;overflow-y:scroll">
 										@foreach (var cohort in Model.CohortsAll)
 											{
-												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
+													<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" @(Model.Cohorts != null && Model.Cohorts.Contains(cohort.Id) ? "checked" : "") />
 												@cohort.Name
 												<br />
 											}
@@ -405,7 +408,7 @@
 								<td>
 									@foreach (var teacher in Model.TeachersAll)
 										{
-											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
+												<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" @(Model.Teachers != null && Model.Teachers.Contains(teacher.Id) ? "checked" : "") />
 											@teacher.Name
 											<br />
 										}

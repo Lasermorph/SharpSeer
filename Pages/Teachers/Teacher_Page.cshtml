@@ -24,6 +24,13 @@
 				<input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Telefon nummer" />
 			</th>
 			<th scope="col">
+				<select asp-for="IsExternal" class="form-select">
+					<option value="">Alle</option>
+					<option value="true">Ja</option>
+					<option value="false">Nej</option>
+				</select>
+			</th>
+			<th scope="col">
 				<button type="submit" class="btn btn-primary">Søg</button>
 			</th>
 		</tr>
@@ -44,6 +51,9 @@
 				</td>
 				<td>
 					@teacher.PhoneNumber
+				</td>
+				<td>
+					@(teacher.IsExternal == true ? "Ja" : teacher.IsExternal == false ? "Nej" : "")
 				</td>
 				<td style="display: inline-block;">
 					<form method="get">
@@ -113,7 +123,7 @@
 										Navn
 									</th>
 									<td>
-										<input asp-for="Teacher.Name" class="form-control" />
+										<input asp-for="Teacher.Name" class="form-control" required />
 									</td>
 								</tr>
 								<tr>
@@ -121,7 +131,7 @@
 										Navne kode
 									</th>
 									<td>
-										<input asp-for="Teacher.NameId" class="form-control" />
+										<input asp-for="Teacher.NameId" class="form-control" required />
 									</td>
 								</tr>
 								<tr>
@@ -129,7 +139,7 @@
 										E-Mail
 									</th>
 									<td>
-										<input asp-for="Teacher.Email" class="form-control" />
+										<input asp-for="Teacher.Email" class="form-control" required />
 									</td>
 								</tr>
 								<tr>
@@ -137,7 +147,17 @@
 										Telefon nummer
 									</th>
 									<td>
-										<input asp-for="Teacher.PhoneNumber" class="form-control" />
+										<input asp-for="Teacher.PhoneNumber" class="form-control" required />
+									</td>
+								<tr>
+									<th scope="col">
+										Extern censor
+									</th>
+									<td>
+										<select asp-for="Teacher.IsExternal" class="form-select">
+											<option value="false">Nej</option>
+											<option value="true">Ja</option>
+										</select>
 									</td>
 								</tr>
 							</tbody>
@@ -186,7 +206,7 @@
 									<td>
 										<input asp-for="Teacher.NameId" class="form-control" />
 									</td>
-								</tr>
+								</tr>	
 								<tr>
 									<th scope="col">
 										E-Mail
@@ -201,6 +221,17 @@
 									</th>
 									<td>
 										<input asp-for="Teacher.PhoneNumber" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<th scope="col">
+										Extern censor
+									</th>
+									<td>
+										<select asp-for="Teacher.IsExternal" class="form-select">
+											<option value="false">Nej</option>
+											<option value="true">Ja</option>
+										</select>
 									</td>
 								</tr>
 							</tbody>
