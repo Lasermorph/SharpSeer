@@ -29,7 +29,7 @@ namespace MyApp.Namespace
         public List<string> WeekNames { get; set; }
         public string UpdateModal { get; set; } = "";
         public Exam SelectedExam { get; set; } = new Exam();
-        public ExamTypeEnum ExamType { get; set; }
+        public Exam.ExamTypeEnum ExamType { get; set; }
         public bool ShowUpdate { get; set; } = false;
         public bool ShowSelected { get; set; } = false;
         private SharpSeerDbContext m_context;
@@ -49,13 +49,6 @@ namespace MyApp.Namespace
             Month = CurrentTime.Month;
             WeekNames = new List<string>{"Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"};
             m_context = dbContext;
-            using (StreamReader sr = new StreamReader("./UpdateModalExam.html"))
-            {
-                while (sr.ReadLine() != null)
-                {
-                    UpdateModal += sr.ReadLine();
-                }
-            }
             m_cohortService = cohortService;
             m_teacherService = teacherService;
         }
@@ -130,7 +123,7 @@ namespace MyApp.Namespace
             MonthStr = GetMonthName(Month);
 
             SelectedExam = m_service.GetById(examID);
-            ExamType = (ExamTypeEnum)SelectedExam.ExamType;
+            ExamType = (Exam.ExamTypeEnum)SelectedExam.ExamType;
             CohortsAll = m_cohortService.GetAll();
             TeachersAll = m_teacherService.GetAll();
             ShowUpdate = true;
