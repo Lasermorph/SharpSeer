@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using SharpSeer.Interfaces;
 using SharpSeer.Models;
 using SharpSeer.Pages.Exams;
@@ -106,6 +107,18 @@ namespace SharpSeer.Services
         public void Update(Exam t, int id)
         {
             throw new NotImplementedException();
+        }
+    }
+    public static class Extensions
+    {
+        public static string GetDisplayName(this Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+
+            var attribute = field.GetCustomAttributes(typeof(DisplayAttribute), false)
+                                 .FirstOrDefault() as DisplayAttribute;
+
+            return attribute?.Name ?? value.ToString();
         }
     }
 }
