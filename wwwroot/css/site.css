@@ -21,22 +21,32 @@ html
   position: relative;
   min-height: 100%;
 }
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+
+col {
+    width: auto;
+    background-color: aqua;
+}
 
 body 
 {
   margin-bottom: 60px;
+  font-family: 'Franklin Gothic Medium', sans-serif;
+}
+footer {
+    text-align: center;
+    background-color: #305030;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder 
-{
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder 
-{
-  text-align: start;
-}
 
 .modal
 {
@@ -51,13 +61,12 @@ body
   overflow: hidden;
 }
 
-.home-background 
-{
-    background-image: url('/Images/SharpSeerHomePage.png');
+.home-background {
+    background-image: url('/Images/greenfrontpage.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left;
-    background-color: #fffce7;
+    background-color: #dfecdf;
 }
 .home 
 {
@@ -80,54 +89,57 @@ body
         line-height: 1.6;
         margin-bottom: 15px;
     }
-.background
-{
-    background-color: white;
+.background {
+    background-color: #dfecdf;
 }
-
-table {
+.costum-navbar {
+    background-color: #000000;
+    front-family: 'Franklin Gothic Medium', sans-serif !important;
+}
+.table-search,
+.table-showup {
+    width: 100%;
+    border-radius: 8px;
     border-collapse: collapse;
-    box-shadow: 0 5px 10px #e1e5ee;
+    box-shadow: 0 5px 10px #8fbc8f;
     text-align: left;
     overflow: hidden;
+    margin-top: 1rem;
+}
+
+
+.table-search {
+    margin-bottom: 2rem;
+}
+
     
-}
-thead{
-    box-shadow: 0 5px 10px #e1e5ee; 
-}
-th {
-    padding: 1rem 2rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1rem;
-    front-size: 0.85rem;
-    front weight: 900;
-}
-td {
-    padding: 1rem 2rem;
-}
-col 
-{
-    width: auto;
-    background-color:aqua;
-}
-    .table tbody tr:hover td 
-    {
-    background-color: #e5dede !important;
+    .table-search thead th,
+    .table-showup thead th {
+        background-color: #305030;
+        color: #ffffff;
     }
 
-.table tr:nth-child(even)
-{
-    background-color: #e8e8e8;
+
+..table-showup tbody tr:nth-child(odd) td {
+    background-color: #afcfaf !important;
 }
 
-td 
-{
-    background-color: transparent !important;
+.table-showup tbody tr:nth-child(even) td {
+    background-color: #8fbc8f !important;
+    .calender-btn {
+    background-color: #4d804d;
+    color: white;
+    border: none;
 }
-th {
-    background-color: transparent !important;
+.login-btn {
+    background-color: #4d804d;
+    color: white;
+    border: none;
 }
-  
+.btn-search {
+    background-color: #CCCCFF;
+
+}
 
 
 

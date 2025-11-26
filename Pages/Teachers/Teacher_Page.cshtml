@@ -7,72 +7,59 @@
 
 <a class="btn btn-primary" href="/Teachers/Teacher_Page/?Create=0">Tilføj</a>
 
-<table class="table">
-	<form>
+
+<form method="get" class="search-form">
+	<table class="table table-search">
+		<thead>
+			<tr>
+				<th><input type="text" class="form-control" asp-for="Name" placeholder="Navn" /></th>
+				<th><input type="text" class="form-control" asp-for="NameId" placeholder="Initialer" /></th>
+				<th><input type="text" class="form-control" asp-for="Email" placeholder="E-mail" /></th>
+				<th><input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Telefon nummer" /></th>
+				<th>
+					<select asp-for="IsExternal" class="form-select">
+						<option value="">Alle</option>
+						<option value="true">Ja</option>
+						<option value="false">Nej</option>
+					</select>
+				</th>
+				<th>
+					<button type="submit" class="btn btn-primary">Søg</button>
+				</th>
+			</tr>
+		</thead>
+	</table>
+</form>
+
+
+<table class="table table-showup">
 	<thead>
 		<tr>
-			<th scope="col">
-				<input type="text" class="form-control" asp-for="Name" placeholder="Navn" />
-			</th>
-			<th scope="col">
-				<input type="text" class="form-control" asp-for="NameId" placeholder="Navne kode" />
-			</th>
-			<th scope="col">
-				<input type="text" class="form-control" asp-for="Email" placeholder="E-mail" />
-			</th>
-			<th scope="col">
-				<input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Telefon nummer" />
-			</th>
-			<th scope="col">
-				<select asp-for="IsExternal" class="form-select">
-					<option value="">Alle</option>
-					<option value="true">Ja</option>
-					<option value="false">Nej</option>
-				</select>
-			</th>
-			<th scope="col">
-				<button type="submit" class="btn btn-primary">Søg</button>
-			</th>
+			<th>Navn</th>
+			<th>Initialer</th>
+			<th>E-mail</th>
+			<th>Telefon nummer</th>
+			<th>Er censor?</th>
+			  <th></th>
+			  <th></th>
 		</tr>
 	</thead>
-	</form>
 	<tbody>
 		@foreach (var teacher in Model.Teachers)
 		{
 			<tr>
-				<td>
-					@teacher.Name
-				</td>
-				<td>
-					@teacher.NameId
-				</td>
-				<td>
-					@teacher.Email
-				</td>
-				<td>
-					@teacher.PhoneNumber
-				</td>
-				<td>
-					@(teacher.IsExternal == true ? "Ja" : teacher.IsExternal == false ? "Nej" : "")
-				</td>
-				<td style="display: inline-block;">
-					<form method="get">
-						<a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary" type="submit">
-							Opdater
-						</a>
-					</form>
-				</td>
-				<td style="display: inline-block;">
-					<form method="get">
-						<a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger" type="submit">
-							Slet
-						</a>
-					</form>
-				</td>
+				<td>@teacher.Name</td>
+				<td>@teacher.NameId</td>
+				<td>@teacher.Email</td>
+				<td>@teacher.PhoneNumber</td>
+				<td>@(teacher.IsExternal == true ? "Ja" : teacher.IsExternal == false ? "Nej" : "")</td>
+				<td><a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary">Opdater</a></td>
+				<td><a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger">Slet</a></td>
 			</tr>
 		}
 	</tbody>
 </table>
+
 
 @if (Model.ShowDelete)
 {

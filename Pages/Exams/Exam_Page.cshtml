@@ -8,149 +8,108 @@
 
 <body class="background"></body>
 <body class="@((Model.SetOverflow) ? "noScroll": "")">
-<a class="btn btn-primary" href="/Exams/Exam_Page/?Create=0">Tilføj</a>
-<table class="table">
-	<form method="get">
-	<thead>
-		<tr>
-			<th scope="col">
-				<input type="text" class="form-control" asp-for="Name" placeholder="Navn" />
-			</th>
-			<th scope="col">
-				<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
-					<option value="">Alle</option>
-				</select>
-				@* <input type="int" class="form-control" asp-for="ExamType" placeholder="Eksamens type" /> *@
-			</th>
-			<th scope="col">
-				<select asp-for="IsGuarded" class="form-select">
-					<option value="">Alle</option>
-					<option value="true">Ja</option>
-					<option value="false">Nej</option>
-				</select>
-				@* <input type="checkbox" asp-for="IsGuarded" placeholder="Eksamens vagt" /> *@
-			</th>
-			<th scope="col">
-				<select asp-for="NeedExternalExaminer" class="form-select"> 
-					<option value="">Alle</option>
-					<option value="true">Ja</option>
-					<option value="false">Nej</option>
-				</select>
-				@* <input type="checkbox" asp-for="NeedExternalExaminer" placeholder="Udenfra kommende censor" /> *@
-			</th>
-			<th scope="col">
-				<input type="datetime" class="form-control" asp-for="FirstExamDate" placeholder="Første eksamens dag" />
-			</th>
-			<th scope="col">
-				<input type="datetime" class="form-control" asp-for="LastExamDate" placeholder="Sidste eksamens dag" />
-			</th>
-			<th scope="col">
-				<input type="datetime" class="form-control" asp-for="HandInDeadline" placeholder="Deadline for aflevering, hvis skriftlig" />
-			</th>
-			<th scope="col">
-				<input type="number" min="0" class="form-control" asp-for="DurationInMinutes" placeholder="Eksamens varighed" />
-			</th>
-			<th scope="col">
-				<button type="submit" class="btn btn-primary">Søg</button>
-			</th>
-		</tr>
-	</thead>
-	</form>
-	<thead>
-		<tr>
-			<th scope="col" >
-				Navn
-			</th>
-			<th scope="col">
-				Eksamens type
-			</th>
-			<th scope="col">
-				Hold
-			</th>
-			<th scope="col">
-				Underviser(e)
-			</th>
-			<th scope="col">
-				Med vagt
-			</th>
-			<th scope="col">
-				Ekstern censor
-			</th>
-			<th scope="col">
-				Eksamens start
-			</th>
-			<th scope="col">
-				Eksamens Slut
-			</th>
-			<th scope="col">
-				Deadline for aflevering
-			</th>
-			<th scope="col">
-				Eksmaens varighed
-			</th>
-			<th scope="col">
-				
-			</th>
-			
-		</tr>
-	</thead>
-	
-	<tbody>
-	@foreach (var exam in Model.Exams)
-	{
-		<tr>
-			<td>
-				@exam.Name
-			</td>
-			<td>
-				@((ExamTypeEnum)exam.ExamType)
-			</td>
-			<td scope="col">
-				@((exam.Cohorts?.Any() ?? false)
-				? string.Join(", ", exam.Cohorts.Select(c => c.Name)) : "Ingen hold tilknyttet")
-			</td>
-			<td scope="col">
-				@((exam.Teachers?.Any() ?? false)
-				? string.Join(", ", exam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet")
-			</td>
-			<td>
-				@(exam.IsGuarded ? "Ja" : "Nej")
-			</td>
-			<td>
-				@(exam.NeedExternalExaminer ? "Ja" : "Nej")
-			</td>
-			<td>
-				@exam.FirstExamDate
-			</td>
-			<td>
-				@exam.LastExamDate
-			</td>
-			<td>
-				@exam.HandInDeadline
-			</td>
-			<td>
-				@exam.DurationInMinutes minutter
-			</td>
-			<td>
-				<form method="get">
-					<a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" style="float: left;" type="submit">
-						Opdater
-					</a>
-				</form>
-			</td>
-			<td>
-				<form method="get">
-				<a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit">
-					Slet
-				</a>
-				</form>
-			</td>
 
-		</tr>
-	}
-	</tbody>
-		
-</table>
+
+<a class="btn btn-primary" href="/Exams/Exam_Page/?Create=0">Tilføj</a>
+
+	<form method="get" class="search-form">
+		<table class="table table-search">
+			<thead>
+				<tr>
+		        	<th><input type="text" class="form-control" asp-for="Name" placeholder="Navn" /></th>
+					<th>
+						<select asp-for="ExamType"
+								asp-items="Html.GetEnumSelectList<ExamTypeEnum>()"
+								class="form-select">
+							<option value="">Eksamens type</option>
+						</select>
+					</th>
+
+					<th>
+						<select name="teachers" id="teacher" class="form-select">
+							<option value="">Navn på underviseren</option>
+							@foreach (var teacher in Model.TeachersAll)
+							{
+								<option value="@teacher.Id">@teacher.Name</option>
+							}
+						</select>
+					</th>
+				<th>
+						<select name="cohorts" id="cohort"class="form-select">
+						<option value="">Navn på hold</option>
+						@foreach (var cohort in Model.CohortsAll)
+						{
+							<option value="@cohort.Id">@cohort.Name</option>
+						}
+			        	</select>
+				</th>
+
+				<th>
+					<th>
+						<select asp-for="IsGuarded" class="form-select">
+							<option value="">Alle</option>
+							<option value="true">Ja</option>
+							<option value="false">Nej</option>
+						</select>
+					</th>
+
+					<th>
+						<select asp-for="NeedExternalExaminer" class="form-select">
+							<option value="">Alle</option>
+							<option value="true">Ja</option>
+							<option value="false">Nej</option>
+						</select>
+					</th>
+
+			<th><input type="datetime" class="form-control" asp-for="FirstExamDate" placeholder="Første eksamens dag" /></th>
+			<th><input type="datetime" class="form-control" asp-for="LastExamDate" placeholder="Sidste eksamens dag" /></th>
+			<th><input type="datetime" class="form-control" asp-for="HandInDeadline" placeholder="Deadline for aflevering, hvis skriftlig" /></th>
+			<th><input type="number" min="0" class="form-control" asp-for="DurationInMinutes" placeholder="Eksamens varighed" /></th>
+			<th>
+				<button type="submit" class="btn btn-search">Søg</button>
+					</th>
+				</tr>
+			</thead>
+		</table>
+	</form>
+
+	<table class="table table-showup">
+		<thead>
+			<tr>
+				<th>Navn</th>
+				<th>Eksamens Type</th>
+				<th>Hold</th>
+				<th>Underviser(e)</th>
+				<th>Med vagt?</th>
+				<th>Ekstern Censor?</th>
+				<th>Eksamens Start</th>
+				<th>Eksamens Slut</th>
+				<th>Deadline for aflevering</th>
+				<th>Eksmaens varighed</th>
+				<th></th>
+			    <th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var exam in Model.Exams)
+			{
+				<tr> 
+					<td> 
+						@exam.Name </td>
+						<td> 
+							@((ExamTypeEnum)exam.ExamType) 
+						</td>
+							<td scope="col"> @((exam.Cohorts?.Any() ?? false) ? string.Join(", ", exam.Cohorts.Select(c => c.Name)) : "Ingen hold tilknyttet") </td>
+							<td scope="col"> @((exam.Teachers?.Any() ?? false) ? string.Join(", ", exam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet") </td> 
+							<td> @(exam.IsGuarded ? "Ja" : "Nej") </td> <td> @(exam.NeedExternalExaminer ? "Ja" : "Nej") </td> <td> @exam.FirstExamDate </td> <td> @exam.LastExamDate </td>
+							<td> @exam.HandInDeadline </td> 
+							<td> @exam.DurationInMinutes minutter </td> 
+						    	<td> <form method="get"> <a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" style="float: left;" type="submit"> Opdater </a> </form></td> 
+								<td> <form method="get"> <a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit"> Slet </a> </form></td> 
+			    </tr>
+			}
+		</tbody>
+	</table>
 	
 
 @if (Model.ShowDelete)
@@ -328,7 +287,7 @@
 	
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<!-- Modal Header -->
 				<div class="modal-header">
@@ -421,11 +380,10 @@
 										@(Model.Exam.IsGuarded  ? "Ja" : "Nej")
                                 </td>
 								<td>
-										<select asp-for="IsGuarded" class="form-select">
-											<option value="">Alle</option>
-											<option value="true">Ja</option>
-											<option value="false">Nej</option>
-										</select>
+											<select asp-for="Exam.IsGuarded" class="form-select">
+												<option value="true">Ja</option>
+												<option value="false">Nej</option>
+											</select>
 									</td>
 								</tr>
 
@@ -433,11 +391,10 @@
 									<td>Ekstern censor</td>
 									<td>@(Model.Exam.NeedExternalExaminer ? "Ja" : "Nej")</td>
 									<td>
-										<select asp-for="NeedExternalExaminer" class="form-select">
-											<option value="">Alle</option>
-											<option value="true">Ja</option>
-											<option value="false">Nej</option>
-										</select>
+											<select asp-for="Exam.NeedExternalExaminer" class="form-select">
+												<option value="true">Ja</option>
+												<option value="false">Nej</option>
+											</select>
 									</td>
 								</tr>
 
