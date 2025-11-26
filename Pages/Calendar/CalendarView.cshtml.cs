@@ -16,6 +16,10 @@ namespace MyApp.Namespace
     {
         public LinkedList<Exam> ExamButtons { get; set; }
 		public List<Exam> ExamToBeDeleted { get; set; }
+        [BindProperty (SupportsGet = true)]
+        public List<int> Cohorts { get; set; }
+        [BindProperty (SupportsGet = true)]
+        public List<int> Teachers { get; set; }
         [BindProperty]
         public int ExamButtonIndex { get; set; } = 0;
         public DateTime CurrentTime { get; set; } = DateTime.Now;
@@ -28,15 +32,20 @@ namespace MyApp.Namespace
         public int FirstDayOfMonth { get; set; } = 0;
         public List<string> WeekNames { get; set; }
         public string UpdateModal { get; set; } = "";
-        public Exam SelectedExam { get; set; } = new Exam();
+        [BindProperty (SupportsGet = true)]
+        public Exam? SelectedExam { get; set; } = new Exam();
+        [BindProperty]
         public Exam.ExamTypeEnum ExamType { get; set; }
         public bool ShowUpdate { get; set; } = false;
         public bool ShowSelected { get; set; } = false;
         private SharpSeerDbContext m_context;
+
         public IEnumerable<Cohort> CohortsAll { get; set; }
         public IEnumerable<Teacher> TeachersAll { get; set; }
-        public bool IsGuarded { get; set; } = true;
-        public bool NeedExternalExaminer { get; set; } = true;
+        [BindProperty (SupportsGet = true)]
+        public bool? IsGuarded { get; set; } = null;
+        [BindProperty (SupportsGet = true)]
+        public bool? NeedExternalExaminer { get; set; } = null;
         private IService<Exam> m_service;
         private IService<Teacher> m_teacherService;
         private IService<Cohort> m_cohortService;
@@ -55,6 +64,36 @@ namespace MyApp.Namespace
         {
             GetMonth();
 			GetDataFromDatabase();
+            Cohorts = SelectedExam.Cohorts?.Select(c => c.Id).ToList() ?? new List<int>();
+            Teachers = SelectedExam.Teachers?.Select(t => t.Id).ToList() ?? new List<int>();
+        }
+
+        public IActionResult OnPostUpdate(int id)
+        {
+            SelectedExam.Id = id;
+            SelectedExam.ExamType = (int)ExamType;
+
+            if (IsGuarded.HasValue)
+            {
+                SelectedExam.IsGuarded = IsGuarded.Value;
+            }
+            if (NeedExternalExaminer.HasValue)
+            {
+                SelectedExam.NeedExternalExaminer = NeedExternalExaminer.Value;
+            }
+            
+            foreach (var cohortId in Cohorts)
+            {
+                var cohort = m_cohortService.GetById(cohortId);
+                SelectedExam.Cohorts.Add(cohort);
+            }
+            foreach (var teacherId in Teachers)
+            {
+                var teacher = m_teacherService.GetById(teacherId);
+                SelectedExam.Teachers.Add(teacher);
+            }
+            m_service.Update(SelectedExam);
+            return RedirectToPage("CalendarView");
         }
 
         public async Task OnPostNextMonth(int month, int year)
@@ -116,6 +155,8 @@ namespace MyApp.Namespace
             TeachersAll = m_teacherService.GetAll();
             ShowUpdate = true;
             GetDataFromDatabase();
+            Cohorts = SelectedExam.Cohorts?.Select(c => c.Id).ToList() ?? new List<int>();
+            Teachers = SelectedExam.Teachers?.Select(t => t.Id).ToList() ?? new List<int>();
         }
 
         public string GetMonthName(int month)

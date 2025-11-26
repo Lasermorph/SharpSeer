@@ -255,7 +255,7 @@
 										<div style="height:80px;overflow-y:scroll">
 										@foreach (var cohort in Model.CohortsAll)
 											{
-												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
+												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" @(Model.Cohorts != null && Model.Cohorts.Contains(cohort.Id) ? "checked" : "") />
 												@cohort.Name
 												<br />
 											}
@@ -274,7 +274,7 @@
 								<td>
 									@foreach (var teacher in Model.TeachersAll)
 										{
-											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
+											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" @(Model.Teachers != null && Model.Teachers.Contains(teacher.Id) ? "checked" : "") />
 											@teacher.Name
 											<br />
 										}
