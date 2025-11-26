@@ -8,9 +8,11 @@
 
 <head>
     <style>
-        * {
+        {
             box-sizing: border-box;
-        }
+			border-radius: 5px;
+			border-radius-color: #8fbc8f;
+		}
 
         ul {
             list-style-type: none;
@@ -23,17 +25,17 @@
         .month {
             padding: 20px 25px;
             width: 100%;
-            background: #fff387;
+			background: #8fbc8f;
             text-align: center;
         }
 
             .month ul {
-                margin: 0;
-                padding: 0;
+                margin: 1px;
+                padding: 1px;
             }
 
                 .month ul li {
-                    color: black;
+					color: #ffffff;
                     font-size: 25px;
                     text-transform: uppercase;
                     letter-spacing: 3px;
@@ -51,38 +53,38 @@
 
         .weekdays {
             margin: 0;
-            padding: 10px 0;
-            background-color: #F4A460;
+            padding: 0 ;
+            background-color: #bfd9bf;
         }
 
             .weekdays li {
                 display: inline-block;
                 width: 13.6%;
-                color: #000000;
+                color: #ffff;
                 text-align: center;
             }
 
         .days 
         {
-            padding: 30px 0;
-            background: #fafad2;
-            margin: 10px;
+            padding: 0;
+			background: #eff5ef;
+            margin: 0;
         }
 
             .days
 			{
 				display: grid;
 				grid-template-columns: repeat(7, 1fr);
-				padding: 30px 0;
-				background: #fafad2;
-				margin: 10px;
+				padding: 0;
+			background: #eff5ef;
+				margin: 0px;
 			}
 
 			.days li 
 			{
 				list-style-type: none;
 				box-sizing: border-box;
-				border: 1px solid #deb887;
+				border: 1px solid #dfecdf;
 				overflow: auto;
 				display: inline-block;
 				width: 100%;
@@ -105,9 +107,10 @@
 			color: white !important;
 		   }
 
-        .exam
+/* 		ekasem der skal kigges på pga ulovlig overlap farve background-color: #cd5c5c;
+ */        .exam
         {
-            background-color: #cd5c5c;
+			background-color: #80b380;
             font-size: 0.5vw;
             margin-bottom: 0.2rem;
         }

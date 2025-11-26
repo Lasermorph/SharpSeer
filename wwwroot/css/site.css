@@ -1,18 +1,23 @@
-html {
+html
+{
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
-  html {
+@media (min-width: 768px) 
+{
+  html 
+  {
     font-size: 16px;
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus
+{
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
+html 
+{
   position: relative;
   min-height: 100%;
 }
@@ -22,12 +27,14 @@ body
   margin-bottom: 60px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder 
+{
   color: var(--bs-secondary-color);
   text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder 
+{
   text-align: start;
 }
 
@@ -44,32 +51,83 @@ body
   overflow: hidden;
 }
 
-.home-background {
+.home-background 
+{
     background-image: url('/Images/SharpSeerHomePage.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left;
     background-color: #fffce7;
 }
-.home {
+.home 
+{
     position: relative;
     margin-left: 500px; 
     margin-top: 80px; 
     max-width: 700px;
 }
 
-    .home h1 {
+    .home h1 
+    {
         font-size: 52px; 
         font-weight: 300;
         margin-bottom: 20px;
     }
 
-    .home p {
+    .home p 
+    {
         font-size: 22px; 
         line-height: 1.6;
         margin-bottom: 15px;
     }
-    .background{
-                background-color: #fffce7;
+.background
+{
+    background-color: white;
+}
+
+table {
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px #e1e5ee;
+    text-align: left;
+    overflow: hidden;
+    
+}
+thead{
+    box-shadow: 0 5px 10px #e1e5ee; 
+}
+th {
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    front-size: 0.85rem;
+    front weight: 900;
+}
+td {
+    padding: 1rem 2rem;
+}
+col 
+{
+    width: auto;
+    background-color:aqua;
+}
+    .table tbody tr:hover td 
+    {
+    background-color: #e5dede !important;
     }
-   
+
+.table tr:nth-child(even)
+{
+    background-color: #e8e8e8;
+}
+
+td 
+{
+    background-color: transparent !important;
+}
+th {
+    background-color: transparent !important;
+}
+  
+
+
+
