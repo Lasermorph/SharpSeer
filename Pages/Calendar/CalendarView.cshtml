@@ -69,35 +69,41 @@
             margin: 10px;
         }
 
-            .days li
-            {
-                list-style-type: none;
-                display: inline-block;
-                width: 13.6%;
-                text-align: center;
-                margin-bottom: 25px;
-                font-size: 12px;
-                color: #777;
-                border-left: 2px solid #FFDEAD;
-                border-top: 2px solid #FFDEAD   ;
-                padding: 10px 0;
-            }
+            .days
+			{
+				display: grid;
+				grid-template-columns: repeat(7, 1fr);
+				padding: 30px 0;
+				background: #fafad2;
+				margin: 10px;
+			}
 
-                .days li:nth-child(7n +1)
-                {
-                    border-left: none;
-                }
+			.days li 
+			{
+				list-style-type: none;
+				box-sizing: border-box;
+				border: 1px solid #deb887;
+				overflow: auto;
+				display: inline-block;
+				width: 100%;
+				text-align: center;
+				margin-bottom: 0px;
+				font-size: 19px;
+				padding: 8px 0;
+				height: 100px;
+			}
 
-                .days li:nth-child(-n+7)
-                {
-                    border-top: none;
-                }
-
-                .days li .active {
-                    padding: 20px;
-                    background: #1abc9c;
-                    color: white !important;
-                }
+			.days li:empty
+			{
+				background-color: transparent;
+				border: none;
+			}
+			.days li .active
+	    	{
+			padding: 20px;
+			background: #1abc9c;
+			color: white !important;
+		   }
 
         .exam
         {
@@ -106,11 +112,7 @@
             margin-bottom: 0.2rem;
         }
 
-        .days li.empty
-        {
-            background-color: transparent;
-            border: none;
-        }
+     
     </style>
 </head>
 <body>
