@@ -44,7 +44,6 @@ namespace MyApp.Namespace
         public CalendarViewModel(SharpSeerDbContext dbContext, IService<Exam> service, IService<Cohort> cohortService, IService<Teacher> teacherService)
         {
             m_service = service;
-            DaysInMonth = DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month);
             Year = CurrentTime.Year;
             Month = CurrentTime.Month;
             WeekNames = new List<string>{"Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"};
@@ -54,11 +53,7 @@ namespace MyApp.Namespace
         }
         public void OnGet()
         {
-            MonthStr = GetMonthName(Month);
-
-            m_selectedDateTime = new DateTime(Year, Month, 1);
-            DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
-            FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
+            GetMonth();
 			GetDataFromDatabase();
         }
 
@@ -72,11 +67,7 @@ namespace MyApp.Namespace
                 Year = year + 1;
             }
 
-            DaysInMonth = DateTime.DaysInMonth(Year, Month);
-            m_selectedDateTime = new DateTime(Year, Month, 1);
-            DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
-            FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
-            MonthStr = GetMonthName(Month);
+            GetMonth();
 			GetDataFromDatabase();
         }
 
@@ -90,14 +81,17 @@ namespace MyApp.Namespace
                 Year = year - 1;
             }
 
-            DaysInMonth = DateTime.DaysInMonth(Year, Month);
+            GetMonth();
+			GetDataFromDatabase();
+        }
 
+        private void GetMonth()
+        {
+            DaysInMonth = DateTime.DaysInMonth(Year, Month);
             m_selectedDateTime = new DateTime(Year, Month, 1);
             DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
             FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
-
             MonthStr = GetMonthName(Month);
-			GetDataFromDatabase();
         }
 
 		public void GetDataFromDatabase()
@@ -114,14 +108,8 @@ namespace MyApp.Namespace
         {
             Year = year;
             Month = month;
-            DaysInMonth = DateTime.DaysInMonth(Year, Month);
 
-            m_selectedDateTime = new DateTime(Year, Month, 1);
-            DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
-            FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
-
-            MonthStr = GetMonthName(Month);
-
+            GetMonth();
             SelectedExam = m_service.GetById(examID);
             ExamType = (Exam.ExamTypeEnum)SelectedExam.ExamType;
             CohortsAll = m_cohortService.GetAll();

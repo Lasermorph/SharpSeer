@@ -1,35 +1,53 @@
-html {
+html
+{
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
-  html {
+@media (min-width: 768px) 
+{
+  html 
+  {
     font-size: 16px;
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus
+{
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
+html 
+{
   position: relative;
   min-height: 100%;
 }
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/*wtf is that*/
+col {
+    width: auto;
+    background-color: #ff0000;
+}
+
 
 body 
 {
   margin-bottom: 60px;
+  font-family: 'Franklin Gothic Medium', sans-serif;
+}
+footer {
+    text-align: center;
+    background-color: #305030;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
 
 .modal
 {
@@ -45,31 +63,95 @@ body
 }
 
 .home-background {
-    background-image: url('/Images/SharpSeerHomePage.png');
+    background-image: url('/Images/greenfrontpage.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left;
-    background-color: #fffce7;
+    background-color: #dfecdf;
 }
-.home {
+.home 
+{
     position: relative;
     margin-left: 500px; 
     margin-top: 80px; 
     max-width: 700px;
 }
 
-    .home h1 {
+    .home h1 
+    {
         font-size: 52px; 
         font-weight: 300;
         margin-bottom: 20px;
     }
 
-    .home p {
+    .home p 
+    {
         font-size: 22px; 
         line-height: 1.6;
         margin-bottom: 15px;
     }
-    .background{
-                background-color: #fffce7;
+.background {
+    background-color: #dfecdf;
+}
+.costum-navbar {
+    background-color: #000000;
+    front-family: 'Franklin Gothic Medium', sans-serif !important;
+}
+.table-search,
+.table-showup {
+    width: 100%;
+    border-radius: 8px;
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px #8fbc8f;
+    text-align: left;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+
+.table-search {
+    margin-bottom: 2rem;
+}
+
+    
+    .table-search thead th,
+    .table-showup thead th {
+        background-color: #305030;
+        color: #ffffff;
     }
-   
+
+
+.table-showup tbody tr:nth-child(odd) td {
+    background-color: #eff5ef !important;
+}
+
+.table-showup tbody tr:nth-child(even) td {
+    background-color: #8fbc8f !important;
+}
+.calender-btn {
+    background-color: #305030;
+    color: white;
+    border: none;
+}
+.login-btn {
+    background-color: #305030;
+    color: white;
+    border: none;
+}
+.btn-search {
+    background-color: #bfd9bf;
+}
+.btn-primary {
+
+    background-color: #305030;
+    color: white;
+    border: none;
+}
+.btn-danger {
+    background-color: #9c3030;
+    color: white;
+    border: none;
+}
+
+
+

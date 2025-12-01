@@ -11,9 +11,10 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3"
+             style="background-color: #305030;">
             <div class="container">
-                <a class="navbar-brand" style="color:#fff387;" asp-area="" asp-page="/Index">SharpSeer</a>
+                <a class="navbar-brand" style="color:#ffff;" asp-area="" asp-page="/Index">SharpSeer</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,19 +22,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link" style="color:#fff387;" asp-area="" asp-page="/Index">Hjem</a>
+                            <a class="nav-link" style="color:#ffff;" asp-area="" asp-page="/Index">Hjem</a>
                         </li>
                         <li class="nav-item">
-							<a class="nav-link" style="color:#fff387" asp-area="" asp-page="/Cohorts/Cohort_Page">Hold</a>
+							<a class="nav-link" style="color:#ffff" asp-area="" asp-page="/Cohorts/Cohort_Page">Hold</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color:#fff387" asp-area="" asp-page="/Exams/Exam_Page">Eksamner</a>
+                            <a class="nav-link" style="color:#ffff" asp-area="" asp-page="/Exams/Exam_Page">Eksamner</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color:#fff387" asp-area="" asp-page="/Teachers/Teacher_Page">Lærer</a>
+                            <a class="nav-link" style="color:#ffff" asp-area="" asp-page="/Teachers/Teacher_Page">Lærer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color:#fff387" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link" style="color:#ffff" asp-area="" asp-page="/Calendar/CalendarView">Calender</a>
+                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color:#ffff" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
@@ -46,9 +50,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-black">
+    <footer class="border-top footer text-muted"
+   
         <div class="container">
-           <a asp-area="" style="color:#fff387" asp-page="/Privacy">Privacy</a>
+            <a asp-area="" style="color:#ffff" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
