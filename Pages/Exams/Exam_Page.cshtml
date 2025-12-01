@@ -3,6 +3,7 @@
 @using static SharpSeer.Models.Exam
 @using System.Linq
 @model SharpSeer.Pages.Exams.Exam_PageModel
+@using static SharpSeer.Services.Extensions
 @{
 }
 
@@ -327,7 +328,7 @@
 									Eksamens type
 								</th>
 								<td>
-									@((ExamTypeEnum)Model.Exam.ExamType)
+									@(((ExamTypeEnum)Model.Exam.ExamType).GetDisplayName())
 								</td>
 								<td>
 									<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">

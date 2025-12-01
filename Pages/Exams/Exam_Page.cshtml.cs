@@ -4,6 +4,7 @@ using SharpSeer.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Runtime.CompilerServices;
 using static SharpSeer.Models.Exam;
+using static SharpSeer.Services.Extensions;
 using Microsoft.VisualBasic;
 
 

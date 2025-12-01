@@ -156,7 +156,8 @@
 					<a href="/Cohorts/Cohort_Page" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
-				<form method="post">
+				<form method="post" asp-page-handler="Update">
+				<input type="hidden" name="id" value="@Model.Cohort?.Id" />
 					<div class="modal-body">
 						<table class="table">
 							<tbody>
@@ -181,7 +182,7 @@
 										Semester
 									</th>
 									<td>
-										<input type="number" min="0" max="5" asp-for="Cohort.Term" />
+										<input asp-for ="Cohort.Term" type="number" min="0" max="5" class="form-control" />
 									</td>
 								</tr>
 							</tbody>

@@ -9,8 +9,11 @@ public partial class Exam
 
     public enum ExamTypeEnum
     {
+        [Display(Name = "Skriftlig")]
         Skriftlig = 1,
+        [Display(Name = "Mundtlig")]
         Mundtlig = 2,
+        [Display(Name = "Projekt")]
         Projekt = 3,
         [Display(Name = "Skriftlig Re-Examen")] 
         Skriftlig_Re_Examen = 4,
@@ -46,4 +49,7 @@ public partial class Exam
     public virtual ICollection<Cohort> Cohorts { get; set; } = new List<Cohort>();
 
     public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
+
+
+
 }
