@@ -30,11 +30,12 @@ html
     text-align: start;
 }
 
-
+/*wtf is that*/
 col {
     width: auto;
-    background-color: aqua;
+    background-color: #ff0000;
 }
+
 
 body 
 {
@@ -120,25 +121,36 @@ footer {
     }
 
 
-..table-showup tbody tr:nth-child(odd) td {
-    background-color: #afcfaf !important;
+.table-showup tbody tr:nth-child(odd) td {
+    background-color: #eff5ef !important;
 }
 
 .table-showup tbody tr:nth-child(even) td {
     background-color: #8fbc8f !important;
-    .calender-btn {
-    background-color: #4d804d;
+}
+.calender-btn {
+    background-color: #305030;
     color: white;
     border: none;
 }
 .login-btn {
-    background-color: #4d804d;
+    background-color: #305030;
     color: white;
     border: none;
 }
 .btn-search {
-    background-color: #CCCCFF;
+    background-color: #bfd9bf;
+}
+.btn-primary {
 
+    background-color: #305030;
+    color: white;
+    border: none;
+}
+.btn-danger {
+    background-color: #9c3030;
+    color: white;
+    border: none;
 }
 
 
