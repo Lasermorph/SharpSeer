@@ -9,6 +9,7 @@ using SharpSeer.Interfaces;
 using SharpSeer.Models;
 using SharpSeer.Services;
 using System.IO;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MyApp.Namespace
 {
@@ -16,6 +17,12 @@ namespace MyApp.Namespace
     {
         public LinkedList<Exam> ExamButtons { get; set; }
 		public List<Exam> ExamToBeDeleted { get; set; }
+        [BindProperty (SupportsGet = true)]
+        public List<int> CohortsID { get; set; }
+        [BindProperty (SupportsGet = true)]
+        public List<int> TeachersID { get; set; }
+        public IEnumerable<Teacher> Teachers { get; set; }
+        public IEnumerable<Cohort> Cohorts { get; set; }
         [BindProperty]
         public int ExamButtonIndex { get; set; } = 0;
         public DateTime CurrentTime { get; set; } = DateTime.Now;
@@ -28,18 +35,27 @@ namespace MyApp.Namespace
         public int FirstDayOfMonth { get; set; } = 0;
         public List<string> WeekNames { get; set; }
         public string UpdateModal { get; set; } = "";
-        public Exam SelectedExam { get; set; } = new Exam();
+        [BindProperty (SupportsGet = true)]
+        public Exam? SelectedExam { get; set; } = new Exam();
+        [BindProperty]
         public Exam.ExamTypeEnum ExamType { get; set; }
         public bool ShowUpdate { get; set; } = false;
         public bool ShowSelected { get; set; } = false;
         private SharpSeerDbContext m_context;
+
         public IEnumerable<Cohort> CohortsAll { get; set; }
         public IEnumerable<Teacher> TeachersAll { get; set; }
-        public bool IsGuarded { get; set; } = true;
-        public bool NeedExternalExaminer { get; set; } = true;
+        [BindProperty (SupportsGet = true)]
+        public bool? IsGuarded { get; set; } = null;
+        [BindProperty (SupportsGet = true)]
+        public bool? NeedExternalExaminer { get; set; } = null;
         private IService<Exam> m_service;
         private IService<Teacher> m_teacherService;
         private IService<Cohort> m_cohortService;
+        [BindProperty (SupportsGet = true)]
+        public int TeacherID { get; set; }
+        public Teacher? SelectedTeacher { get; set; }
+        public Cohort? SelectedCohort { get; set; }
 
         public CalendarViewModel(SharpSeerDbContext dbContext, IService<Exam> service, IService<Cohort> cohortService, IService<Teacher> teacherService)
         {
@@ -53,8 +69,101 @@ namespace MyApp.Namespace
         }
         public void OnGet()
         {
+            ICollection<string> QKeys = HttpContext.Request.Query.Keys;
+            foreach (string key in QKeys)
+            {
+                if (key == "month")
+                {
+                    HttpContext.Request.Query.TryGetValue(key, out var month);
+                    if (!month.IsNullOrEmpty())
+                    {
+                        Month = int.Parse(month);
+                    }
+                    break;
+                }
+                if (key == "year")
+                {
+                    HttpContext.Request.Query.TryGetValue(key, out var year);
+                    if (!year.IsNullOrEmpty())
+                    {
+                        Year = int.Parse(year);
+                    }
+                    break;
+                }
+            }
             GetMonth();
 			GetDataFromDatabase();
+            SetJunctionTable();
+        }
+
+        public void OnPostGetTeacher(int teacherID, int month, int year)
+        {
+            Month = month;
+            Year = year;
+            SelectedTeacher = m_teacherService.GetById(teacherID);
+            Cohorts = m_cohortService.GetAll();
+            Teachers = m_teacherService.GetAll();
+            List<Teacher> teachers = new List<Teacher>(Teachers);
+            int teacherToBeSwaped = teachers.FindIndex(t => t.Id == teacherID);
+            teachers.RemoveAt(teacherToBeSwaped);
+            Teachers = teachers.Prepend(SelectedTeacher);
+            
+            GetMonth();
+            LastDateInMonth = new DateTime(Year, Month, DaysInMonth);
+			IEnumerable<Exam> buttons = m_context.Exams.Include(e => e.Cohorts)
+                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime && e.Teachers.Any<Teacher>(t => t.Id == TeacherID))
+                .OrderBy(e => e.FirstExamDate);
+			ExamButtons = new LinkedList<Exam>(buttons);
+			ExamToBeDeleted = new List<Exam>(3);
+        }
+
+        public void OnPostGetCohort(int cohortID, int month, int year)
+        {
+            Month = month;
+            Year = year;
+            SelectedCohort = m_cohortService.GetById(cohortID);
+            Cohorts = m_cohortService.GetAll();
+            Teachers = m_teacherService.GetAll();
+            List<Cohort> cohorts = new List<Cohort>(Cohorts);
+            int cohortToBeSwaped = cohorts.FindIndex(c => c.Id == cohortID);
+            cohorts.RemoveAt(cohortToBeSwaped);
+            Cohorts = cohorts.Prepend(SelectedCohort);
+
+            GetMonth();
+            LastDateInMonth = new DateTime(Year, Month, DaysInMonth);
+			IEnumerable<Exam> buttons = m_context.Exams.Include(e => e.Cohorts)
+                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime && e.Cohorts.Any<Cohort>(t => t.Id == cohortID))
+                .OrderBy(e => e.FirstExamDate);
+			ExamButtons = new LinkedList<Exam>(buttons);
+			ExamToBeDeleted = new List<Exam>(3);
+        }
+
+        public IActionResult OnPostUpdate(int id)
+        {
+            SelectedExam.Id = id;
+            SelectedExam.ExamType = (int)ExamType;
+
+            if (IsGuarded.HasValue)
+            {
+                SelectedExam.IsGuarded = IsGuarded.Value;
+            }
+            if (NeedExternalExaminer.HasValue)
+            {
+                SelectedExam.NeedExternalExaminer = NeedExternalExaminer.Value;
+            }
+            
+            foreach (var cohortId in CohortsID)
+            {
+                var cohort = m_cohortService.GetById(cohortId);
+                SelectedExam.Cohorts.Add(cohort);
+            }
+            foreach (var teacherId in TeachersID)
+            {
+                var teacher = m_teacherService.GetById(teacherId);
+                SelectedExam.Teachers.Add(teacher);
+            }
+            m_service.Update(SelectedExam);
+            return RedirectToPage("CalendarView");
         }
 
         public async Task OnPostNextMonth(int month, int year)
@@ -69,6 +178,7 @@ namespace MyApp.Namespace
 
             GetMonth();
 			GetDataFromDatabase();
+            SetJunctionTable();
         }
 
         public async Task OnPostPreviousMonth(int month, int year)
@@ -83,6 +193,7 @@ namespace MyApp.Namespace
 
             GetMonth();
 			GetDataFromDatabase();
+            SetJunctionTable();
         }
 
         private void GetMonth()
@@ -116,6 +227,15 @@ namespace MyApp.Namespace
             TeachersAll = m_teacherService.GetAll();
             ShowUpdate = true;
             GetDataFromDatabase();
+            SetJunctionTable();
+        }
+
+        public void SetJunctionTable()
+        {
+            CohortsID = SelectedExam.Cohorts?.Select(c => c.Id).ToList() ?? new List<int>();
+            TeachersID = SelectedExam.Teachers?.Select(t => t.Id).ToList() ?? new List<int>();
+            Teachers = m_teacherService.GetAll();
+            Cohorts = m_cohortService.GetAll();
         }
 
         public string GetMonthName(int month)
