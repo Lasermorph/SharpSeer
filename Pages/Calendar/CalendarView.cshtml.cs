@@ -163,9 +163,6 @@ namespace MyApp.Namespace
                 SelectedExam.Teachers.Add(teacher);
             }
 
-            // List<Exam> exams = new List<Exam>(m_service.GetAll());
-            // int selectedExam = exams.FindIndex(e => e.Id == id);
-            // exams.RemoveAt(selectedExam);
             IEnumerable<Exam> exams = m_service.GetAll().ToList();
 
             foreach (Exam exam in exams)
