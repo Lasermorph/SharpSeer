@@ -11,7 +11,11 @@ html
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus
+.btn:focus,
+.btn:active:focus, 
+.btn-link.nav-link:focus, 
+.form-control:focus, 
+.form-check-input:focus
 {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -21,12 +25,14 @@ html
   position: relative;
   min-height: 100%;
 }
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+.form-floating > .form-control-plaintext::placeholder, 
+.form-floating > .form-control::placeholder {
     color: var(--bs-secondary-color);
     text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+.form-floating > .form-control-plaintext:focus::placeholder, 
+.form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
 
@@ -141,17 +147,127 @@ footer {
 .btn-search {
     background-color: #bfd9bf;
 }
+    .btn-search:hover {
+        background-color: #8fbc8f;
+        color: white;
+        border: none;
+    }
 .btn-primary {
 
     background-color: #305030;
+
     color: white;
     border: none;
 }
+    .btn-primary:hover {
+        background-color: #437043;
+        color: white;
+        border: none;
+    }
+
 .btn-danger {
     background-color: #9c3030;
     color: white;
     border: none;
 }
+.btn-danger:hover {
+    background-color: #bf5050;
+    color: white;
+    border: none;
+}
+
+/* ----------------- KALENDER-STYLES ----------------- */
+ul. {
+    list-style-type: none;
+}
+.month {
+    padding: 20px 25px;
+    width: 100%;
+    background: #305030;
+    text-align: center;
+}
+
+.month ul {
+    margin: 1px;
+    padding: 1px;
+}
+
+    .month ul li {
+        color: #ffffff;
+        font-size: 25px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+
+.month .prev {
+    float: left;
+    padding-top: 10px;
+}
+
+.month .next {
+    float: right;
+    padding-top: 10px;
+}
+
+.weekdays {
+    margin: 0;
+    padding: 0;
+    background-color: #8fbc8f;
+}
+
+    .weekdays li {
+        display: inline-block;
+        width: 13.6%;
+        color: #ffff;
+        text-align: center;
+    }
+
+.days {
+    padding: 0;
+    background: #eff5ef;
+    margin: 0;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 0;
+    background: #eff5ef;
+    margin: 0px;
+}
+
+    .days li {
+        list-style-type: none;
+        box-sizing: border-box;
+        border: 1px solid #dfecdf;
+        overflow: auto;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0px;
+        font-size: 19px;
+        padding: 8px 0;
+        height: 100px;
+    }
+
+        .days li:empty {
+            background-color: transparent;
+            border: none;
+        }
+
+        .days li .active {
+            padding: 20px;
+            background: #1abc9c;
+            color: white !important;
+        }
+
+/* 		ekasem der skal kigges på pga ulovlig overlap farve background-color: #cd5c5c;
+ */ .exam {
+    background-color: #dfecdf;
+    font-size: 0.5vw;
+    margin-bottom: 0.2rem;
+}
+
 
 
 
