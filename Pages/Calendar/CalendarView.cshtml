@@ -12,6 +12,28 @@
 	</body>
 
 	<h1> Kalender oversigt </h1>
+<form method="post" asp-page-handler="GetTeacher" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+	<select id="teacher" name="TeacherID">
+		@foreach (Teacher teacher in Model.Teachers)
+		{
+			<option value="@teacher.Id">@teacher.Name</option>
+		}
+	</select>
+	<button type="submit">vælg</button>
+</form>
+
+<form method="post" asp-page-handler="GetCohort" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+	<select id="cohort" name="CohortID">
+		@foreach (Cohort cohort in Model.Cohorts)
+		{
+			<option value="@cohort.Id">@cohort.Name</option>
+		}
+	</select>
+	<button type="submit">vælg</button>
+</form>
+
+
+<h1>CSS Calendar</h1>
 
 <div class="month">
   <ul>
@@ -151,7 +173,7 @@
 										<div style="height:80px;overflow-y:scroll">
 										@foreach (var cohort in Model.CohortsAll)
 											{
-												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" />
+												<input class="form-check-inline" name="Cohorts" type="checkbox" value="@cohort.Id" @(Model.CohortsID != null && Model.CohortsID.Contains(cohort.Id) ? "checked" : "") />
 												@cohort.Name
 												<br />
 											}
@@ -170,7 +192,7 @@
 								<td>
 									@foreach (var teacher in Model.TeachersAll)
 										{
-											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" />
+											<input class="form-check-inline" name="Teachers" type="checkbox" value="@teacher.Id" @(Model.TeachersID != null && Model.TeachersID.Contains(teacher.Id) ? "checked" : "") />
 											@teacher.Name
 											<br />
 										}
@@ -242,7 +264,7 @@
 				<div class="modal-footer">
 					
 					<button type="submit" class="btn btn-primary">Opdater</button>
-					<a href="/Calendar/CalendarView" type="button" class="btn btn-danger">Annuller</a>
+					<a href="/Calendar/CalendarView?month=@Model.Month&year=@Model.Year" type="button" class="btn btn-danger">Annuller</a>
 				</div>
 				</form>
 			</div>

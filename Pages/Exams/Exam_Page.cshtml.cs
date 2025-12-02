@@ -227,6 +227,16 @@ namespace SharpSeer.Pages.Exams
         {
             Exam.Id = id;
             Exam.ExamType = (int)ExamType.Value;
+
+            if (IsGuarded.HasValue)
+            {
+                Exam.IsGuarded = IsGuarded.Value;
+            }
+            if (NeedExternalExaminer.HasValue)
+            {
+                Exam.NeedExternalExaminer = NeedExternalExaminer.Value;
+            }
+
             foreach (var cohortId in Cohorts)
             {
                 var cohort = m_cohortService.GetById(cohortId);
