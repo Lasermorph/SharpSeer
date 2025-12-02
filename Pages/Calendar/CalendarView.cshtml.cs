@@ -132,8 +132,8 @@ namespace MyApp.Namespace
             GetMonth();
             LastDateInMonth = new DateTime(Year, Month, DaysInMonth);
 			IEnumerable<Exam> buttons = m_context.Exams.Include(e => e.Cohorts)
-                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime && e.Cohorts.Any<Cohort>(t => t.Id == cohortID))
-                .OrderBy(e => e.FirstExamDate);
+                .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime && 
+                e.Cohorts.Any<Cohort>(t => t.Id == cohortID)).OrderBy(e => e.FirstExamDate);
 			ExamButtons = new LinkedList<Exam>(buttons);
 			ExamToBeDeleted = new List<Exam>(3);
         }
@@ -161,6 +161,23 @@ namespace MyApp.Namespace
             {
                 var teacher = m_teacherService.GetById(teacherId);
                 SelectedExam.Teachers.Add(teacher);
+            }
+
+            IEnumerable<Exam> exams = m_service.GetAll().ToList();
+
+            foreach (Exam exam in exams)
+            {
+                foreach (Teacher teacher in SelectedExam.Teachers)
+                {
+                    if (exam.Teachers.Contains(teacher))
+                    {
+                        if (exam.FirstExamDate <= SelectedExam.LastExamDate && exam.LastExamDate >= SelectedExam.FirstExamDate)
+                        {
+                            m_service.Update(SelectedExam);
+                            return RedirectToPage("CalendarView");
+                        }
+                    }
+                }
             }
             m_service.Update(SelectedExam);
             return RedirectToPage("CalendarView");
