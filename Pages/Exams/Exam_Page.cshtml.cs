@@ -37,6 +37,7 @@ namespace SharpSeer.Pages.Exams
         public DateTime? HandInDeadline { get; set; }
         [BindProperty(SupportsGet = true)]
         public int DurationInMinutes { get; set; }
+        public int EstimatedStudentCount { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string QueryString { get; set; } = string.Empty;
@@ -157,6 +158,13 @@ namespace SharpSeer.Pages.Exams
                             Exams = Exams.Where(t => t.DurationInMinutes == DurationInMinutes);
                         }
                         break;
+                    case "EstimatedStudentCout": 
+                        if (EstimatedStudentCOunt != 0)
+                        {
+                            Exams = Exams.Where(t => t.EstimatedStudentCount == EstimatedStudentCount); 
+                        }
+                        break; 
+
                 }
             }
             EndOfLoop:;
@@ -235,6 +243,11 @@ namespace SharpSeer.Pages.Exams
             if (NeedExternalExaminer.HasValue)
             {
                 Exam.NeedExternalExaminer = NeedExternalExaminer.Value;
+            }
+            
+            if( EstimatedStudentCount.HasValue)
+            {
+                Exam.EstimatedStudentCount = EstimatedStudentCount.Value;
             }
 
             foreach (var cohortId in Cohorts)
