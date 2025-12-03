@@ -163,19 +163,29 @@ namespace MyApp.Namespace
                 SelectedExam.Teachers.Add(teacher);
             }
 
-            IEnumerable<Exam> exams = m_service.GetAll().ToList();
+            List<Exam> exams = m_service.GetAll().Where(e => e.LastExamDate >= SelectedExam.FirstExamDate && e.FirstExamDate <= SelectedExam.LastExamDate).ToList();
 
             foreach (Exam exam in exams)
             {
+                if (exam.Id == SelectedExam.Id)
+                {
+                    continue;
+                }
                 foreach (Teacher teacher in SelectedExam.Teachers)
                 {
                     if (exam.Teachers.Contains(teacher))
                     {
-                        if (exam.FirstExamDate <= SelectedExam.LastExamDate && exam.LastExamDate >= SelectedExam.FirstExamDate)
-                        {
-                            m_service.Update(SelectedExam);
-                            return RedirectToPage("CalendarView");
-                        }
+                        m_service.Update(SelectedExam);
+                        return RedirectToPage("/Cohorts/Cohort_Page");
+                    }
+                }
+
+                foreach (Cohort cohort in SelectedExam.Cohorts)
+                {
+                    if (exam.Cohorts.Contains(cohort))
+                    {
+                        m_service.Update(SelectedExam);
+                        return RedirectToPage("/Cohorts/Cohort_Page");
                     }
                 }
             }
