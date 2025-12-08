@@ -6,7 +6,7 @@ namespace SharpSeer.Models;
 
 public partial class Exam
 {
-    public enum ExamTypeEnum
+   public enum ExamTypeEnum
     {
         [Display(Name = "Skriftlig")]
         Skriftlig = 1,
@@ -14,7 +14,7 @@ public partial class Exam
         Mundtlig = 2,
         [Display(Name = "Projekt")]
         Projekt = 3,
-        [Display(Name = "Skriftlig Re-Examen")] 
+        [Display(Name = "Skriftlig Re-Examen")]
         Skriftlig_Re_Examen = 4,
         [Display(Name = "Mundtlig Re-Examen")]
         Mundtlig_Re_Examen = 5,
@@ -25,6 +25,7 @@ public partial class Exam
         [Display(Name = "Afsluttende Re-Examen")]
         Afsluttende_Re_Examen = 8
     }
+
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
@@ -45,7 +46,17 @@ public partial class Exam
 
     public int? EstimatedStudentCount { get; set; }
 
-    public virtual ICollection<OverlapExamCheck> OverlapExamChecks { get; set; } = new List<OverlapExamCheck>();
+    private string m_examComment;
+
+    public string? ExamComment
+    { 
+        get { return m_examComment; }
+        set 
+        { 
+            if (value.Length < 256)
+            m_examComment = value;
+        } 
+    } 
 
     public virtual ICollection<Cohort> Cohorts { get; set; } = new List<Cohort>();
 
