@@ -50,6 +50,5 @@ public partial class Exam
 
     public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
 
-
-
+    public virtual ICollection<OverlapExamCheck> OverlapExamChecks { get; set; } = new List<OverlapExamCheck>();
 }
