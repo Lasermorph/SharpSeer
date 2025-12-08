@@ -36,7 +36,6 @@ html
     text-align: start;
 }
 
-/*wtf is that*/
 col {
     width: auto;
     background-color: #ff0000;
@@ -261,13 +260,98 @@ ul. {
             color: white !important;
         }
 
-/* 		ekasem der skal kigges på pga ulovlig overlap farve background-color: #cd5c5c;
- */ .exam {
-    background-color: #dfecdf;
+.exam {
+    background-color: #8fbc8f;
     font-size: 0.5vw;
     margin-bottom: 0.2rem;
 }
+    .exam:hover {
+        background-color: #bfd9bf;
+        color: white;
+        border: none;
+    }
 
+.background > form {
+    display: inline-flex; 
+    align-items: center;
+    gap: 8px;
+    margin-left: 40px;
+    margin-top: 6px;
+    padding: 8px 12px;
+    background-color: #305030; 
+    border-radius: 8px;
+    box-shadow: 0 5px 10px #8fbc8f; 
+}
 
+    .background > form + form {
+        margin-left: 10px;
+    }
 
+    .background > form select {
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: none;
+        background-color: #ffffff;
+        font-size: 0.9rem;
+        min-width: 150px;
+    }
 
+    
+    .background > form button {
+        padding: 6px 14px;
+        border-radius: 999px;
+        border: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        background-color: #bfd9bf; 
+        color: #305030;
+        cursor: pointer;
+    }
+
+        .background > form button:hover {
+            background-color: #8fbc8f; 
+            color: white;
+            .calendar-top
+        }
+
+.calendar-filter {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background-color: #305030;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 20px 40px;
+    box-shadow: 0 5px 10px #8fbc8f; 
+}
+
+    .calendar-filter select {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: white;
+    font-size: 1rem;
+    min-width: 150px;
+}
+
+.calendar-filter button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    background-color: #bfd9bf; 
+    color: #305030;
+    cursor: pointer;
+}
+
+    .calendar-filter button:hover {
+        background-color: #8fbc8f;
+        color: white;
+    }
+
+.background h1 {
+    margin: 20px 0 10px 40px;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #305030; 
+}
