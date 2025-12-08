@@ -92,7 +92,7 @@ public partial class SharpSeerDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__overlap___3213E83FBB2764EC");
 
-            entity.ToTable("overlap_exam_check");
+            entity.ToTable("OverlapExamCheck");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CohortId).HasColumnName("cohortID");

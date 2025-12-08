@@ -12,6 +12,8 @@ public partial class Cohort
 
     public int Term { get; set; }
 
+    public virtual ICollection<OverlapExamCheck> OverlapExamChecks { get; set; } = new List<OverlapExamCheck>();
+
     public virtual ICollection<Exam> Exams { get; set; } = new List<Exam>();
     public virtual ICollection<OverlapExamCheck> OverlapExamChecks { get; set; } = new List<OverlapExamCheck>();
 }
