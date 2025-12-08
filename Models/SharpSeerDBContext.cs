@@ -19,8 +19,6 @@ public partial class SharpSeerDbContext : DbContext
 
     public virtual DbSet<Exam> Exams { get; set; }
 
-    public virtual DbSet<OverlapExamCheck> OverlapExamChecks { get; set; }
-
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -49,6 +47,9 @@ public partial class SharpSeerDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Exams__3214EC2797C7D7E3");
 
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.ExamComment)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -86,31 +87,6 @@ public partial class SharpSeerDbContext : DbContext
                         j.IndexerProperty<int>("ExamId").HasColumnName("ExamID");
                         j.IndexerProperty<int>("TeacherId").HasColumnName("TeacherID");
                     });
-        });
-
-        modelBuilder.Entity<OverlapExamCheck>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__overlap___3213E83FBB2764EC");
-
-            entity.ToTable("OverlapExamCheck");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CohortId).HasColumnName("cohortID");
-            entity.Property(e => e.ExamId).HasColumnName("examID");
-            entity.Property(e => e.TeacherId).HasColumnName("teacherID");
-
-            entity.HasOne(d => d.Cohort).WithMany(p => p.OverlapExamChecks)
-                .HasForeignKey(d => d.CohortId)
-                .HasConstraintName("FK__overlap_e__cohor__76969D2E");
-
-            entity.HasOne(d => d.Exam).WithMany(p => p.OverlapExamChecks)
-                .HasForeignKey(d => d.ExamId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__overlap_e__examI__74AE54BC");
-
-            entity.HasOne(d => d.Teacher).WithMany(p => p.OverlapExamChecks)
-                .HasForeignKey(d => d.TeacherId)
-                .HasConstraintName("FK__overlap_e__teach__75A278F5");
         });
 
         modelBuilder.Entity<Teacher>(entity =>

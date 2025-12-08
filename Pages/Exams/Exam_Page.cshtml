@@ -87,6 +87,7 @@
 				<th>Eksamens Slut</th>
 				<th>Deadline for aflevering</th>
 				<th>Eksmaens varighed</th>
+				<th>Eksamens kommentar</th>
 				<th></th>
 			    <th></th>
 			</tr>
@@ -104,10 +105,11 @@
 							<td scope="col"> @((exam.Teachers?.Any() ?? false) ? string.Join(", ", exam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet") </td> 
 							<td> @(exam.IsGuarded ? "Ja" : "Nej") </td> <td> @(exam.NeedExternalExaminer ? "Ja" : "Nej") </td> <td> @exam.FirstExamDate </td> <td> @exam.LastExamDate </td>
 							<td> @exam.HandInDeadline </td> 
-							<td> @exam.DurationInMinutes minutter </td> 
-						    	<td> <form method="get"> <a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" style="float: left;" type="submit"> Opdater </a> </form></td> 
-								<td> <form method="get"> <a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit"> Slet </a> </form></td> 
-			    </tr>
+							<td> @exam.DurationInMinutes minutter </td>
+					<td> @exam.ExamComment </td>
+						    <td> <form method="get"> <a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" style="float: left;" type="submit"> Opdater </a> </form></td> 
+							<td> <form method="get"> <a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit"> Slet </a> </form></td> 
+				</tr>
 			}
 		</tbody>
 	</table>
@@ -265,9 +267,17 @@
 										Eksmaens varighed
 									</th>
 									<td>
-											<input asp-for="Exam.DurationInMinutes" class="form-control" required />
+										<input asp-for="Exam.DurationInMinutes" class="form-control" required />
 									</td>
                                 </tr>
+								<tr>
+									<th scope="col">
+											Kommentar
+									</th>
+									<td>
+										<input asp-for="Exam.ExamComment" class="form-control" maxlength="255"/>
+									</td>
+								</tr>
                             </tbody>
 						</table>
 					</div>
@@ -428,6 +438,13 @@
 									<td>@Model.Exam.DurationInMinutes</td>
 									<td>
 										<input asp-for="Exam.DurationInMinutes" class="form-control" />
+									</td>
+								</tr>
+								<tr>
+									<td>Kommentar</td>
+									<td>@Model.Exam.ExamComment</td>
+									<td>
+										<input asp-for="Exam.ExamComment" class="form-control" maxlength="255" />
 									</td>
 								</tr>
 							</tbody>
