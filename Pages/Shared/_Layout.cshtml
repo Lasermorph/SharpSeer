@@ -40,6 +40,22 @@
                             <a class="nav-link" style="color:#ffff" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                     </ul>
+                    @{
+						var roleCookie = Context.Request.Cookies["IsTeacher"];
+                    }
+                    <form method="post" asp-page="/RoleSelector" class="d-flex align-items-center" >
+						@Html.AntiForgeryToken()
+                        <label class="me-2 mb-0 text-white">Rolle</label>
+                        <select name="IsTeacher" class="form-select-sm me-2" style="width:120px;">
+                            @if (string.IsNullOrEmpty(roleCookie))
+                                {
+                                <option value="" selected="@(string.IsNullOrEmpty(roleCookie) ? "selected" : null)">vælg...</option>
+                                }
+                             <option value="false" selected="@(roleCookie == "false" ? "selected" : null)">Elev</option>
+							 <option value="true" selected="@(roleCookie == "true" ? "selected" : null)">Lærer</option>
+                        </select>
+                        <button type="submit" class="btn btn-outline-light btn-sm">Gem</button>
+                    </form>
                 </div>
             </div>
         </nav>

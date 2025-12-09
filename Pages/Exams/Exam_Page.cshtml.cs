@@ -22,6 +22,9 @@ namespace SharpSeer.Pages.Exams
         public List<Exam> TestExams { get; set; } = new List<Exam>();
 
         [BindProperty(SupportsGet = true)]
+        public bool? IsTeacher { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string Name { get; set; } = null!;
         [BindProperty(SupportsGet = true)]
         public ExamTypeEnum? ExamType { get; set; }
@@ -83,6 +86,15 @@ namespace SharpSeer.Pages.Exams
         }
         public void OnGet()
         {
+            if (Request.Cookies.ContainsKey("IsTeacher"))
+            {
+                var cookie = Request.Cookies["IsTeacher"];
+                if (!string.IsNullOrEmpty(cookie))
+                {
+                    IsTeacher = cookie == "true";
+                }
+            }
+
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
             foreach (var q in QKeys)
             {
@@ -283,6 +295,10 @@ namespace SharpSeer.Pages.Exams
 
             m_examService.Create(Exam);
             return RedirectToPage("Exam_Page");
+        }
+        public IActionResult OnPostTeacher()
+        {
+            return RedirectToPage("Exam_Page", new { IsTeacher = IsTeacher });
         }
     }
 }
