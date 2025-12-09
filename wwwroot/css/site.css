@@ -178,25 +178,29 @@ footer {
 /* ----------------- KALENDER-STYLES ----------------- */
 ul {
     list-style-type: none;
+    border-radius: 25px;
+    padding: 20px 25px;
 }
 .month {
     padding: 20px 25px;
     width: 100%;
     background: #305030;
     text-align: center;
+    border-radius: 25px;
+    box-shadow: 0 5px 10px #8fbc8f;
 }
 
-.month ul {
-    margin: 1px;
-    padding: 1px;
-}
-
-    .month ul li {
-        color: #ffffff;
-        font-size: 25px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
+    .month ul {
+        margin: 1px;
+        padding: 1px;
     }
+
+        .month ul li {
+            color: #ffffff;
+            font-size: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
 
 .month .prev {
     float: left;
@@ -311,7 +315,6 @@ ul {
         .background > form button:hover {
             background-color: #8fbc8f; 
             color: white;
-            .calendar-top
         }
 
 .calendar-filter {

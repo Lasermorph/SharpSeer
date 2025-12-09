@@ -53,9 +53,10 @@ public partial class Exam
         get { return m_examComment; }
         set 
         { 
-            if (value.Length < 256)
+            if (value == null || value.Length < 256)
             m_examComment = value;
-        } 
+            
+        }
     } 
 
     public virtual ICollection<Cohort> Cohorts { get; set; } = new List<Cohort>();
