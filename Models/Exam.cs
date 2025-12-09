@@ -7,23 +7,23 @@ namespace SharpSeer.Models;
 public partial class Exam
 {
    public enum ExamTypeEnum
-    {
+    {                                                   // Overlap accepted
         [Display(Name = "Skriftlig")]
-        Skriftlig = 1,
+        Skriftlig = 1,                                  // none
         [Display(Name = "Mundtlig")]
-        Mundtlig = 2,
+        Mundtlig = 2,                                   // none
         [Display(Name = "Projekt")]
-        Projekt = 3,
+        Projekt = 3,                                    // none
         [Display(Name = "Skriftlig Re-Examen")]
-        Skriftlig_Re_Examen = 4,
+        Skriftlig_Re_Examen = 4,                        // Teacher
         [Display(Name = "Mundtlig Re-Examen")]
-        Mundtlig_Re_Examen = 5,
+        Mundtlig_Re_Examen = 5,                         // Teacher
         [Display(Name = "Projekt Re-Examen")]
-        Projekt_Re_Examen = 6,
+        Projekt_Re_Examen = 6,                          // Teacher
         [Display(Name = "Afsluttende Examen")]
-        Afsluttende = 7,
+        Afsluttende = 7,                                // Teacher
         [Display(Name = "Afsluttende Re-Examen")]
-        Afsluttende_Re_Examen = 8
+        Afsluttende_Re_Examen = 8                       // Teacher
     }
 
     public int Id { get; set; }

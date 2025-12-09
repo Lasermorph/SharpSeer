@@ -88,7 +88,14 @@
             {
                 <form method="post" asp-page-handler="SelectedExam" asp-route-examID="@exam.Id" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
                     <div>
-                        <button type="submit" class="btn exam">@exam.Name</button>
+						@if (Model.OverlappingExams.Contains(exam.Id))
+						{
+							<button type="submit" class="btn-danger exam">@exam.Name</button>
+						}
+						else
+						{
+							<button type="submit" class="btn exam">@exam.Name</button>
+						}
                     </div>
                 </form>
             }

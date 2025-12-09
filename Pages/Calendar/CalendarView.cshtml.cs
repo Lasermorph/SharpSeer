@@ -56,6 +56,9 @@ namespace MyApp.Namespace
         public int TeacherID { get; set; }
         public Teacher? SelectedTeacher { get; set; }
         public Cohort? SelectedCohort { get; set; }
+        public List<int> OverlappingExams { get; set; } = new List<int>();
+        public LinkedList<Teacher>? OverlappingTeacher { get; set; } = null;
+        public LinkedList<Cohort>? OverlappingCohort { get; set; } = null;
 
         public CalendarViewModel(SharpSeerDbContext dbContext, IService<Exam> service, IService<Cohort> cohortService, IService<Teacher> teacherService)
         {
@@ -94,6 +97,7 @@ namespace MyApp.Namespace
             GetMonth();
 			GetDataFromDatabase();
             SetJunctionTable();
+            GetOverlapping();
         }
 
         public void OnPostGetTeacher(int teacherID, int month, int year)
@@ -175,8 +179,13 @@ namespace MyApp.Namespace
                 {
                     if (exam.Teachers.Contains(teacher))
                     {
-                        m_service.Update(SelectedExam);
-                        return RedirectToPage("/Cohorts/Cohort_Page");
+                        if (exam.ExamType < 4 && SelectedExam.ExamType < 4)
+                        {
+                            OverlappingExams.Add(exam.Id);
+                            OverlappingExams.Add(SelectedExam.Id);
+                            OverlappingTeacher ??= new LinkedList<Teacher>();
+                            OverlappingTeacher.AddLast(teacher);
+                        }
                     }
                 }
 
@@ -184,8 +193,10 @@ namespace MyApp.Namespace
                 {
                     if (exam.Cohorts.Contains(cohort))
                     {
-                        m_service.Update(SelectedExam);
-                        return RedirectToPage("/Cohorts/Cohort_Page");
+                        OverlappingExams.Add(exam.Id);
+                        OverlappingExams.Add(SelectedExam.Id);
+                        OverlappingCohort ??= new LinkedList<Cohort>();
+                        OverlappingCohort.AddLast(cohort);
                     }
                 }
             }
@@ -255,6 +266,49 @@ namespace MyApp.Namespace
             ShowUpdate = true;
             GetDataFromDatabase();
             SetJunctionTable();
+        }
+
+        public void GetOverlapping()
+        {
+            List<Exam> exams = m_service.GetAll().Where(e => e.FirstExamDate >= m_selectedDateTime).ToList();
+            for (int i = 0; i < exams.Count; i++)
+            {
+                foreach (Exam exam in exams)
+                {
+                    if (exam.Id == exams[i].Id)
+                    {
+                        continue;
+                    }
+
+                    if (exam.LastExamDate >= exams[i].FirstExamDate && exam.FirstExamDate <= exams[i].LastExamDate)
+                    {
+                        foreach (Teacher teacher in exams[i].Teachers)
+                        {
+                            if (exam.Teachers.Contains(teacher))
+                            {
+                                if (exam.ExamType < 4 && exams[i].ExamType < 4)
+                                {
+                                    OverlappingExams.Add(exam.Id);
+                                    OverlappingExams.Add(exams[i].Id);
+                                    OverlappingTeacher ??= new LinkedList<Teacher>();
+                                    OverlappingTeacher.AddLast(teacher);
+                                }
+                            }
+                        }
+
+                        foreach (Cohort cohort in exams[i].Cohorts)
+                        {
+                            if (exam.Cohorts.Contains(cohort))
+                            {
+                                OverlappingExams.Add(exam.Id);
+                                OverlappingExams.Add(exams[i].Id);
+                                OverlappingCohort ??= new LinkedList<Cohort>();
+                                OverlappingCohort.AddLast(cohort);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public void SetJunctionTable()
