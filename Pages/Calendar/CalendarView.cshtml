@@ -10,17 +10,29 @@
 <body class="background">
 
 	<h1> Kalender oversigt </h1>
+<form method="post" asp-page-handler="GetTeacher" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+	<div class="d-flex align-items-center gap-2">
+		<select class="form-control form-control-m w-auto" id="teacher" name="TeacherID">
+			@foreach (Teacher teacher in Model.Teachers)
+			{
+				<option value="@teacher.Id">@teacher.Name</option>
+			}
+		</select>
+		<button class="form-control form-control-m w-auto" type="submit">vælg</button>
+	</div>
+</form>
 
-	<div class="calendar-filter">
-		<form method="post" asp-page-handler="GetTeacher" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
-			<select id="teacher" name="TeacherID">
-				@foreach (Teacher teacher in Model.Teachers)
-				{
-					<option value="@teacher.Id">@teacher.Name</option>
-				}
-			</select>
-			<button type="submit">vælg</button>
-		</form>
+<form method="post" asp-page-handler="GetCohort" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+	<div class="d-flex align-items-center gap-2">
+		<select class="form-control form-control-m w-auto" id="cohort" name="CohortID">
+			@foreach (Cohort cohort in Model.Cohorts)
+			{
+				<option value="@cohort.Id">@cohort.Name</option>
+			}
+		</select>
+		<button class="form-control form-control-m w-auto" type="submit">vælg</button>
+	</div>
+</form>
 
 		<form method="post" asp-page-handler="GetCohort" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
 			<select id="cohort" name="CohortID">
