@@ -7,9 +7,7 @@
 }
 
 
-<body>
-	<body class="background">
-	</body>
+<body class="background">
 
 	<h1> Kalender oversigt </h1>
 <form method="post" asp-page-handler="GetTeacher" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
@@ -36,8 +34,20 @@
 	</div>
 </form>
 
+		<form method="post" asp-page-handler="GetCohort" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+			<select id="cohort" name="CohortID">
+				@foreach (Cohort cohort in Model.Cohorts)
+				{
+					<option value="@cohort.Id">@cohort.Name</option>
+				}
+			</select>
 
-<h1>CSS Calendar</h1>
+			<button type="submit">vælg</button>
+		</form>
+	</div>
+
+
+<h1></h1>
 
 <div class="month">
   <ul>

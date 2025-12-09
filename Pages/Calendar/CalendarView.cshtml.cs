@@ -137,7 +137,7 @@ namespace MyApp.Namespace
 			ExamButtons = new LinkedList<Exam>(buttons);
 			ExamToBeDeleted = new List<Exam>(3);
         }
-
+     
         public IActionResult OnPostUpdate(int id)
         {
             SelectedExam.Id = id;
