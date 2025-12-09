@@ -40,6 +40,18 @@
 	𝕲𝖆𝖒𝖊𝖗 𝖌𝖔𝖉 42
 	gamergod42
 
+		<form method="post" asp-page-handler="GetCohort" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
+			<select id="cohort" name="CohortID">
+				@foreach (Cohort cohort in Model.Cohorts)
+				{
+					<option value="@cohort.Id">@cohort.Name</option>
+				}
+			</select>
+
+			<button type="submit">vælg</button>
+		</form>
+	</div>
+
 
 
 	<div class="month">
