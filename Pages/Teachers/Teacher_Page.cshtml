@@ -5,8 +5,10 @@
 }
 <h2>Lærer oversigt</h2>
 
-<a class="btn btn-primary" href="/Teachers/Teacher_Page/?Create=0">Tilføj</a>
-
+@if (Model.IsTeacher == true)
+{
+	<a class="btn btn-primary" href="/Teachers/Teacher_Page/?Create=0">Tilføj</a>
+}
 
 <form method="get" class="search-form">
 	<table class="table table-search">
@@ -53,15 +55,22 @@
 				<td>@teacher.Email</td>
 				<td>@teacher.PhoneNumber</td>
 				<td>@(teacher.IsExternal == true ? "Ja" : teacher.IsExternal == false ? "Nej" : "")</td>
+				@if (Model.IsTeacher == true)
+				{
 				<td><a href="/Teachers/Teacher_Page/?Update=@teacher.Id" class="btn btn-primary">Opdater</a></td>
 				<td><a href="/Teachers/Teacher_Page/?Delete=@teacher.Id" class="btn btn-danger">Slet</a></td>
+				}
+				else
+				{
+					<td></td>
+					<td></td>
+				}
 			</tr>
 		}
 	</tbody>
 </table>
 
-
-@if (Model.ShowDelete)
+@if (Model.ShowDelete && Model.IsTeacher == true)
 {
 	
 	<!-- Modal -->
@@ -89,7 +98,7 @@
 	</div>
 }
 
-@if (Model.ShowCreate)
+@if (Model.ShowCreate && Model.IsTeacher == true)
 {
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
@@ -162,7 +171,7 @@
 	</div>
 }
 
-@if (Model.ShowUpdate)
+@if (Model.ShowUpdate && Model.IsTeacher == true)
 {
 	<!-- Modal -->
 	<div style="display: block;" class="modal" id="myModal">
@@ -234,6 +243,7 @@
 		</div>
 	</div>
 }
+
 <body class="background">
 </body>
 

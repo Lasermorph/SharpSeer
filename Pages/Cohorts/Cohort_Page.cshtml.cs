@@ -12,7 +12,9 @@ namespace SharpSeer.Pages.Cohorts
         public bool ShowDelete { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
-        
+        [BindProperty(SupportsGet = true)]
+        public bool IsTeacher { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Name { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -32,6 +34,8 @@ namespace SharpSeer.Pages.Cohorts
             Cohorts = m_service.GetAll();
             Cohort = new Cohort();
         }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GetQueryValues(in string q)
         {
@@ -40,6 +44,15 @@ namespace SharpSeer.Pages.Cohorts
         }
         public void OnGet()
         {
+            if (Request.Cookies.ContainsKey("IsTeacher"))
+            {
+                var cookie = Request.Cookies["IsTeacher"];
+                if (!string.IsNullOrEmpty(cookie))
+                {
+                    IsTeacher = cookie == "true";
+                }
+            }
+
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
             foreach (var q in QKeys)
             {

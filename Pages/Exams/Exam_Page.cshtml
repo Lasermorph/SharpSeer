@@ -10,9 +10,11 @@
 <body class="background"></body>
 <body class="@((Model.SetOverflow) ? "noScroll": "")">
 
-
-<a class="btn btn-primary" href="/Exams/Exam_Page/?Create=0">Tilføj</a>
-
+<h1 class="page-title">Eksamener</h1>
+	@if (Model.IsTeacher == true)
+	{
+		<a class="btn btn-primary" href="/Exams/Exam_Page/?Create=0">Tilføj</a>
+	}
 	<form method="get" class="search-form">
 		<table class="table table-search">
 			<thead>
@@ -27,20 +29,20 @@
 					</th>
 
 					<th>
-						<select name="teachers" id="teacher" class="form-select">
+						<select asp-for="NameId" class="form-select">
 							<option value="">Navn på underviseren</option>
 							@foreach (var teacher in Model.TeachersAll)
 							{
-								<option value="@teacher.Id">@teacher.Name</option>
+								<option value="@teacher.NameId">@teacher.NameId</option>
 							}
 						</select>
 					</th>
 				<th>
-						<select name="cohorts" id="cohort"class="form-select">
+						<select asp-for="CohortName" class="form-select">
 						<option value="">Navn på hold</option>
 						@foreach (var cohort in Model.CohortsAll)
 						{
-							<option value="@cohort.Id">@cohort.Name</option>
+								<option value="@cohort.Name">@cohort.Name</option>
 						}
 			        	</select>
 				</th>
@@ -71,7 +73,8 @@
 
 			<th>
 				<button type="submit" class="btn btn-search">Søg</button>
-					</th>
+					
+				</th>
 				</tr>
 			</thead>
 		</table>
@@ -106,23 +109,29 @@
 							@((ExamTypeEnum)exam.ExamType) 
 						</td>
 							<td scope="col"> @((exam.Cohorts?.Any() ?? false) ? string.Join(", ", exam.Cohorts.Select(c => c.Name)) : "Ingen hold tilknyttet") </td>
-							<td scope="col"> @((exam.Teachers?.Any() ?? false) ? string.Join(", ", exam.Teachers.Select(t => t.Name)) : "Ingen underviser tilknyttet") </td> 
+							<td scope="col"> @((exam.Teachers?.Any() ?? false) ? string.Join(", ", exam.Teachers.Select(t => t.NameId)) : "Ingen underviser tilknyttet") </td> 
 							<td> @(exam.IsGuarded ? "Ja" : "Nej") </td> <td> @(exam.NeedExternalExaminer ? "Ja" : "Nej") </td> <td> @exam.FirstExamDate </td> <td> @exam.LastExamDate </td>
 							<td> @exam.HandInDeadline </td> 
 							<td> @exam.DurationInMinutes minutter </td>
-				        	<td> @exam.EstimatedStudentCount </td>
-				        	<td> @exam.ExamComment </td>
-						    <td> <form method="get"> <a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" style="float: left;" type="submit"> Opdater </a> </form></td> 
-							<td> <form method="get"> <a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit"> Slet </a> </form></td> 
+					<td> @exam.ExamComment </td>
+					@if (Model.IsTeacher == true)
+					{
+						<td> <form method="get"> <a href="/Exams/Exam_page/?Update=@exam.Id" class="btn btn-primary" style="float: left;" type="submit"> Opdater </a> </form></td> 
+						<td> <form method="get"> <a href="/Exams/Exam_Page/?Delete=@exam.Id" class="btn btn-danger" style="margin-left: 1rem;" type="submit"> Slet </a> </form></td> 
+					}
+					else
+					{
+						<td></td>
+						<td></td>
+					}
 				</tr>
 			}
 		</tbody>
 	</table>
 	
 
-@if (Model.ShowDelete)
-{
-
+	@if (Model.ShowDelete && Model.IsTeacher == true)
+	{
 	<!-- Modal -->
 		<div style="display: block;" class="modal" id="myModal">
 		<div class="modal-dialog">
@@ -147,7 +156,7 @@
 		</div>
 	</div>
 }	
-@if (Model.ShowCreate)
+	@if (Model.ShowCreate && Model.IsTeacher == true)
 {
 	
 	<!-- Modal -->
@@ -306,7 +315,7 @@
 	</div>
 }
 
-@if (Model.ShowUpdate)
+	@if (Model.ShowUpdate && Model.IsTeacher == true)
 {
 	
 	<!-- Modal -->
@@ -481,7 +490,6 @@
 		</div>
 	</div>
 }
-
 @if (Model.ShowCalendar)
 {
 

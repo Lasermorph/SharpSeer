@@ -3,9 +3,10 @@
 @{
 }
 <h1>Hold Oversigt</h1>
-
+@if (Model.IsTeacher == true)
+{
 <a class="btn btn-primary" href="/Cohorts/Cohort_Page/?Create=0">Tilføj</a>
-
+}
 <form method="get" class="search-form">
 	<table class="table table-search">
 		<thead>
@@ -45,15 +46,23 @@
 				<td>@cohort.Name</td>
 				<td>@cohort.Major</td>
 				<td>@cohort.Term</td>
+				@if (Model.IsTeacher == true)
+				{
 				<td><a href="/Cohorts/Cohort_Page/?Update=@cohort.Id" class="btn btn-primary">Opdater</a></td>
-				<td><a href="/Cohorts/Cohort_Page/?Update=@cohort.Id" class="btn btn-danger">Slet</a></td>
+				<td><a href="/Cohorts/Cohort_Page/?Delete=@cohort.Id" class="btn btn-danger">Slet</a></td>
+				}
+				else
+				{	
+				<td> </td>
+				<td> </td>
+				}
 			</tr>
 		}
 	</tbody>
 </table>
 
 <!-- Modal -->
-@if (Model.ShowDelete)
+@if (Model.ShowDelete && Model.IsTeacher == true)
 {
 	
 	<!-- Modal -->
@@ -81,7 +90,7 @@
 	</div>
 }
 
-@if (Model.ShowCreate)
+@if (Model.ShowCreate && Model.IsTeacher == true)
 {
 	<style>
 		.modal {
@@ -106,7 +115,7 @@
 							<tbody>
 								<tr>
 									<th scope="col">
-										Navn
+										Navn	
 									</th>
 									<td>
 										<input asp-for="Cohort.Name" class="form-control" required/>
@@ -143,7 +152,7 @@
 	</div>
 }
 
-@if (Model.ShowUpdate)
+@if (Model.ShowUpdate && Model.IsTeacher == true)
 {
 
 	<!-- Modal -->
@@ -198,6 +207,7 @@
 		</div>
 	</div>
 }
+
 <body class="background">
 </body>
 
