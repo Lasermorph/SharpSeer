@@ -47,7 +47,7 @@ namespace SharpSeer.Pages.Exams
         public DateTime? HandInDeadline { get; set; }
         [BindProperty(SupportsGet = true)]
         public int DurationInMinutes { get; set; }
-
+        public int EstimatedStudentCount { get; set; }  
         [BindProperty(SupportsGet = true)]
         public string QueryString { get; set; } = string.Empty;
 
@@ -187,6 +187,12 @@ namespace SharpSeer.Pages.Exams
                             Exams = Exams.Where(t => t.DurationInMinutes == DurationInMinutes);
                         }
                         break;
+                    case "EstimatedStudentCount":
+                        if (EstimatedStudentCount != 0)
+                        {
+                            Exams = Exams.Where(t => t.EstimatedStudentCount != null && t.EstimatedStudentCount == EstimatedStudentCount);
+                        }
+                        break;  
                 }
             }
             EndOfLoop:;
