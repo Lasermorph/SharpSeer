@@ -20,12 +20,19 @@ namespace SharpSeer.Pages.Exams
         public bool ShowCalendar { get; set; } = false;
         public string ExamComment { get; set; } = string.Empty;
         public List<Exam> TestExams { get; set; } = new List<Exam>();
-
+        
         [BindProperty(SupportsGet = true)]
         public bool? IsTeacher { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Name { get; set; } = null!;
+
+        [BindProperty(SupportsGet = true)]
+        public string NameId { get; set; } = null!;
+
+        [BindProperty(SupportsGet =true)]
+        public string CohortName { get; set; } = null!;
+
         [BindProperty(SupportsGet = true)]
         public ExamTypeEnum? ExamType { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -122,7 +129,18 @@ namespace SharpSeer.Pages.Exams
                             Exams = Exams.Where(t => t.Name.Contains(Name, StringComparison.OrdinalIgnoreCase));
                         }
                         break;
-                    
+                    case "NameId":
+                        if (!string.IsNullOrEmpty(NameId))
+                        {
+                            Exams = Exams.Where(t => t.Teachers.Any(teacher => teacher.NameId.Contains(NameId, StringComparison.OrdinalIgnoreCase)));
+                        }
+                        break;
+                    case "CohortName":
+                        if (!string.IsNullOrEmpty(CohortName))
+                        {
+                            Exams = Exams.Where(t => t.Cohorts.Any(cohort => cohort.Name.Contains(CohortName, StringComparison.OrdinalIgnoreCase)));
+                        }
+                        break;
                     case "ExamType":
                         if (ExamType.HasValue)
                             Exams = Exams.Where(t => t.ExamType == (int)ExamType.Value);

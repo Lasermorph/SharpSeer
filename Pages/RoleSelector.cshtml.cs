@@ -15,7 +15,7 @@ namespace SharpSeer.Pages
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = false,
-                    Expires = DateTimeOffset.UtcNow.AddSeconds(30)
+                    Expires = DateTimeOffset.UtcNow.AddDays(30)
                 };
                 Response.Cookies.Append("IsTeacher", IsTeacher.Value ? "true" : "false", cookieOptions);
             }

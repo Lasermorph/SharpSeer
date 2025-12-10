@@ -9,7 +9,6 @@ namespace SharpSeer.Pages.Teachers
 {
     public class Teacher_PageModel : PageModel
     {
-
         public bool ShowDelete { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
@@ -17,8 +16,11 @@ namespace SharpSeer.Pages.Teachers
         public string Email { get; set; }
         [BindProperty(SupportsGet = true)]
         public string PhoneNumber { get; set; }
-        [BindProperty(SupportsGet =true)]
+        [BindProperty(SupportsGet = true)]
         public string Name { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public bool IsTeacher { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string NameId { get; set; }
@@ -50,6 +52,16 @@ namespace SharpSeer.Pages.Teachers
        
         public void OnGet()
         {
+
+            if (Request.Cookies.ContainsKey("IsTeacher"))
+            {
+                var cookie = Request.Cookies["IsTeacher"];
+                if (!string.IsNullOrEmpty(cookie))
+                {
+                    IsTeacher = cookie == "true";
+                }
+            }
+
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
             foreach (var q in QKeys)
             {
