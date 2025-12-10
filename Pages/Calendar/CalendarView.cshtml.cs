@@ -28,6 +28,8 @@ namespace MyApp.Namespace
         public DateTime CurrentTime { get; set; } = DateTime.Now;
         public DateTime LastDateInMonth { get; set; }
 		private DateTime m_selectedDateTime;
+        [BindProperty (SupportsGet = true)]
+        public DateTime SelectedDateTime { get; set; }
         public int DaysInMonth { get; set; } = 0;
         public int Year { get; set; } = 0;
         public int Month { get; set; } = 0;
@@ -238,6 +240,7 @@ namespace MyApp.Namespace
         {
             DaysInMonth = DateTime.DaysInMonth(Year, Month);
             m_selectedDateTime = new DateTime(Year, Month, 1);
+            SelectedDateTime = m_selectedDateTime;
             DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
             FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
             MonthStr = GetMonthName(Month);
@@ -266,6 +269,11 @@ namespace MyApp.Namespace
             ShowUpdate = true;
             GetDataFromDatabase();
             SetJunctionTable();
+        }
+
+        public void UpdateDateTime(int day)
+        {
+            SelectedDateTime = new DateTime(Year, Month, day);
         }
 
         public void GetOverlapping()

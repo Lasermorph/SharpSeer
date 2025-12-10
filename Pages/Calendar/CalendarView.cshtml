@@ -71,20 +71,16 @@
   
   @for (int day = 1; day <= Model.DaysInMonth; day++)
   {
+	{Model.UpdateDateTime(day);}
     <li>@day
         @foreach (Models.Exam exam in Model.ExamButtons)
         {
-            if(exam.FirstExamDate.Day > day)
-            {
-                break;
-            }
-
-            if (exam.LastExamDate.Day < day)
+            if (exam.LastExamDate < Model.SelectedDateTime)
             {
                 Model.ExamToBeDeleted.Add(exam);
             }
             
-            if (exam.FirstExamDate.Day <= day && exam.LastExamDate.Day >= day)
+            if (exam.FirstExamDate <= Model.SelectedDateTime && exam.LastExamDate >= Model.SelectedDateTime)
             {
                 <form method="post" asp-page-handler="SelectedExam" asp-route-examID="@exam.Id" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
                     <div>
