@@ -392,3 +392,17 @@ ul {
     margin: 20px 40px;
     box-shadow: 0 5px 10px #888888; 
 }
+
+.finalExam
+{
+    background-color:  #ae7beb;
+    font-size: 0.5vw;
+    margin-bottom: 0.2rem;
+}
+
+.re-finalExam
+{
+    background-color:  #d1a9eb;
+    font-size: 0.5vw;
+    margin-bottom: 0.2rem;
+}

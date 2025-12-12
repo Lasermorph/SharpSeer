@@ -89,12 +89,13 @@
                     <div>
 						@if (Model.OverlappingExams.Contains(exam.Id))
 						{
-							<button type="submit" class="btn danger exam">@exam.Name</button>
+							{Model.GetExamType(exam);}
+							<button type="submit" class="btn danger @Model.ExamColor">@Model.ExamDisplayName</button>
 						}
 						else
 						{
 							{Model.GetExamType(exam);}
-							<button type="submit" class="btn exam">@exam.Name</button>
+							<button type="submit" class="btn @Model.ExamColor">@Model.ExamDisplayName</button>
 						}
                     </div>
                 </form>

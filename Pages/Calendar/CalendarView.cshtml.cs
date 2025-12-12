@@ -64,6 +64,8 @@ namespace MyApp.Namespace
         public List<Tuple<Exam, Teacher>>? OverlappingTeacher { get; set; } = null;
         public List<Tuple<Exam, Cohort>>? OverlappingCohort { get; set; } = null;
         public string OverlappingStr { get; set; } = "";
+        public string ExamColor { get; set; } = "exam";
+        public string ExamDisplayName { get; set; } = "";
 
         public CalendarViewModel(SharpSeerDbContext dbContext, IService<Exam> service, IService<Cohort> cohortService, IService<Teacher> teacherService)
         {
@@ -334,7 +336,36 @@ namespace MyApp.Namespace
             switch ((Exam.ExamTypeEnum)exam.ExamType)
             {
                 case Exam.ExamTypeEnum.Skriftlig:
-
+                    ExamColor = "exam";
+                    ExamDisplayName = "📝 " + exam.Name;
+                    break;
+                case Exam.ExamTypeEnum.Mundtlig:
+                    ExamColor = "exam";
+                    ExamDisplayName = "🗣️ " + exam.Name;
+                    break;
+                case Exam.ExamTypeEnum.Projekt:
+                    ExamColor = "exam";
+                    ExamDisplayName = "💻 " + exam.Name;
+                    break;
+                case Exam.ExamTypeEnum.Skriftlig_Re_Examen:
+                    ExamColor = "re-exam";
+                    ExamDisplayName = "🔁📝 " + exam.Name;
+                    break;
+                case Exam.ExamTypeEnum.Mundtlig_Re_Examen:
+                    ExamColor = "re-exam";
+                    ExamDisplayName = "🔁🗣️ " + exam.Name;
+                    break;
+                case Exam.ExamTypeEnum.Projekt_Re_Examen:
+                    ExamColor = "re-exam";
+                    ExamDisplayName = "🔁💻 " + exam.Name;
+                    break;
+                case Exam.ExamTypeEnum.Afsluttende:
+                    ExamColor = "finalExam";
+                    ExamDisplayName = "🎓 " + exam.Name;
+                    break;
+                case Exam.ExamTypeEnum.Afsluttende_Re_Examen:
+                    ExamColor = "re-finalExam";
+                    ExamDisplayName = "🔁🎓 " + exam.Name;
                     break;
             }
         }
