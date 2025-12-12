@@ -50,19 +50,6 @@ namespace SharpSeer.Services
             context.Entry(entity).CurrentValues.SetValues(cohort);
             context.SaveChanges();
         }
-        public void Update(Cohort cohort, int id)
-        {
-            var entity = context.Cohorts.Find(id);
-            if (entity == null)
-            {
-                throw new NotImplementedException();
-            }
-            //context.Entry(entity).CurrentValues.SetValues(cohort);
-            entity.Name = cohort.Name;
-            entity.Major = cohort.Major;
-            entity.Term = cohort.Term;
-            context.SaveChanges();
-        }
     }
 }
 

@@ -15,7 +15,7 @@ namespace SharpSeer.Pages.Exams
         public bool ShowDelete { get; set; } = false;
         public bool ShowCreate { get; set; } = false;
         public bool ShowUpdate { get; set; } = false;
-        public bool AreYouAnIdiot { get; set;} = false;
+        public bool IsInvalidDate { get; set;} = false;
         public bool SetOverflow { get; set; } = false;
         public bool ShowCalendar { get; set; } = false;
         public string ExamComment { get; set; } = string.Empty;
@@ -79,17 +79,6 @@ namespace SharpSeer.Pages.Exams
         {
             HttpContext.Request.Query.TryGetValue(q, out var value);
             Exam = m_examService.GetById(int.Parse(value));
-        }
-        public void GetTime(DateTime start, DateTime end)
-        {
-            foreach(Exam e in Exams)
-            {
-                if (e.FirstExamDate >= start || e.FirstExamDate <= e.LastExamDate || e.LastExamDate <= end)
-                {
-                    TestExams.Add(e);
-                }
-            }
-            Exams = TestExams;
         }
         public void OnGet()
         {
@@ -160,7 +149,7 @@ namespace SharpSeer.Pages.Exams
                     case "FirstExamDate":
                         if (FirstExamDate > LastExamDate)
                         {
-                            AreYouAnIdiot = true;                            
+                            IsInvalidDate = true;                            
                         }
                         else
                         {
@@ -173,6 +162,7 @@ namespace SharpSeer.Pages.Exams
                     case "LastExamDate":
                         if (LastExamDate != DateTime.MinValue)
                         {
+                            Exams = Exams.Where(t => t.FirstExamDate.Date >= LastExamDate.Date && t.LastExamDate.Date <= FirstExamDate.Date);
                         }
                         break;
                     case "HandInDeadline":
@@ -206,42 +196,6 @@ namespace SharpSeer.Pages.Exams
 
         }
 
-        public IActionResult OnPost()
-        {
-            ICollection<string> QKeys = HttpContext.Request.Query.Keys;
-            bool isDone = false;
-            foreach (var q in QKeys)
-            {
-                switch (q)
-                {
-                    case "Delete":
-
-                        GetQueryValues(q);
-                        m_examService.Delete(Exam);
-                        goto EndOfLoop;
-                    case "Create":
-                        HttpContext.Request.Query.TryGetValue(q, out var value);
-                        m_examService.Create(Exam);
-                        isDone = true;
-                        break;
-                    case "Update":
-                        GetQueryValues(q);
-                        m_examService.Update(Exam);
-                        isDone = true;
-                        break;
-                }
-                if (isDone)
-                {
-                    break;
-                }
-            }
-        EndOfLoop:
-            //HttpContext.Request.Query.TryGetValue("Delete", out var actionValue);
-            //m_service.Delete(m_service.GetById(int.Parse(actionValue)));
-            return RedirectToPage("Exam_Page");
-
-        }
-
         public IActionResult OnPostDelete(int id)
         {
             Exam.Id = id;
@@ -264,15 +218,6 @@ namespace SharpSeer.Pages.Exams
             Exam.Id = id;
             Exam.ExamType = (int)ExamType.Value;
 
-            if (IsGuarded.HasValue)
-            {
-                Exam.IsGuarded = IsGuarded.Value;
-            }
-            if (NeedExternalExaminer.HasValue)
-            {
-                Exam.NeedExternalExaminer = NeedExternalExaminer.Value;
-            }
-
             foreach (var cohortId in Cohorts)
             {
                 var cohort = m_cohortService.GetById(cohortId);
@@ -292,9 +237,11 @@ namespace SharpSeer.Pages.Exams
 
             CohortsAll = m_cohortService.GetAll();
             TeachersAll = m_teacherService.GetAll();
+            Exam.ExamType = (int)ExamType;
 
             if (Cohorts == null || Cohorts.Count == 0)
             {
+                // nameof referce to the html element with name = Cohorts
                 ModelState.AddModelError(nameof(Cohorts), "Vælg mindst ét hold.");
                 ShowCreate = true;
                 return Page();
@@ -305,7 +252,7 @@ namespace SharpSeer.Pages.Exams
                 ShowCreate = true;
                 return Page();
             }
-            Exam.ExamType = (int)ExamType;
+
             foreach (var cohortId in Cohorts)
             {
                 var cohort = m_cohortService.GetById(cohortId);
@@ -319,10 +266,6 @@ namespace SharpSeer.Pages.Exams
 
             m_examService.Create(Exam);
             return RedirectToPage("Exam_Page");
-        }
-        public IActionResult OnPostTeacher()
-        {
-            return RedirectToPage("Exam_Page", new { IsTeacher = IsTeacher });
         }
     }
 }

@@ -47,28 +47,9 @@
 			        	</select>
 				</th>
 
-				<th>
-					<th>
-						<select asp-for="IsGuarded" class="form-select">
-							<option value="">Alle</option>
-							<option value="true">Ja</option>
-							<option value="false">Nej</option>
-						</select>
-					</th>
-
-					<th>
-						<select asp-for="NeedExternalExaminer" class="form-select">
-							<option value="">Alle</option>
-							<option value="true">Ja</option>
-							<option value="false">Nej</option>
-						</select>
-					</th>
-
 			<th><input type="datetime" class="form-control" asp-for="FirstExamDate" placeholder="Første eksamens dag" /></th>
 			<th><input type="datetime" class="form-control" asp-for="LastExamDate" placeholder="Sidste eksamens dag" /></th>
 			<th><input type="datetime" class="form-control" asp-for="HandInDeadline" placeholder="Deadline for aflevering, hvis skriftlig" /></th>
-			<th><input type="number" min="0" class="form-control" asp-for="DurationInMinutes" placeholder="Eksamens varighed" /></th>
-			<th><input type="number" min="0" class="form-control" asp-for="EstimatedStudentCount" placeholder="Antal elever" /></th>
 
 
 			<th>
@@ -113,6 +94,7 @@
 							<td> @(exam.IsGuarded ? "Ja" : "Nej") </td> <td> @(exam.NeedExternalExaminer ? "Ja" : "Nej") </td> <td> @exam.FirstExamDate </td> <td> @exam.LastExamDate </td>
 							<td> @exam.HandInDeadline </td> 
 							<td> @exam.DurationInMinutes minutter </td>
+							<td> @exam.EstimatedStudentCount</td>
 					<td> @exam.ExamComment </td>
 					@if (Model.IsTeacher == true)
 					{

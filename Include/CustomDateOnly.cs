@@ -49,6 +49,7 @@ public class CustomDateOnly
         return -1;
     }
 
+    // If given object is bigger return 1, equal 0, or smaller -1 that this CustomDateOnly
     public int Comparer(in DateTime dateTime)
     {
         if (dateTime.Year == Year && dateTime.Month == Month && dateTime.Day == Day)

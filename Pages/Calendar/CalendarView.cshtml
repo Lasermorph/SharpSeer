@@ -78,7 +78,6 @@
         {
             if (Model.SelectedDateTime.Comparer(exam.LastExamDate) == -1)
             {
-                Model.ExamToBeDeleted.Add(exam);
                 continue;
             }
             
@@ -102,22 +101,8 @@
             }
         }
     </li>
-    @foreach (Exam examToBeDeleted in Model.ExamToBeDeleted)
-    {
-        Model.ExamButtons.Remove(examToBeDeleted);
-    }
-    @if (Model.ExamToBeDeleted.Count > 0)
-    {
-        Model.ExamToBeDeleted.Clear();
-    }
-
   }
 </ul> 
-
-@if (Model.ShowSelected)
-{
-
-}
 
 @if (Model.ShowUpdate)
 {

@@ -55,20 +55,5 @@ namespace SharpSeer.Services
             context.SaveChanges();
         }
 
-        public void Update(Teacher teacher, int id)
-        {
-            var entity = context.Teachers.Find(id);
-            if (entity == null) 
-            { 
-                throw new NotImplementedException(); 
-            }
-            entity.NameId = teacher.NameId;
-            entity.IsExternal = teacher.IsExternal;
-            entity.Name = teacher.Name;
-            entity.Email = teacher.Email;
-            entity.PhoneNumber = teacher.PhoneNumber;
-            context.SaveChanges();
-
-        }
     }
 }
