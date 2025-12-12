@@ -18,7 +18,6 @@ namespace MyApp.Namespace
     public class CalendarViewModel : PageModel
     {
         public LinkedList<Exam> ExamButtons { get; set; }
-		public List<Exam> ExamToBeDeleted { get; set; }
         [BindProperty (SupportsGet = true)]
         public List<int> CohortsID { get; set; }
         [BindProperty (SupportsGet = true)]
@@ -125,7 +124,6 @@ namespace MyApp.Namespace
                 .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime && e.Teachers.Any<Teacher>(t => t.Id == TeacherID))
                 .OrderBy(e => e.FirstExamDate);
 			ExamButtons = new LinkedList<Exam>(buttons);
-			ExamToBeDeleted = new List<Exam>(3);
         }
 
         public void OnPostGetCohort(int cohortID, int month, int year)
@@ -146,7 +144,6 @@ namespace MyApp.Namespace
                 .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime && 
                 e.Cohorts.Any<Cohort>(t => t.Id == cohortID)).OrderBy(e => e.FirstExamDate);
 			ExamButtons = new LinkedList<Exam>(buttons);
-			ExamToBeDeleted = new List<Exam>(3);
         }
      
         public IActionResult OnPostUpdate(int id, int month, int year)
@@ -232,7 +229,6 @@ namespace MyApp.Namespace
                 .Include(e => e.Teachers).Where(e => e.FirstExamDate <= LastDateInMonth && e.LastExamDate >= m_selectedDateTime)
                 .OrderBy(e => e.FirstExamDate);
 			ExamButtons = new LinkedList<Exam>(buttons);
-			ExamToBeDeleted = new List<Exam>(3);
 		}
 
         public void OnPostSelectedExam(int examID, int month, int year)
@@ -253,14 +249,14 @@ namespace MyApp.Namespace
             if (OverlappingExams.Contains(SelectedExam.Id) && OverlappingCohort != null && OverlappingTeacher != null)
             {
                 string overStr = "";
-                HashSet<string> examTeacher = new HashSet<string>();
+                HashSet<string> overHash = new HashSet<string>();
                 
                 foreach (Tuple<Exam, Cohort> tuple in OverlappingCohort)
                 {
                     if (tuple.Item1 == SelectedExam)
                     {
                         overStr = tuple.Item2.Name + ", ";
-                        examTeacher.Add(overStr);
+                        overHash.Add(overStr);
                     }
                 }
 
@@ -269,11 +265,11 @@ namespace MyApp.Namespace
                     if (tuple.Item1 == SelectedExam)
                     {
                         overStr = tuple.Item2.Name + ", ";
-                        examTeacher.Add(overStr);
+                        overHash.Add(overStr);
                     }
                 }
                 
-                foreach (string str in examTeacher)
+                foreach (string str in overHash)
                 {
                     OverlappingStr += str;
                 }
