@@ -71,25 +71,29 @@
   
   @for (int day = 1; day <= Model.DaysInMonth; day++)
   {
-	{Model.UpdateDateTime(day);}
+		{Model.UpdateDateTime(day);}
+	
     <li>@day
         @foreach (Models.Exam exam in Model.ExamButtons)
         {
-            if (exam.LastExamDate < Model.SelectedDateTime)
+            if (Model.SelectedDateTime.Comparer(exam.LastExamDate) == -1)
             {
                 Model.ExamToBeDeleted.Add(exam);
+                continue;
             }
             
-            if (exam.FirstExamDate <= Model.SelectedDateTime && exam.LastExamDate >= Model.SelectedDateTime)
+            if (Model.SelectedDateTime.Comparer(exam.FirstExamDate) == -1 || Model.SelectedDateTime.Comparer(exam.FirstExamDate) == 0 
+            && Model.SelectedDateTime.Comparer(exam.LastExamDate) == 1 || Model.SelectedDateTime.Comparer(exam.LastExamDate) == 0)
             {
                 <form method="post" asp-page-handler="SelectedExam" asp-route-examID="@exam.Id" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
                     <div>
 						@if (Model.OverlappingExams.Contains(exam.Id))
 						{
-							<button type="submit" class="btn-danger exam">@exam.Name</button>
+							<button type="submit" class="btn danger exam">@exam.Name</button>
 						}
 						else
 						{
+							{Model.GetExamType(exam);}
 							<button type="submit" class="btn exam">@exam.Name</button>
 						}
                     </div>
@@ -97,14 +101,15 @@
             }
         }
     </li>
-    foreach (Exam examToBeDeleted in Model.ExamToBeDeleted)
+    @foreach (Exam examToBeDeleted in Model.ExamToBeDeleted)
     {
         Model.ExamButtons.Remove(examToBeDeleted);
     }
-    if (Model.ExamToBeDeleted.Count > 0)
+    @if (Model.ExamToBeDeleted.Count > 0)
     {
         Model.ExamToBeDeleted.Clear();
     }
+
   }
 </ul> 
 
@@ -126,8 +131,17 @@
 					<a href="/Calendar/CalendarView" type="button" class="btn btn-close"></a>
 				</div>
 				<!-- Modal body -->
+				@if (Model.OverlappingStr != string.Empty)
+				{
+					<div class="overlappingBox">
+						<div>Overlap</div>
+						<div style="color: #ee1a1a;">
+							@Model.OverlappingStr
+						</div>
+					</div>
+				}
 			
-				<form method="post" asp-page-handler="Update" asp-route-id="@Model.SelectedExam.Id">
+				<form method="post" asp-page-handler="Update" asp-route-id="@Model.SelectedExam.Id" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
 				<div class="modal-body">
 					<table class="table">
 						<thead>

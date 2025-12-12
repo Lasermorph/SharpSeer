@@ -10,6 +10,8 @@ using SharpSeer.Models;
 using SharpSeer.Services;
 using System.IO;
 using Microsoft.IdentityModel.Tokens;
+using SharpSeer;
+using System.Runtime.CompilerServices;
 
 namespace MyApp.Namespace
 {
@@ -29,7 +31,7 @@ namespace MyApp.Namespace
         public DateTime LastDateInMonth { get; set; }
 		private DateTime m_selectedDateTime;
         [BindProperty (SupportsGet = true)]
-        public DateTime SelectedDateTime { get; set; }
+        public CustomDateOnly SelectedDateTime { get; set; }
         public int DaysInMonth { get; set; } = 0;
         public int Year { get; set; } = 0;
         public int Month { get; set; } = 0;
@@ -58,9 +60,10 @@ namespace MyApp.Namespace
         public int TeacherID { get; set; }
         public Teacher? SelectedTeacher { get; set; }
         public Cohort? SelectedCohort { get; set; }
-        public List<int> OverlappingExams { get; set; } = new List<int>();
-        public LinkedList<Teacher>? OverlappingTeacher { get; set; } = null;
-        public LinkedList<Cohort>? OverlappingCohort { get; set; } = null;
+        public HashSet<int> OverlappingExams { get; set; } = new HashSet<int>();
+        public List<Tuple<Exam, Teacher>>? OverlappingTeacher { get; set; } = null;
+        public List<Tuple<Exam, Cohort>>? OverlappingCohort { get; set; } = null;
+        public string OverlappingStr { get; set; } = "";
 
         public CalendarViewModel(SharpSeerDbContext dbContext, IService<Exam> service, IService<Cohort> cohortService, IService<Teacher> teacherService)
         {
@@ -144,8 +147,10 @@ namespace MyApp.Namespace
 			ExamToBeDeleted = new List<Exam>(3);
         }
      
-        public IActionResult OnPostUpdate(int id)
+        public IActionResult OnPostUpdate(int id, int month, int year)
         {
+            Month = month;
+            Year = year;
             SelectedExam.Id = id;
             SelectedExam.ExamType = (int)ExamType;
 
@@ -169,41 +174,11 @@ namespace MyApp.Namespace
                 SelectedExam.Teachers.Add(teacher);
             }
 
-            List<Exam> exams = m_service.GetAll().Where(e => e.LastExamDate >= SelectedExam.FirstExamDate && e.FirstExamDate <= SelectedExam.LastExamDate).ToList();
+            GetOverlapping();
 
-            foreach (Exam exam in exams)
-            {
-                if (exam.Id == SelectedExam.Id)
-                {
-                    continue;
-                }
-                foreach (Teacher teacher in SelectedExam.Teachers)
-                {
-                    if (exam.Teachers.Contains(teacher))
-                    {
-                        if (exam.ExamType < 4 && SelectedExam.ExamType < 4)
-                        {
-                            OverlappingExams.Add(exam.Id);
-                            OverlappingExams.Add(SelectedExam.Id);
-                            OverlappingTeacher ??= new LinkedList<Teacher>();
-                            OverlappingTeacher.AddLast(teacher);
-                        }
-                    }
-                }
-
-                foreach (Cohort cohort in SelectedExam.Cohorts)
-                {
-                    if (exam.Cohorts.Contains(cohort))
-                    {
-                        OverlappingExams.Add(exam.Id);
-                        OverlappingExams.Add(SelectedExam.Id);
-                        OverlappingCohort ??= new LinkedList<Cohort>();
-                        OverlappingCohort.AddLast(cohort);
-                    }
-                }
-            }
+            // List<Exam> exams = m_service.GetAll().Where(e => e.LastExamDate >= SelectedExam.FirstExamDate && e.FirstExamDate <= SelectedExam.LastExamDate).ToList();
             m_service.Update(SelectedExam);
-            return RedirectToPage("CalendarView");
+            return Redirect($"/Calendar/CalendarView?month={Month}&year={Year}");
         }
 
         public async Task OnPostNextMonth(int month, int year)
@@ -219,6 +194,7 @@ namespace MyApp.Namespace
             GetMonth();
 			GetDataFromDatabase();
             SetJunctionTable();
+            GetOverlapping();
         }
 
         public async Task OnPostPreviousMonth(int month, int year)
@@ -234,13 +210,14 @@ namespace MyApp.Namespace
             GetMonth();
 			GetDataFromDatabase();
             SetJunctionTable();
+            GetOverlapping();
         }
 
         private void GetMonth()
         {
             DaysInMonth = DateTime.DaysInMonth(Year, Month);
             m_selectedDateTime = new DateTime(Year, Month, 1);
-            SelectedDateTime = m_selectedDateTime;
+            SelectedDateTime = new CustomDateOnly(m_selectedDateTime);
             DayOfWeek dayOfWeek = m_selectedDateTime.DayOfWeek;
             FirstDayOfMonth = GetDayOfWeekAsNumber(dayOfWeek.ToString());
             MonthStr = GetMonthName(Month);
@@ -269,53 +246,96 @@ namespace MyApp.Namespace
             ShowUpdate = true;
             GetDataFromDatabase();
             SetJunctionTable();
+            GetOverlapping();
+
+            if (OverlappingExams.Contains(SelectedExam.Id) && OverlappingCohort != null && OverlappingTeacher != null)
+            {
+                string overStr = "";
+                HashSet<string> examTeacher = new HashSet<string>();
+                
+                foreach (Tuple<Exam, Cohort> tuple in OverlappingCohort)
+                {
+                    if (tuple.Item1 == SelectedExam)
+                    {
+                        overStr = tuple.Item2.Name + ", ";
+                        examTeacher.Add(overStr);
+                    }
+                }
+
+                foreach (Tuple<Exam, Teacher> tuple in OverlappingTeacher)
+                {
+                    if (tuple.Item1 == SelectedExam)
+                    {
+                        overStr = tuple.Item2.Name + ", ";
+                        examTeacher.Add(overStr);
+                    }
+                }
+                
+                foreach (string str in examTeacher)
+                {
+                    OverlappingStr += str;
+                }
+                OverlappingStr = OverlappingStr.Substring(0, OverlappingStr.Length - 2);
+            }
         }
 
         public void UpdateDateTime(int day)
         {
-            SelectedDateTime = new DateTime(Year, Month, day);
+            // Made a custom DateOnly for this to avoid unnecessary heap allocations
+            SelectedDateTime.Day = day;
         }
 
         public void GetOverlapping()
         {
-            List<Exam> exams = m_service.GetAll().Where(e => e.FirstExamDate >= m_selectedDateTime).ToList();
+            List<Exam> exams = m_service.GetAll().ToList();
+            // DateTime lastDayInMonth = new DateTime(Year, Month, DaysInMonth);
+            // List<Exam> exams = m_service.GetAll().Where(e => e.FirstExamDate <= m_selectedDateTime && e.LastExamDate >= m_selectedDateTime ||
+            // e.FirstExamDate >= m_selectedDateTime && e.FirstExamDate <= lastDayInMonth).ToList();
+
             for (int i = 0; i < exams.Count; i++)
             {
-                foreach (Exam exam in exams)
+                for (int j = i + 1; j < exams.Count; j++)
                 {
-                    if (exam.Id == exams[i].Id)
-                    {
-                        continue;
-                    }
+                    Exam examA = exams[i];
+                    Exam examB = exams[j];
 
-                    if (exam.LastExamDate >= exams[i].FirstExamDate && exam.FirstExamDate <= exams[i].LastExamDate)
+                    // Check if date ranges overlap
+                    if (examA.LastExamDate >= examB.FirstExamDate && examA.FirstExamDate <= examB.LastExamDate)
                     {
-                        foreach (Teacher teacher in exams[i].Teachers)
+                        // Check overlapping teachers
+                        foreach (var teacher in examA.Teachers.Intersect(examB.Teachers))
                         {
-                            if (exam.Teachers.Contains(teacher))
+                            if (examA.ExamType < 4 && examB.ExamType < 4)
                             {
-                                if (exam.ExamType < 4 && exams[i].ExamType < 4)
-                                {
-                                    OverlappingExams.Add(exam.Id);
-                                    OverlappingExams.Add(exams[i].Id);
-                                    OverlappingTeacher ??= new LinkedList<Teacher>();
-                                    OverlappingTeacher.AddLast(teacher);
-                                }
+                                OverlappingExams.Add(examA.Id);
+                                OverlappingExams.Add(examB.Id);
+                                OverlappingTeacher ??= new List<Tuple<Exam, Teacher>>();
+                                OverlappingTeacher.Add(new Tuple<Exam, Teacher>(examA, teacher));
+                                OverlappingTeacher.Add(new Tuple<Exam, Teacher>(examB, teacher));
                             }
                         }
 
-                        foreach (Cohort cohort in exams[i].Cohorts)
+                        // Check overlapping cohorts
+                        foreach (var cohort in examA.Cohorts.Intersect(examB.Cohorts))
                         {
-                            if (exam.Cohorts.Contains(cohort))
-                            {
-                                OverlappingExams.Add(exam.Id);
-                                OverlappingExams.Add(exams[i].Id);
-                                OverlappingCohort ??= new LinkedList<Cohort>();
-                                OverlappingCohort.AddLast(cohort);
-                            }
+                            OverlappingExams.Add(examA.Id);
+                            OverlappingExams.Add(examB.Id);
+                            OverlappingCohort ??= new List<Tuple<Exam, Cohort>>();
+                            OverlappingCohort.Add(new Tuple<Exam, Cohort>(examA, cohort));
+                            OverlappingCohort.Add(new Tuple<Exam, Cohort>(examB, cohort));
                         }
                     }
                 }
+            }
+        }
+
+        public void GetExamType(Exam exam)
+        {
+            switch ((Exam.ExamTypeEnum)exam.ExamType)
+            {
+                case Exam.ExamTypeEnum.Skriftlig:
+
+                    break;
             }
         }
 

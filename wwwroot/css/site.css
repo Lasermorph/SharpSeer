@@ -355,3 +355,40 @@ ul {
     font-weight: 700;
     color: #305030; 
 }
+
+.re-exam {
+    background-color:  #bfd9bf;
+    font-size: 0.5vw;
+    margin-bottom: 0.2rem;
+}
+    .re-exam:hover {
+        background-color: #dfecdf;
+        color: white;
+        border: none;
+    }
+/* .danger knap { */
+.danger
+{
+    background-color:  #bf5050;
+    font-size: 0.5vw;
+    margin-bottom: 0.2rem;
+}
+    .danger:hover 
+    {
+        background-color: #C56161;
+        color: white;
+        border: none;
+    }
+
+.overlappingBox
+{
+    display: flex;
+    gap: 20px;
+    align-items: baseline;
+    flex-direction: column;
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 20px 40px;
+    box-shadow: 0 5px 10px #888888; 
+}
