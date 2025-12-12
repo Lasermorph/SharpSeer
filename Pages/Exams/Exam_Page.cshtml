@@ -22,7 +22,7 @@
 		        	<th><input type="text" class="form-control" asp-for="Name" placeholder="Navn" /></th>
 					<th>
 						<select asp-for="ExamType"
-								asp-items="Html.GetEnumSelectList<ExamTypeEnum>()"
+								asp-items="@Html.GetEnumSelectList<ExamTypeEnum>()"
 								class="form-select">
 							<option value="">Eksamens type</option>
 						</select>
@@ -87,7 +87,7 @@
 					<td> 
 						@exam.Name </td>
 						<td> 
-							@((ExamTypeEnum)exam.ExamType) 
+							@(((ExamTypeEnum)exam.ExamType).GetDisplayName())
 						</td>
 							<td scope="col"> @((exam.Cohorts?.Any() ?? false) ? string.Join(", ", exam.Cohorts.Select(c => c.Name)) : "Ingen hold tilknyttet") </td>
 							<td scope="col"> @((exam.Teachers?.Any() ?? false) ? string.Join(", ", exam.Teachers.Select(t => t.NameId)) : "Ingen underviser tilknyttet") </td> 
@@ -169,7 +169,7 @@
 									</th>
 									<td>
 										<label>Vælg type</label>
-										<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+										<select asp-for="ExamType" asp-items="@Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
 										</select>
 									</td>
 								</tr>
@@ -345,7 +345,7 @@
 									@(((ExamTypeEnum)Model.Exam.ExamType).GetDisplayName())
 								</td>
 								<td>
-									<select asp-for="ExamType" asp-items="Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
+									<select asp-for="ExamType" asp-items="@Html.GetEnumSelectList<ExamTypeEnum>()" class="form-select">
 									</select>
 								</td>
 								

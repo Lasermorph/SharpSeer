@@ -39,6 +39,8 @@ namespace MyApp.Namespace
         public List<string> WeekNames { get; set; }
         public string UpdateModal { get; set; } = "";
         [BindProperty (SupportsGet = true)]
+        public bool? IsTeacher { get; set; } = null;
+        [BindProperty (SupportsGet = true)]
         public Exam? SelectedExam { get; set; } = new Exam();
         [BindProperty]
         public Exam.ExamTypeEnum ExamType { get; set; }
@@ -48,9 +50,9 @@ namespace MyApp.Namespace
 
         public IEnumerable<Cohort> CohortsAll { get; set; }
         public IEnumerable<Teacher> TeachersAll { get; set; }
-        [BindProperty (SupportsGet = true)]
+        [BindProperty(SupportsGet = true)]
         public bool? IsGuarded { get; set; } = null;
-        [BindProperty (SupportsGet = true)]
+        [BindProperty(SupportsGet = true)]
         public bool? NeedExternalExaminer { get; set; } = null;
         private IService<Exam> m_service;
         private IService<Teacher> m_teacherService;
@@ -104,6 +106,12 @@ namespace MyApp.Namespace
 			GetDataFromDatabase();
             SetJunctionTable();
             GetOverlapping();
+
+            if (SelectedExam != null)
+            {
+                ExamType = (Exam.ExamTypeEnum)SelectedExam.ExamType;
+            }
+
         }
 
         public void OnPostGetTeacher(int teacherID, int month, int year)
