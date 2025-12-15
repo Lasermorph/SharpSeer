@@ -1,4 +1,5 @@
-﻿namespace SharpSeer.Test;
+﻿using SharpSeer.Models;
+namespace SharpSeer.Test;
 
 [TestClass]
 public sealed class Test1
@@ -6,5 +7,6 @@ public sealed class Test1
     [TestMethod]
     public void TestMethod1()
     {
+        
     }
 }
