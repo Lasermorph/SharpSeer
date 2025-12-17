@@ -91,6 +91,7 @@ namespace SharpSeer.Pages.Exams
                 }
             }
 
+
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
             foreach (var q in QKeys)
             {
@@ -187,6 +188,11 @@ namespace SharpSeer.Pages.Exams
             }
             EndOfLoop:;
 
+            if (Exam != null)
+            {
+                ExamType = (ExamTypeEnum)Exam.ExamType;
+            } 
+
             // If updating, populate bound id lists so checkboxes render checked
             if (ShowUpdate && Exam != null)
             {
@@ -217,6 +223,15 @@ namespace SharpSeer.Pages.Exams
         {
             Exam.Id = id;
             Exam.ExamType = (int)ExamType.Value;
+
+            if (IsGuarded.HasValue)
+            {
+                Exam.IsGuarded = IsGuarded.Value;
+            }
+            if (NeedExternalExaminer.HasValue)
+            {
+                Exam.NeedExternalExaminer = NeedExternalExaminer.Value;
+            }
 
             foreach (var cohortId in Cohorts)
             {
