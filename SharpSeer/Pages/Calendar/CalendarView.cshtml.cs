@@ -256,7 +256,8 @@ namespace MyApp.Namespace
         {
             Year = year;
             Month = month;
-
+            
+            GetCookie();
             GetMonth();
             SelectedExam = m_service.GetById(examID);
             ExamType = (Exam.ExamTypeEnum)SelectedExam.ExamType;
@@ -295,6 +296,18 @@ namespace MyApp.Namespace
                     OverlappingStr += str;
                 }
                 OverlappingStr = OverlappingStr.Substring(0, OverlappingStr.Length - 2);
+            }
+        }
+
+        private void GetCookie()
+        {
+            if (Request.Cookies.ContainsKey("IsTeacher"))
+            {
+                var cookie = Request.Cookies["IsTeacher"];
+                if (!string.IsNullOrEmpty(cookie))
+                {
+                    IsTeacher = cookie == "true";
+                }
             }
         }
 
