@@ -39,12 +39,12 @@
 
 	<div class="month">
   <ul>
-    <form method="post" asp-page-handler="PreviousMonth" asp-route-month="@Model.Month" asp-route-year="@Model.Year" asp-route-lastDayOfMonth="@Model.FirstDayOfMonth">
+    <form method="post" asp-page-handler="PreviousMonth" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
         <li class="prev">
             <button type="submit">&#10094;</button>
         </li>
     </form>
-    <form method="post" asp-page-handler="NextMonth" asp-route-month="@Model.Month" asp-route-year="@Model.Year" asp-route-lastDayOfMonth="@Model.FirstDayOfMonth">
+    <form method="post" asp-page-handler="NextMonth" asp-route-month="@Model.Month" asp-route-year="@Model.Year">
         <li class="next">
         <button type="submit">&#10095;</button>
         </li>

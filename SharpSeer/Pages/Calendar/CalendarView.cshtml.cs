@@ -76,34 +76,51 @@ namespace MyApp.Namespace
             m_cohortService = cohortService;
             m_teacherService = teacherService;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
             ICollection<string> QKeys = HttpContext.Request.Query.Keys;
-            foreach (string key in QKeys)
+            try
             {
-                if (key == "month")
+                foreach (string key in QKeys)
                 {
-                    HttpContext.Request.Query.TryGetValue(key, out var month);
-                    if (!month.IsNullOrEmpty())
+                    if (key == "month")
                     {
-                        Month = int.Parse(month);
+                        HttpContext.Request.Query.TryGetValue(key, out var month);
+                        if (!month.IsNullOrEmpty())
+                        {
+                            Month = int.Parse(month!);
+                        }
+                        continue;
                     }
-                    break;
-                }
-                if (key == "year")
-                {
-                    HttpContext.Request.Query.TryGetValue(key, out var year);
-                    if (!year.IsNullOrEmpty())
+                    if (key == "year")
                     {
-                        Year = int.Parse(year);
+                        HttpContext.Request.Query.TryGetValue(key, out var year);
+                        if (!year.IsNullOrEmpty())
+                        {
+                            Year = int.Parse(year!);
+                        }
+                        continue;
                     }
-                    break;
                 }
             }
+            catch (FormatException)
+            {
+                Month = CurrentTime.Month;
+                Year = CurrentTime.Year;
+
+                return RedirectToPage(new
+                {
+                    month = Month,
+                    year = Year
+                });
+            }
+
             GetMonth();
 			GetDataFromDatabase();
             SetJunctionTable();
             GetOverlapping();
+
+            return Page();
         }
 
         public void OnPostGetTeacher(int teacherID, int month, int year)
@@ -180,36 +197,38 @@ namespace MyApp.Namespace
             return Redirect($"/Calendar/CalendarView?month={Month}&year={Year}");
         }
 
-        public async Task OnPostNextMonth(int month, int year)
+        public IActionResult OnPostNextMonth(int month, int year)
         {
             Month = month + 1;
             Year = year;
-            if (Month == 13)
+            if (Month > 12)
             {
                 Month = 1;
                 Year = year + 1;
             }
 
-            GetMonth();
-			GetDataFromDatabase();
-            SetJunctionTable();
-            GetOverlapping();
+            return RedirectToPage(new 
+            {
+                month = Month,
+                year = Year
+            });
         }
 
-        public async Task OnPostPreviousMonth(int month, int year)
+        public IActionResult OnPostPreviousMonth(int month, int year)
         {
             Month = month - 1;
             Year = year;
-            if (Month == 0)
+            if (Month < 1)
             {
                 Month = 12;
                 Year = year - 1;
             }
 
-            GetMonth();
-			GetDataFromDatabase();
-            SetJunctionTable();
-            GetOverlapping();
+            return RedirectToPage(new 
+            {
+                month = Month,
+                year = Year
+            });
         }
 
         private void GetMonth()
